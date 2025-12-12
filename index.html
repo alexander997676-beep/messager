@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Ultimate Pro</title>
+    <title>FaizanMsg Ultimate</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     
@@ -21,7 +21,7 @@
         body { font-family: var(--font); background: var(--bg); color: var(--text); margin: 0; height: 100vh; display: flex; justify-content: center; overflow: hidden; }
 
         .app-container { width: 100%; max-width: 480px; height: 100%; position: relative; display: flex; flex-direction: column; background: #050505; }
-        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; scroll-behavior: smooth; }
+        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 150px; scroll-behavior: smooth; }
         
         /* --- CARDS & INPUTS --- */
         .card { background: var(--surface); border: 1px solid var(--glass); padding: 15px; border-radius: 20px; margin-bottom: 15px; position: relative; }
@@ -54,9 +54,22 @@
         .msg-media { width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid var(--glass); }
         video.msg-media, audio.msg-media { outline: none; background: #000; }
         
-        /* --- NAV & UTILS --- */
-        .dock-nav { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(20,20,20,0.9); padding: 12px 30px; border-radius: 50px; display: flex; gap: 40px; border: 1px solid var(--glass); z-index: 50; }
-        .dock-item { font-size: 22px; color: #666; transition: 0.3s; }
+        /* --- NAV DOCK (FIXED POSITION) --- */
+        .dock-nav {
+            position: absolute;
+            bottom: 80px; /* <--- UPDATED: Moved up to avoid overlap */
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.95);
+            padding: 12px 30px;
+            border-radius: 50px;
+            display: flex;
+            gap: 40px;
+            border: 1px solid var(--glass);
+            z-index: 50;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .dock-item { font-size: 22px; color: #666; transition: 0.3s; cursor: pointer; }
         .dock-item.active { color: var(--accent); transform: translateY(-5px); }
 
         .view-section { display: none; animation: fadeIn 0.3s ease; }
@@ -110,7 +123,7 @@
     <!-- 2. INBOX -->
     <div id="view-inbox" class="view-section">
         <div class="scroll-view">
-            <h2 style="margin-bottom:20px;">Inbox <i class="fas fa-sync" style="float:right; font-size:16px; opacity:0.5;" onclick="app.renderInbox()"></i></h2>
+            <h2 style="margin-bottom:20px;">Inbox <i class="fas fa-sync" style="float:right; font-size:16px; opacity:0.5; cursor: pointer;" onclick="app.renderInbox()"></i></h2>
             <div id="msg-list"></div>
         </div>
     </div>
@@ -145,7 +158,7 @@
             <div id="preview-area" class="hidden">
                 <div id="preview-content"></div>
                 <div id="file-name" style="font-size:12px; color:var(--accent); margin-top:5px;"></div>
-                <button onclick="app.clearFile()" style="background:none; border:none; color:red; margin-top:5px;">Remove File</button>
+                <button onclick="app.clearFile()" style="background:none; border:none; color:red; margin-top:5px; cursor:pointer;">Remove File</button>
             </div>
 
             <textarea id="msg-text" class="input-field" rows="4" placeholder="Type a message..."></textarea>
@@ -332,6 +345,10 @@
             
             if(v === 'inbox' || v === 'profile') {
                 dock.classList.remove('hidden');
+                document.querySelectorAll('.dock-item').forEach(i => i.classList.remove('active'));
+                if(v === 'inbox') document.querySelector('.fa-envelope').classList.add('active');
+                if(v === 'profile') document.querySelector('.fa-user').classList.add('active');
+                
                 if(v === 'inbox') app.renderInbox();
                 if(v === 'profile') app.renderProfile();
             } else {
