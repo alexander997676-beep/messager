@@ -3,67 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Inbox - GhostChat</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body { background: #111b21; color: #e9edef; font-family: sans-serif; margin: 0; }
         .header { background: #202c33; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 10px; }
-        .add-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        
+        .add-box { display: flex; gap: 10px; margin-bottom: 20px; background: #202c33; padding: 10px; border-radius: 10px; }
         input { flex: 1; padding: 10px; border-radius: 5px; border: none; background: #2a3942; color: white; }
         button { padding: 10px 20px; background: #00a884; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .contact { background: #202c33; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; }
+        
+        .section-title { font-size: 14px; color: #00a884; margin: 10px 0; font-weight: bold; }
+
+        .contact { background: #202c33; padding: 15px; margin-bottom: 2px; cursor: pointer; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .contact:hover { background: #2a3942; }
-        .avatar { width: 40px; height: 40px; background: #6a7f8a; border-radius: 50%; margin-right: 15px; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        .avatar { width: 45px; height: 45px; background: #6a7f8a; border-radius: 50%; margin-right: 15px; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; font-size: 18px; }
+        .info { flex: 1; }
+        .last-msg { font-size: 12px; color: #8696a0; margin-top: 3px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h3 id="welcome-msg" style="margin:0;">Dashboard</h3>
+        <h3 id="welcome-msg" style="margin:0;">WhatsApp Clone</h3>
         <button onclick="logout()" style="background:#ef4444;">Logout</button>
     </div>
 
     <div class="container">
+        <!-- New Chat Start Karne ke liye -->
         <div class="add-box">
-            <input type="text" id="friend-name" placeholder="Enter Friend's Username">
-            <button onclick="addFriend()">Add</button>
+            <input type="text" id="friend-name" placeholder="Start new chat (Username)">
+            <button onclick="startNewChat()">Message</button>
         </div>
+
+        <div class="section-title">CHATS</div>
         <div id="list"></div>
     </div>
 
     <script>
-        const user = localStorage.getItem('gc_session');
-        if (!user) window.location.href = 'index.html'; // Security Check
+        const currentUser = localStorage.getItem('gc_session');
+        if (!currentUser) window.location.href = 'index.html';
 
-        document.getElementById('welcome-msg').innerText = "Hi, " + user;
+        document.getElementById('welcome-msg').innerText = currentUser;
 
-        function addFriend() {
+        // --- MAIN LOGIC: INBOX LOAD KARNA ---
+        function loadInbox() {
+            const listElement = document.getElementById('list');
+            listElement.innerHTML = "";
+            
+            // 1. Ek list banao jisme wo sab log honge jinse baat hui hai
+            let activeChats = new Set();
+
+            // 2. LocalStorage ke saare keys check karo
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+
+                // Agar key message wali hai (format: gc_msgs_UserA_UserB)
+                if (key.startsWith('gc_msgs_')) {
+                    const parts = key.replace('gc_msgs_', '').split('_');
+                    
+                    // Check karo ke kya isme mera naam shamil hai?
+                    if (parts.includes(currentUser)) {
+                        // Agar mera naam hai, to doosra banda kaun hai?
+                        const otherPerson = parts[0] === currentUser ? parts[1] : parts[0];
+                        activeChats.add(otherPerson);
+                    }
+                }
+            }
+
+            // 3. Agar koi chat nahi mili
+            if (activeChats.size === 0) {
+                listElement.innerHTML = "<div style='text-align:center; padding:20px; color:#777;'>No messages yet.</div>";
+                return;
+            }
+
+            // 4. Har active chat ko screen par dikhao
+            activeChats.forEach(person => {
+                // Last message nikalne ke liye (Optional styling)
+                const chatID = [currentUser, person].sort().join('_');
+                const msgs = JSON.parse(localStorage.getItem('gc_msgs_' + chatID) || "[]");
+                const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].t : "Tap to chat";
+                const lastTime = msgs.length > 0 ? msgs[msgs.length - 1].time || "" : "";
+
+                // HTML banana
+                listElement.innerHTML += `
+                <div class="contact" onclick="window.location.href='chat.html?to=${person}'">
+                    <div class="avatar">${person[0].toUpperCase()}</div>
+                    <div class="info">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="font-weight:bold; font-size:16px;">${person}</span>
+                            <span style="font-size:11px; color:#8696a0;">${lastTime}</span>
+                        </div>
+                        <div class="last-msg">${lastMsg}</div>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // Kisi naye bande ko message bhejna ho (jo list me nahi hai)
+        function startNewChat() {
             const f = document.getElementById('friend-name').value.trim();
             const allUsers = JSON.parse(localStorage.getItem('gc_users') || "{}");
             
-            if (!allUsers[f]) return alert("User does not exist!");
-            if (f === user) return alert("Can't add self");
+            if (!allUsers[f]) return alert("User exist nahi karta!");
+            if (f === currentUser) return alert("Khud ko message nahi bhej sakte");
 
-            let contacts = JSON.parse(localStorage.getItem(`gc_contacts_${user}`) || "[]");
-            if (!contacts.includes(f)) {
-                contacts.push(f);
-                localStorage.setItem(`gc_contacts_${user}`, JSON.stringify(contacts));
-                loadContacts();
-            }
-        }
-
-        function loadContacts() {
-            const list = JSON.parse(localStorage.getItem(`gc_contacts_${user}`) || "[]");
-            const el = document.getElementById('list');
-            el.innerHTML = "";
-            list.forEach(c => {
-                // Yahan dekhein, hum chat.html par bhej rahe hain URL parameter ke sath
-                el.innerHTML += `
-                <div class="contact" onclick="window.location.href='chat.html?to=${c}'">
-                    <div class="avatar">${c[0].toUpperCase()}</div>
-                    <span>${c}</span>
-                </div>`;
-            });
+            // Direct chat page par le jao
+            window.location.href = `chat.html?to=${f}`;
         }
 
         function logout() {
@@ -71,7 +117,8 @@
             window.location.href = 'index.html';
         }
 
-        loadContacts();
-    </script>
-</body>
-</html>
+        // Har 1 second baad inbox refresh karo (Taaki naya msg aaye to dikh jaye)
+        loadInbox();
+        setInterval(loadInbox, 2000); 
+
+    </scr
