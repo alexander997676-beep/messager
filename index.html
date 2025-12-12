@@ -2,228 +2,284 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Supreme</title>
+    <!-- Viewport Fix for Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>FaizanMsg Ultra</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME --- */
+        /* --- DYNAMIC THEME ENGINE --- */
         :root {
-            --hue: 260;
+            --primary: #6366f1; /* Default Color */
             --bg-deep: #000000;
-            --primary: hsl(var(--hue), 90%, 65%);
-            --surface: rgba(20, 20, 20, 0.7);
+            --surface: rgba(20, 20, 20, 0.85);
             --border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
             --font: 'Plus Jakarta Sans', sans-serif;
         }
 
-        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: var(--font); background: var(--bg-deep); color: var(--text); margin: 0; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+        
+        body {
+            font-family: var(--font); background: var(--bg-deep); color: var(--text);
+            margin: 0; height: 100vh; height: 100dvh; overflow: hidden;
+        }
 
         /* --- BACKGROUND --- */
-        .orb-bg { position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; }
-        .orb-1 { top: 0; left: 0; width: 60vw; height: 60vw; background: var(--primary); }
-        .orb-2 { bottom: 0; right: 0; width: 60vw; height: 60vw; background: #22d3ee; }
+        .bg-glow {
+            position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000;
+        }
+        .blob {
+            position: absolute; width: 300px; height: 300px; background: var(--primary);
+            filter: blur(100px); opacity: 0.4; border-radius: 50%;
+            transition: background 0.5s ease; animation: move 10s infinite alternate;
+        }
+        .blob-1 { top: -50px; left: -50px; }
+        .blob-2 { bottom: -50px; right: -50px; animation-delay: -5s; }
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(30px, 30px); } }
 
-        /* --- LAYOUT --- */
-        .app-container {
-            width: 100%; max-width: 450px; height: 100%; margin: 0 auto;
+        /* --- APP CONTAINER --- */
+        .app-shell {
+            width: 100%; max-width: 480px; height: 100%; margin: 0 auto;
             display: flex; flex-direction: column; position: relative;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(30px);
+            background: rgba(0,0,0,0.2); backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
-        /* Padding bottom increased so content is not hidden behind dock */
-        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
-        
-        /* --- INPUTS & BUTTONS --- */
-        .input-field {
-            width: 100%; background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+
+        /* --- SCROLL AREA (Fixed Padding) --- */
+        .scroll-content {
+            flex: 1; overflow-y: auto; 
+            padding: 20px; 
+            padding-bottom: 120px; /* Space for Bottom Dock */
+            padding-top: 20px;
+            scroll-behavior: smooth;
+        }
+        .scroll-content::-webkit-scrollbar { width: 0; }
+
+        /* --- COMPONENTS --- */
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 20px; border-radius: 24px; margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .input-box {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
             padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-size: 16px;
+            transition: 0.3s;
         }
+        .input-box:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
+
         .btn {
             width: 100%; padding: 16px; border-radius: 16px; border: none;
             font-weight: 700; font-size: 16px; cursor: pointer;
-            background: var(--primary); color: white; transition: 0.2s;
+            background: var(--primary); color: white; transition: background 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
-        .btn:active { transform: scale(0.97); }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        /* --- AVATAR FIX --- */
-        .avatar-group { text-align: center; margin-bottom: 25px; position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
-        .avatar {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary); background: #222; display: block;
+        /* --- COLOR PICKER --- */
+        .color-picker-wrapper {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 16px;
+            margin-top: 10px; border: 1px solid var(--border); cursor: pointer;
+        }
+        input[type="color"] {
+            -webkit-appearance: none; border: none; width: 40px; height: 40px;
+            border-radius: 50%; background: none; cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid white; border-radius: 50%; }
+
+        /* --- AVATAR --- */
+        .avatar-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--primary); background: #222;
         }
         .avatar-edit {
-            position: absolute; bottom: 0; right: 0;
-            background: white; color: black; width: 32px; height: 32px; border-radius: 50%;
-            display: grid; place-items: center; font-size: 14px; cursor: pointer; border: 2px solid #000;
+            position: absolute; bottom: 0; right: 0; background: white; color: black;
+            width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+            font-size: 14px; border: 2px solid #111; cursor: pointer;
         }
 
-        /* --- CHAT UI --- */
-        .chat-dock { display: flex; align-items: center; gap: 10px; background: rgba(30,30,30,0.9); padding: 10px; border-radius: 50px; border: 1px solid var(--border); margin-top: 10px; }
-        .action-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
-        .msg-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 5px; }
+        /* --- BOTTOM DOCK (FIXED) --- */
+        .dock {
+            position: absolute; 
+            bottom: 40px; 
+            left: 50%; transform: translateX(-50%);
+            background: rgba(15, 15, 15, 0.95);
+            padding: 12px 25px; border-radius: 50px;
+            display: flex; gap: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+        .dock-item {
+            font-size: 24px; color: #666; transition: 0.3s; cursor: pointer;
+            width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%;
+        }
+        .dock-item.active { background: var(--primary); color: white; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        /* --- FILE PREVIEW --- */
+        /* --- CHAT BAR --- */
+        .chat-area {
+            display: flex; align-items: flex-end; gap: 10px; background: rgba(30,30,30,0.9);
+            padding: 10px; border-radius: 24px; border: 1px solid var(--border); margin-top: 15px;
+        }
+        .chat-btn {
+            width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            color: white; display: grid; place-items: center; flex-shrink: 0; cursor: pointer;
+        }
+        .chat-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px; }
+
+        /* --- FILE CHIP --- */
         .file-chip {
-            display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1);
-            padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border);
-            margin: 10px 0; width: fit-content; max-width: 100%;
+            display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.1);
+            padding: 8px 15px; border-radius: 12px; margin: 10px 0; border: 1px solid var(--border); width: fit-content;
         }
-        .chip-thumb { width: 30px; height: 30px; border-radius: 5px; object-fit: cover; background: #000; display: grid; place-items: center; font-size: 12px; }
-        .chip-info { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
-        .chip-x { color: #ff5555; cursor: pointer; padding-left: 5px; }
-
-        /* --- MENUS --- */
-        .attach-menu { position: absolute; bottom: 85px; left: 20px; width: 160px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; padding: 5px; display: none; }
-        .attach-menu.show { display: block; animation: popUp 0.2s; }
-        .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px; color: white; cursor: pointer; border-radius: 8px; }
-        .menu-item:hover { background: rgba(255,255,255,0.1); }
+        .chip-icon { width: 35px; height: 35px; border-radius: 8px; background: #000; display: grid; place-items: center; object-fit: cover; }
 
         /* --- UTILS --- */
-        .view { display: none; }
-        .view.active { display: block; animation: fadeIn 0.4s; }
+        .view { display: none; animation: fade 0.3s; }
+        .view.active { display: block; }
         .hidden { display: none !important; }
-        
-        /* --- FIXED DOCK (SOLUTION) --- */
-        .dock {
-            position: fixed; /* Fixed kar diya */
-            bottom: 50px;    /* Thoda aur upar utha diya */
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10,10,10,0.95);
-            padding: 10px 20px;
-            border-radius: 40px;
-            display: flex;
-            gap: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 9999; /* Sab se upar */
-        }
-        .dock i { font-size: 24px; color: #666; transition: 0.3s; cursor: pointer; }
-        .dock i.active { color: var(--primary); transform: translateY(-3px); }
+        .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 2000; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; margin-bottom: 10px; border: 1px solid var(--border); }
-        .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; display: none; z-index: 999; }
-        
-        @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
-        @keyframes popUp { from {transform:scale(0.8); opacity:0;} to {transform:scale(1); opacity:1;} }
+        /* --- FULLSCREEN IMAGE --- */
+        .fs-img { position: fixed; inset: 0; background: black; z-index: 3000; display: none; place-items: center; }
+        .fs-img img { max-width: 100%; max-height: 100%; }
+        .close-fs { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
+
     </style>
 </head>
 <body>
 
-<div class="orb-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+<div class="bg-glow"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
 
-<div class="app-container">
+<div class="app-shell" id="app-shell">
 
-    <!-- 1. AUTH SCREEN -->
+    <!-- 1. AUTH -->
     <div id="view-auth" class="view active">
-        <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
-            <div style="text-align:center; margin-bottom: 30px;">
-                <h1 id="auth-title">Login</h1>
-                <p style="color:#aaa;">Secure Anonymous Messaging</p>
+        <div class="scroll-content" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+            <div style="text-align:center; margin-bottom:40px;">
+                <h1 style="font-size:32px;">FaizanMsg <span style="color:var(--primary)">Ultra</span></h1>
+                <p style="color:#aaa;">Secure & Customizable</p>
             </div>
 
-            <!-- Profile Pic (Only for Signup) -->
-            <div id="signup-pic" class="hidden">
-                <div class="avatar-group">
-                    <img id="auth-pic-prev" class="avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+            <div id="signup-box" class="hidden" style="text-align:center;">
+                <div class="avatar-wrap">
+                    <img id="reg-pic-prev" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
                     <label class="avatar-edit"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)"></label>
                 </div>
             </div>
 
-            <!-- Inputs -->
-            <input type="email" id="in-email" class="input-field" placeholder="Email Address">
-            <input type="text" id="in-user" class="input-field hidden" placeholder="Username (Unique)">
-            <input type="password" id="in-pass" class="input-field" placeholder="Password">
-            <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Write a short Bio..."></textarea>
+            <input type="email" id="auth-email" class="input-box" placeholder="Email">
+            <input type="text" id="auth-user" class="input-box hidden" placeholder="Username">
+            <input type="password" id="auth-pass" class="input-box" placeholder="Password">
+            <input type="text" id="auth-bio" class="input-box hidden" placeholder="Short Bio">
 
-            <!-- Buttons -->
-            <button id="btn-submit" class="btn" onclick="app.doAuth()">Login</button>
+            <button id="auth-btn" class="btn" onclick="app.login()">Login</button>
             
-            <p style="text-align:center; margin-top:20px; font-size:14px; color:#aaa;">
-                <span id="auth-text">New here?</span> 
-                <a href="#" onclick="app.toggleAuthMode()" style="color:var(--primary); font-weight:bold; text-decoration:none;">Create Account</a>
+            <p style="text-align:center; margin-top:20px; color:#888;">
+                <span id="auth-switch-text">New here?</span> 
+                <a href="#" onclick="app.toggleAuth()" style="color:var(--primary); font-weight:bold; text-decoration:none;">Create Account</a>
             </p>
         </div>
     </div>
 
     <!-- 2. INBOX -->
     <div id="view-inbox" class="view">
-        <div class="scroll-view">
-            <h2 style="margin-bottom:20px">Inbox <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="float:right; font-size:18px; cursor:pointer"></i></h2>
+        <div class="scroll-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2>Inbox</h2>
+                <div onclick="app.renderInbox()" style="background:var(--surface); padding:10px; border-radius:50%; cursor:pointer;"><i class="fas fa-sync-alt"></i></div>
+            </div>
             <div id="msg-list"></div>
         </div>
     </div>
 
     <!-- 3. PUBLIC SEND -->
     <div id="view-public" class="view">
-        <div class="scroll-view">
+        <div class="scroll-content">
             <div style="text-align:center; margin:30px 0;">
-                <img id="pub-img" class="avatar" style="margin:0 auto 15px;">
-                <h2 style="font-size:24px;">Send Secret</h2>
-                <p style="color:#aaa;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
-                <div id="pub-bio" style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:5px;"></div>
+                <img id="pub-img" class="avatar-img" style="width:100px; height:100px; border-color:white; margin:0 auto;" onclick="app.viewImg(this.src)">
+                <h2 style="margin-top:10px;">Send Secret</h2>
+                <p style="color:#aaa;">To <span id="pub-name" style="color:white; font-weight:bold;">User</span></p>
+                <p id="pub-bio" style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:5px;"></p>
             </div>
 
             <!-- FILE PREVIEW -->
-            <div id="file-preview"></div>
+            <div id="file-area" class="hidden"></div>
 
-            <div class="chat-dock">
-                <div class="action-btn" id="attach-btn" onclick="app.toggleMenu()"><i class="fas fa-plus"></i></div>
-                <textarea id="msg-input" class="msg-input" rows="1" placeholder="Type a message..."></textarea>
-                <div class="action-btn" onclick="app.sendMsg()" style="background:var(--primary);"><i class="fas fa-paper-plane"></i></div>
+            <div class="chat-area">
+                <label class="chat-btn"><i class="fas fa-paperclip"></i><input type="file" hidden onchange="app.handleFile(this)"></label>
+                <textarea id="msg-text" class="chat-input" rows="1" placeholder="Type message..."></textarea>
+                <div class="chat-btn" style="background:var(--primary)" onclick="app.sendMsg()"><i class="fas fa-paper-plane"></i></div>
             </div>
 
-            <!-- Menu -->
-            <div id="attach-menu" class="attach-menu">
-                <label class="menu-item"><i class="fas fa-image" style="color:#4ade80"></i> Photo <input type="file" hidden accept="image/*" onchange="app.handleFile(this, 'image')"></label>
-                <label class="menu-item"><i class="fas fa-video" style="color:#60a5fa"></i> Video <input type="file" hidden accept="video/*" onchange="app.handleFile(this, 'video')"></label>
-                <label class="menu-item"><i class="fas fa-microphone" style="color:#fbbf24"></i> Audio <input type="file" hidden accept="audio/*" onchange="app.handleFile(this, 'audio')"></label>
-            </div>
-
-            <div style="text-align:center; margin-top:50px;"><a href="?" style="color:#555; text-decoration:none; font-size:12px;">Create Account</a></div>
+            <div style="text-align:center; margin-top:50px;"><a href="?" style="color:#666; text-decoration:none; font-size:12px;">Create Account</a></div>
         </div>
     </div>
 
-    <!-- 4. PROFILE -->
+    <!-- 4. PROFILE / SETTINGS -->
     <div id="view-profile" class="view">
-        <div class="scroll-view">
+        <div class="scroll-content">
             <div class="card" style="text-align:center;">
-                <img id="p-img" class="avatar" style="margin:0 auto;">
-                <h2 id="p-user" style="margin-top:10px;">User</h2>
-                <p id="p-bio" style="color:#aaa; font-size:13px; margin:5px 0;">Bio</p>
-                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; font-size:12px; margin-top:10px; color:var(--primary);" id="p-link">Link</div>
+                <div class="avatar-wrap">
+                    <img id="p-img" class="avatar-img" onclick="app.viewImg(this.src)">
+                    <label class="avatar-edit"><i class="fas fa-pen"></i><input type="file" hidden accept="image/*" onchange="app.updatePic(this)"></label>
+                </div>
+                <h2 id="p-name">User</h2>
+                <p id="p-bio-text" style="color:#aaa; font-size:13px; margin:5px 0;">Bio</p>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; margin-top:10px; color:var(--primary); font-size:12px;" id="p-link">Link</div>
                 <button class="btn" onclick="app.copyLink()" style="margin-top:10px; padding:10px; font-size:14px;">Copy Link</button>
             </div>
+
+            <div class="card">
+                <h3>Customization</h3>
+                <label class="color-picker-wrapper">
+                    <span>App Theme Color</span>
+                    <input type="color" id="color-picker" value="#6366f1" oninput="app.changeTheme(this.value)">
+                </label>
+                <button class="btn" onclick="app.toggleFullScreen()" style="margin-top:10px; background:var(--surface); border:1px solid var(--border);">
+                    <i class="fas fa-expand"></i> Fullscreen Mode
+                </button>
+            </div>
+
             <button class="btn" onclick="app.logout()" style="background:rgba(255,0,0,0.2); color:#ff5555;">Log Out</button>
         </div>
     </div>
 
-    <!-- DOCK (NOW FIXED AT BOTTOM) -->
+    <!-- DOCK -->
     <div id="dock" class="dock hidden">
-        <i class="fas fa-comment-dots active" onclick="app.nav('inbox', this)"></i>
-        <i class="fas fa-user" onclick="app.nav('profile', this)"></i>
+        <div class="dock-item active" onclick="app.nav('inbox', this)"><i class="fas fa-comment-dots"></i></div>
+        <div class="dock-item" onclick="app.nav('profile', this)"><i class="fas fa-user-circle"></i></div>
     </div>
 
 </div>
 
-<!-- IMAGE VIEWER -->
-<div id="img-viewer" style="position:fixed; inset:0; background:black; display:none; align-items:center; justify-content:center; z-index:2000;" onclick="this.style.display='none'">
-    <img id="view-img-src" style="max-width:100%; max-height:100%;">
+<!-- FULLSCREEN IMAGE VIEWER -->
+<div id="fs-viewer" class="fs-img">
+    <div class="close-fs" onclick="document.getElementById('fs-viewer').style.display='none'">&times;</div>
+    <img id="fs-img-src">
 </div>
 
-<div id="toast" class="toast">Msg</div>
+<div id="toast" class="toast">Alert</div>
 
 <script>
-    const DB_NAME='FaizanMsgFinal'; const DB_VER=1;
+    const DB='FaizanUltra'; const VER=1;
     const DEF_PIC='https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
     const db={
         open:()=>new Promise(r=>{
-            const q=indexedDB.open(DB_NAME,DB_VER);
+            const q=indexedDB.open(DB,VER);
             q.onupgradeneeded=e=>{
                 const d=e.target.result;
                 if(!d.objectStoreNames.contains('u'))d.createObjectStore('u',{keyPath:'e'});
@@ -241,66 +297,85 @@
     };
 
     const app={
-        s:{mode:'login', authFile:null, msgFile:null, msgType:null, u:null, e:null},
+        s:{user:null,email:null,authFile:null,msgFile:null},
 
         init:async()=>{
+            // Load saved color
+            const savedColor = localStorage.getItem('themeColor');
+            if(savedColor) app.changeTheme(savedColor);
+
             const q=new URLSearchParams(window.location.search);
             if(q.get('to')) return app.loadPublic(q.get('to'));
 
             const u=localStorage.getItem('u'); const e=localStorage.getItem('e');
-            if(u&&e){ app.s.u=u; app.s.e=e; app.nav('inbox', document.querySelector('.dock i')); }
-        },
-
-        // --- AUTH LOGIC (FIXED) ---
-        toggleAuthMode:()=>{
-            app.s.mode = app.s.mode==='login' ? 'signup' : 'login';
-            const isSign = app.s.mode==='signup';
-            
-            // Toggle visibility
-            document.getElementById('signup-pic').classList.toggle('hidden', !isSign);
-            document.getElementById('in-user').classList.toggle('hidden', !isSign);
-            document.getElementById('in-bio').classList.toggle('hidden', !isSign);
-            
-            // Text Updates
-            document.getElementById('auth-title').innerText = isSign ? "Create Account" : "Login";
-            document.getElementById('btn-submit').innerText = isSign ? "Register" : "Login";
-            document.getElementById('auth-text').innerText = isSign ? "Have account?" : "New here?";
-            document.querySelector('#auth-text + a').innerText = isSign ? "Login" : "Create Account";
-        },
-
-        handleAuthPic:(i)=>{ if(i.files[0]){ app.s.authFile=i.files[0]; document.getElementById('auth-pic-prev').src=URL.createObjectURL(i.files[0]); }},
-
-        doAuth:async()=>{
-            const e=document.getElementById('in-email').value.toLowerCase();
-            const p=document.getElementById('in-pass').value;
-            
-            if(app.s.mode==='login'){
-                const u=await db.op('u','readonly','get',e);
-                if(u && u.pass===p){
-                    localStorage.setItem('u',u.user); localStorage.setItem('e',e);
-                    app.s.u=u.user; app.s.e=e;
-                    app.nav('inbox', document.querySelector('.dock i'));
-                } else app.toast('Invalid Email or Password');
+            if(u&&e){
+                app.s.user=u; app.s.email=e;
+                app.nav('inbox', document.querySelector('.dock-item'));
             } else {
-                const u=document.getElementById('in-user').value;
-                const b=document.getElementById('in-bio').value;
-                if(!e||!u||!p) return app.toast('Fill all fields');
-                
-                const ex=await db.op('u','readonly','get',e);
-                if(ex) return app.toast('Email taken');
-                
-                await db.op('u','readwrite','put',{e, user:u, pass:p, bio:b, pic:app.s.authFile});
-                app.toast('Account Created! Login now.');
-                app.toggleAuthMode();
+                document.getElementById('view-auth').classList.add('active');
             }
         },
 
+        // --- THEME & FULLSCREEN ---
+        changeTheme:(c)=>{
+            document.documentElement.style.setProperty('--primary', c);
+            localStorage.setItem('themeColor', c);
+            document.querySelector('.blob').style.background = c;
+        },
+        toggleFullScreen:()=>{
+            if(!document.fullscreenElement){
+                document.documentElement.requestFullscreen().catch(e=>console.log(e));
+            } else {
+                if(document.exitFullscreen) document.exitFullscreen();
+            }
+        },
+
+        // --- AUTH ---
+        toggleAuth:()=>{
+            const isLog = !document.getElementById('auth-user').classList.contains('hidden');
+            ['auth-user','auth-bio','signup-box'].forEach(id=>document.getElementById(id).classList.toggle('hidden'));
+            const btn = document.getElementById('auth-btn');
+            btn.innerText = isLog ? "Register" : "Login";
+            btn.onclick = isLog ? app.register : app.login;
+            document.getElementById('auth-switch-text').innerText = isLog ? "Have account?" : "New here?";
+        },
+        handleAuthPic:(i)=>{ if(i.files[0]){ app.s.authFile=i.files[0]; document.getElementById('reg-pic-prev').src=URL.createObjectURL(i.files[0]); }},
+
+        register:async()=>{
+            const e=document.getElementById('auth-email').value.toLowerCase();
+            const u=document.getElementById('auth-user').value;
+            const p=document.getElementById('auth-pass').value;
+            const b=document.getElementById('auth-bio').value;
+            
+            if(!e||!u||!p) return app.toast('Fill all fields');
+            const ex=await db.op('u','readonly','get',e);
+            if(ex) return app.toast('Email taken');
+            
+            const all=await db.op('u','readonly','getAll');
+            if(all.find(x=>x.user===u)) return app.toast('Username taken');
+
+            await db.op('u','readwrite','put',{e, user:u, pass:p, bio:b, pic:app.s.authFile});
+            app.toast('Created! Login now.');
+            app.toggleAuth();
+        },
+
+        login:async()=>{
+            const e=document.getElementById('auth-email').value.toLowerCase();
+            const p=document.getElementById('auth-pass').value;
+            const u=await db.op('u','readonly','get',e);
+            
+            if(u && u.pass===p){
+                localStorage.setItem('u',u.user); localStorage.setItem('e',e);
+                app.s.user=u.user; app.s.email=e;
+                app.nav('inbox', document.querySelector('.dock-item'));
+            } else app.toast('Invalid Details');
+        },
         logout:()=>{ localStorage.clear(); location.reload(); },
 
-        // --- PUBLIC SEND ---
+        // --- SEND ---
         loadPublic:async(to)=>{
             app.nav('public');
-            document.getElementById('pub-target').innerText=to;
+            document.getElementById('pub-name').innerText=to;
             const all=await db.op('u','readonly','getAll');
             const tgt=all.find(x=>x.user===to);
             if(tgt){
@@ -310,50 +385,49 @@
             } else document.getElementById('pub-img').src=DEF_PIC;
         },
 
-        toggleMenu:()=>{ 
-            const m=document.getElementById('attach-menu');
-            m.classList.toggle('show');
-        },
-
-        handleFile:(i,t)=>{
+        handleFile:(i)=>{
             const f=i.files[0]; if(!f)return;
-            app.s.msgFile=f; app.s.msgType=t;
-            document.getElementById('attach-menu').classList.remove('show');
+            app.s.msgFile=f;
+            const prev=document.getElementById('file-area');
+            prev.classList.remove('hidden');
             
-            const prev=document.getElementById('file-preview');
-            let icon = t==='image'?'fa-image':(t==='video'?'fa-video':'fa-music');
-            let thumb = t==='image' ? `<img src="${URL.createObjectURL(f)}" class="chip-thumb">` : `<div class="chip-thumb"><i class="fas ${icon}" style="color:white"></i></div>`;
-            
+            let thumb='';
+            if(f.type.startsWith('image')) thumb=`<img src="${URL.createObjectURL(f)}" class="chip-icon">`;
+            else if(f.type.startsWith('video')) thumb=`<video src="${URL.createObjectURL(f)}" class="chip-icon"></video>`;
+            else thumb=`<div class="chip-icon"><i class="fas fa-file"></i></div>`;
+
             prev.innerHTML=`<div class="file-chip">${thumb}<div class="chip-info">${f.name}</div><div class="chip-x" onclick="app.clearFile()"><i class="fas fa-times"></i></div></div>`;
         },
-
-        clearFile:()=>{ app.s.msgFile=null; document.getElementById('file-preview').innerHTML=''; },
+        clearFile:()=>{ app.s.msgFile=null; document.getElementById('file-area').innerHTML=''; document.getElementById('file-area').classList.add('hidden'); },
 
         sendMsg:async()=>{
-            const txt=document.getElementById('msg-input').value;
-            const to=document.getElementById('pub-target').innerText;
+            const txt=document.getElementById('msg-text').value;
+            const to=document.getElementById('pub-name').innerText;
             if(!txt && !app.s.msgFile) return app.toast('Empty');
             
-            await db.op('m','readwrite','put',{to, txt, media:app.s.msgFile, type:app.s.msgType, date:new Date()});
+            let type='text';
+            if(app.s.msgFile) type = app.s.msgFile.type.split('/')[0];
+
+            await db.op('m','readwrite','put',{to, txt, media:app.s.msgFile, type, date:new Date()});
             app.toast('Sent!');
-            document.getElementById('msg-input').value='';
+            document.getElementById('msg-text').value='';
             app.clearFile();
         },
 
         // --- INBOX ---
         renderInbox:async()=>{
             const all=await db.op('m','readonly','getAll');
-            const my=all.filter(x=>x.to===app.s.u).reverse();
+            const my=all.filter(x=>x.to===app.s.user).reverse();
             const l=document.getElementById('msg-list');
-            l.innerHTML = my.length ? '' : '<div style="text-align:center;margin-top:50px;opacity:0.5">No secrets yet</div>';
+            l.innerHTML=my.length?'':'<div style="text-align:center;margin-top:50px;opacity:0.5">No secrets yet</div>';
             
             my.forEach(m=>{
                 let med='';
                 if(m.media){
                     const u=URL.createObjectURL(m.media);
-                    if(m.type==='image') med=`<img src="${u}" style="max-width:100%;border-radius:10px;margin-top:5px" onclick="app.viewImg('${u}')">`;
-                    else if(m.type==='video') med=`<video src="${u}" controls style="max-width:100%;border-radius:10px;margin-top:5px"></video>`;
-                    else med=`<audio src="${u}" controls style="width:100%;margin-top:5px"></audio>`;
+                    if(m.type==='image') med=`<img src="${u}" style="max-width:100%;border-radius:10px;margin-top:10px" onclick="app.viewImg('${u}')">`;
+                    else if(m.type==='video') med=`<video src="${u}" controls style="max-width:100%;border-radius:10px;margin-top:10px"></video>`;
+                    else med=`<audio src="${u}" controls style="width:100%;margin-top:10px"></audio>`;
                 }
                 const d=document.createElement('div'); d.className='card';
                 d.innerHTML=`<div style="font-size:11px;color:var(--primary);font-weight:bold">SECRET</div>${med}<div style="font-size:16px;margin-top:5px">${m.txt}</div><div style="font-size:10px;opacity:0.5;margin-top:5px">${new Date(m.date).toLocaleString()}</div>`;
@@ -362,31 +436,39 @@
         },
 
         renderProfile:async()=>{
-            const u=await db.op('u','readonly','get',app.s.e);
-            document.getElementById('p-user').innerText='@'+app.s.u;
-            document.getElementById('p-bio').innerText=u.bio||'No bio';
-            document.getElementById('p-link').innerText=window.location.origin+window.location.pathname+"?to="+app.s.u;
+            const u=await db.op('u','readonly','get',app.s.email);
+            document.getElementById('p-name').innerText='@'+app.s.user;
+            document.getElementById('p-bio-text').innerText=u.bio||'No bio';
+            document.getElementById('p-link').innerText=window.location.origin+window.location.pathname+"?to="+app.s.user;
             if(u.pic) document.getElementById('p-img').src=URL.createObjectURL(u.pic);
             else document.getElementById('p-img').src=DEF_PIC;
+        },
+        
+        updatePic:async(i)=>{
+            if(i.files[0]){
+                const u=await db.op('u','readonly','get',app.s.email);
+                u.pic=i.files[0];
+                await db.op('u','readwrite','put',u);
+                app.renderProfile(); app.toast('Updated!');
+            }
         },
 
         // --- UTILS ---
         nav:(v,el)=>{
             document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
             document.getElementById('view-'+v).classList.add('active');
-            
             const d=document.getElementById('dock');
             if(v==='inbox'||v==='profile'){
                 d.classList.remove('hidden');
-                document.querySelectorAll('.dock i').forEach(i=>i.classList.remove('active'));
+                document.querySelectorAll('.dock-item').forEach(i=>i.classList.remove('active'));
                 if(el) el.classList.add('active');
                 if(v==='inbox') app.renderInbox();
                 if(v==='profile') app.renderProfile();
             } else d.classList.add('hidden');
         },
-        viewImg:(u)=>{ document.getElementById('img-viewer').style.display='flex'; document.getElementById('view-img-src').src=u; },
+        viewImg:(u)=>{ document.getElementById('fs-viewer').style.display='grid'; document.getElementById('fs-img-src').src=u; },
         copyLink:()=>{ navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
-        toast:(m)=>{ const t=document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none',2000); }
+        toast:(m)=>{ const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
     };
 
     window.onload=app.init;
