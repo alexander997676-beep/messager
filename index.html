@@ -3,30 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostMsg - By Faizan Ahmed</title>
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>GhostMsg Ultra - Faizan Ahmed</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ULTIMATE DARK THEME --- */
+        /* --- ULTRA THEME VARIABLES --- */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.75);
-            --primary: #6366f1;
-            --accent: #8b5cf6;
-            --text-main: #f8fafc;
-            --text-sec: #94a3b8;
-            --danger: #ef4444;
+            --bg-dark: #050505;
+            --card-glass: rgba(20, 20, 20, 0.85);
+            --primary: #7000ff;
+            --primary-glow: #7000ff88;
+            --accent: #00f3ff;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --danger: #ff3b30;
+            --success: #34c759;
+            --radius: 24px;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%);
             color: var(--text-main);
             margin: 0;
             display: flex;
@@ -36,532 +39,578 @@
             padding: 15px;
         }
 
-        /* --- APP SHELL --- */
-        .app-shell {
+        /* --- MAIN APP CONTAINER --- */
+        .app-container {
             width: 100%;
-            max-width: 480px;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            min-height: 85vh;
+            max-width: 460px;
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            height: 90vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
             position: relative;
         }
 
         /* --- HEADER --- */
-        .app-header {
+        .header {
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
-        .logo-text {
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 700;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+            text-shadow: 0 0 20px var(--primary-glow);
         }
 
-        /* --- CONTENT AREA --- */
-        .content {
+        /* --- SCROLLABLE CONTENT --- */
+        .scroll-content {
             flex: 1;
-            padding: 20px;
             overflow-y: auto;
+            padding: 20px;
+            scrollbar-width: none; /* Firefox */
         }
+        .scroll-content::-webkit-scrollbar { display: none; }
 
-        /* --- FOOTER (MADE BY FAIZAN) --- */
-        .app-footer {
+        /* --- FOOTER (FIXED) --- */
+        .footer {
             padding: 15px;
             text-align: center;
+            background: rgba(0,0,0,0.4);
+            font-size: 13px;
+            color: var(--text-muted);
             border-top: 1px solid rgba(255,255,255,0.05);
-            background: rgba(0,0,0,0.2);
-            font-size: 0.85rem;
-            color: var(--text-sec);
         }
-        .app-footer b {
-            color: var(--text-main);
-            font-weight: 600;
-        }
-        .heart-beat {
-            color: var(--danger);
-            animation: beat 1.5s infinite;
-            display: inline-block;
-        }
-        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .footer span { color: var(--accent); font-weight: 600; text-shadow: 0 0 10px rgba(0,243,255,0.3); }
 
-        /* --- FORMS --- */
-        .input-group { margin-bottom: 15px; position: relative; }
+        /* --- FORMS & INPUTS --- */
+        .input-box { margin-bottom: 15px; position: relative; }
         .input-field {
             width: 100%;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px;
-            border-radius: 12px;
+            padding: 16px 16px 16px 45px;
+            border-radius: 16px;
             color: white;
-            font-size: 1rem;
-            outline: none;
+            font-size: 15px;
+            font-family: inherit;
             transition: 0.3s;
         }
-        .input-field:focus { border-color: var(--primary); }
-        .toggle-password {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            color: var(--text-sec); cursor: pointer;
-        }
+        .input-field:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); box-shadow: 0 0 15px var(--primary-glow); }
+        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
         /* --- BUTTONS --- */
         .btn {
-            width: 100%; padding: 16px; border: none; border-radius: 12px;
-            font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 10px;
+            width: 100%; padding: 16px; border: none; border-radius: 16px;
+            font-weight: 600; font-size: 16px; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 10px;
-            transition: 0.2s;
+            transition: 0.3s; margin-top: 10px;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+        .btn-grad {
+            background: linear-gradient(135deg, var(--primary), #5200cc);
             color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 5px 20px rgba(112, 0, 255, 0.4);
         }
-        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-sec); }
-        .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-
-        /* --- DASHBOARD --- */
-        .profile-section { text-align: center; margin-bottom: 20px; }
-        .avatar-circle {
-            width: 80px; height: 80px; border-radius: 50%;
-            border: 3px solid var(--primary); margin: 0 auto 10px;
-            overflow: hidden; background: #333;
-        }
-        .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-grad:active { transform: scale(0.98); }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
         
-        .link-card {
-            background: rgba(99, 102, 241, 0.1); border: 1px dashed var(--primary);
-            padding: 15px; border-radius: 12px; font-size: 0.85rem;
-            word-break: break-all; margin-bottom: 10px; color: var(--text-sec);
+        /* --- PROFILE --- */
+        .profile-header { text-align: center; margin-bottom: 25px; }
+        .avatar-container {
+            width: 90px; height: 90px; margin: 0 auto 10px;
+            border-radius: 50%; padding: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            position: relative;
+        }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%;
+            object-fit: cover; border: 3px solid #111;
+            background: #222;
+        }
+        .user-status {
+            font-size: 14px; color: var(--text-muted); 
+            background: rgba(255,255,255,0.05); padding: 5px 15px;
+            border-radius: 20px; display: inline-block; margin-top: 5px;
         }
 
-        /* --- MESSAGES --- */
-        .msg-list { display: flex; flex-direction: column; gap: 15px; }
-        .msg-item {
-            background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 16px;
-            border-left: 4px solid var(--accent); position: relative;
+        /* --- LINK BOX --- */
+        .link-wrapper {
+            background: rgba(112, 0, 255, 0.1);
+            border: 1px dashed var(--primary);
+            padding: 15px; border-radius: 16px;
+            text-align: center; margin-bottom: 15px;
         }
-        .msg-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sec); margin-bottom: 8px; }
-        .media-content { width: 100%; border-radius: 8px; margin-top: 10px; }
+        .link-text { font-size: 13px; color: var(--text-main); word-break: break-all; opacity: 0.8; }
 
-        /* --- MEDIA BAR --- */
-        .media-bar { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
-        .media-icon {
-            width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.05);
+        /* --- MESSAGES UI (PRIVACY BLUR) --- */
+        .msg-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 18px; padding: 15px;
+            margin-bottom: 15px; position: relative;
+            border-left: 3px solid var(--accent);
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from {transform: translateY(20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+
+        .msg-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        
+        /* MEDIA BLUR LOGIC */
+        .media-container {
+            position: relative; overflow: hidden; border-radius: 12px; margin-top: 10px;
+            background: #000; min-height: 150px; display: flex; align-items: center; justify-content: center;
+        }
+        .media-content { width: 100%; display: block; filter: blur(15px); transition: 0.4s; cursor: pointer; opacity: 0.6; }
+        .media-content.revealed { filter: blur(0); opacity: 1; }
+        
+        .tap-reveal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; font-size: 12px; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 1px; pointer-events: none; text-shadow: 0 2px 5px black;
+            z-index: 2; transition: 0.3s;
+        }
+        .media-content.revealed + .tap-reveal { opacity: 0; }
+
+        /* --- MEDIA BAR (SENDER) --- */
+        .action-bar { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .action-btn {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); color: var(--text-main);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+            font-size: 18px; cursor: pointer; transition: 0.3s;
         }
-        .media-icon:hover, .media-icon.active { background: var(--primary); color: white; }
+        .action-btn:hover, .action-btn.active { background: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px var(--primary-glow); }
 
+        /* --- UTILS --- */
         .hidden { display: none !important; }
-        .loader-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.9); z-index: 100;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--primary); border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .badge { background: var(--danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px; }
         
+        /* Toast */
         .toast {
-            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(50px);
-            background: var(--text-main); color: var(--bg-color);
-            padding: 10px 20px; border-radius: 30px; font-weight: 600; opacity: 0;
-            transition: 0.4s; z-index: 999; pointer-events: none;
+            position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: white; color: black; padding: 12px 25px; border-radius: 50px;
+            font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     </style>
 </head>
 <body>
 
-    <div class="app-shell">
-        
-        <!-- HEADER -->
-        <div class="app-header">
-            <div class="logo-text"><i class="fas fa-ghost"></i> GhostMsg</div>
+<div class="app-container">
+    
+    <!-- HEADER -->
+    <div class="header">
+        <div class="brand-logo"><i class="fas fa-ghost"></i> GhostMsg</div>
+        <div style="position: absolute; right: 20px; top: 25px; cursor: pointer;" id="settings-btn" class="hidden" onclick="app.toggleSettings()">
+            <i class="fas fa-cog" style="color:white;"></i>
+        </div>
+    </div>
+
+    <!-- SCROLL AREA -->
+    <div class="scroll-content">
+
+        <!-- 1. LOGIN -->
+        <div id="view-login">
+            <h2 style="text-align:center;">Welcome Back</h2>
+            <p style="text-align:center; color:var(--text-muted); margin-bottom:30px;">Enter the shadows.</p>
+            
+            <form onsubmit="app.login(event)">
+                <div class="input-box">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="log-user" class="input-field" placeholder="Username" autocomplete="username" required>
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="log-pass" class="input-field" placeholder="Password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-grad">Login</button>
+            </form>
+            <button class="btn btn-ghost" onclick="app.nav('signup')">Create Account</button>
         </div>
 
-        <!-- CONTENT AREA (Scrollable) -->
-        <div class="content">
-
-            <!-- 1. LOGIN -->
-            <div id="view-login">
-                <h2 style="text-align:center; margin-bottom:5px;">Welcome Back</h2>
-                <p style="text-align:center; color:var(--text-sec); margin-bottom:30px;">Login to view your secrets</p>
-
-                <form onsubmit="app.login(event)">
-                    <div class="input-group">
-                        <input type="text" id="log-user" class="input-field" placeholder="Username" autocomplete="username" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="log-pass" class="input-field" placeholder="Password" autocomplete="current-password" required>
-                        <i class="fas fa-eye toggle-password" onclick="app.togglePass('log-pass')"></i>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sign In <i class="fas fa-arrow-right"></i></button>
-                </form>
-                <button class="btn btn-outline" onclick="app.nav('signup')">Create Account</button>
+        <!-- 2. SIGNUP (With Bio) -->
+        <div id="view-signup" class="hidden">
+            <h2 style="text-align:center;">Create ID</h2>
+            
+            <div class="profile-header">
+                <div class="avatar-container" onclick="document.getElementById('reg-pic').click()">
+                    <img id="reg-preview" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                    <div style="position:absolute; bottom:0; right:0; background:var(--accent); color:black; width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fas fa-camera"></i></div>
+                </div>
+                <span style="font-size:12px; color:var(--text-muted);">Tap to upload</span>
             </div>
+            <input type="file" id="reg-pic" hidden accept="image/*" onchange="app.previewImage(this, 'reg-preview')">
 
-            <!-- 2. SIGNUP -->
-            <div id="view-signup" class="hidden">
-                <h2 style="text-align:center;">Join Anonymous</h2>
-                <div class="profile-section" onclick="document.getElementById('reg-pic').click()" style="cursor:pointer">
-                    <div class="avatar-circle">
-                        <img id="avatar-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-                    </div>
-                    <span style="font-size:12px; color:var(--primary);">+ Upload Photo</span>
+            <form onsubmit="app.register(event)">
+                <div class="input-box">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="reg-user" class="input-field" placeholder="Username" required>
                 </div>
-                <input type="file" id="reg-pic" hidden accept="image/*" onchange="app.previewImage(this)">
-
-                <form onsubmit="app.register(event)">
-                    <div class="input-group">
-                        <input type="text" id="reg-user" class="input-field" placeholder="Choose Username" autocomplete="username" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="reg-pass" class="input-field" placeholder="Create Password" autocomplete="new-password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Profile</button>
-                </form>
-                <button class="btn btn-outline" onclick="app.nav('login')">Back to Login</button>
-            </div>
-
-            <!-- 3. DASHBOARD -->
-            <div id="view-dashboard" class="hidden">
-                <div class="profile-section">
-                    <div class="avatar-circle"><img id="dash-avatar" src=""></div>
-                    <h3 id="dash-user" style="margin:5px 0;">User</h3>
+                <div class="input-box">
+                    <i class="fas fa-pen input-icon"></i>
+                    <input type="text" id="reg-bio" class="input-field" placeholder="Status / Bio (e.g. Ask me!)" maxlength="30">
                 </div>
-
-                <div class="link-card" id="share-link">Generating...</div>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn btn-primary" onclick="app.copyLink()"><i class="fas fa-copy"></i> Copy</button>
-                    <button class="btn btn-primary" style="background:#25D366;" onclick="app.shareWhatsapp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                <div class="input-box">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="reg-pass" class="input-field" placeholder="Password" required>
                 </div>
-
-                <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center;">
-                    <h4 style="margin:0;">Inbox</h4>
-                    <span style="font-size:12px; color:var(--danger); cursor:pointer;" onclick="app.clearAllMessages()">Clear All</span>
-                </div>
-                <div id="msg-container" class="msg-list" style="margin-top:15px;"></div>
-                <button class="btn btn-danger" onclick="app.logout()" style="margin-top:30px;">Logout</button>
-            </div>
-
-            <!-- 4. PUBLIC SENDER -->
-            <div id="view-public" class="hidden">
-                <div class="profile-section">
-                    <div class="avatar-circle"><img id="pub-avatar" src=""></div>
-                    <p style="color:var(--text-sec); font-size:12px;">Send secret message to</p>
-                    <h3 id="pub-user" style="margin:0;">...</h3>
-                </div>
-
-                <textarea id="msg-text" class="input-field" rows="3" placeholder="Type secret message..."></textarea>
-
-                <div class="media-bar">
-                    <div class="media-icon" onclick="app.triggerFile('image')"><i class="fas fa-camera"></i></div>
-                    <div class="media-icon" onclick="app.triggerFile('video')"><i class="fas fa-video"></i></div>
-                    <div class="media-icon" id="btn-mic" onclick="app.toggleRec()"><i class="fas fa-microphone"></i></div>
-                </div>
-
-                <input type="file" id="file-image" hidden accept="image/*" onchange="app.handleFile('image')">
-                <input type="file" id="file-video" hidden accept="video/*" onchange="app.handleFile('video')">
-                
-                <div id="preview-box" class="hidden" style="text-align:center; margin-bottom:15px; position:relative;">
-                    <span onclick="app.resetMedia()" style="position:absolute; right:0; top:-10px; color:var(--danger); cursor:pointer;">&times; Remove</span>
-                    <img id="prev-img" class="media-content hidden">
-                    <video id="prev-vid" class="media-content hidden" controls></video>
-                    <audio id="prev-aud" class="media-content hidden" controls></audio>
-                </div>
-
-                <button class="btn btn-primary" onclick="app.send()">Send Secretly <i class="fas fa-paper-plane"></i></button>
-                <button class="btn btn-outline" onclick="location.href=location.pathname">Get your own link</button>
-            </div>
-
+                <button type="submit" class="btn btn-grad">Create Profile</button>
+            </form>
+            <button class="btn btn-ghost" onclick="app.nav('login')">Back to Login</button>
         </div>
 
-        <!-- FOOTER (BY FAIZAN) -->
-        <div class="app-footer">
-            Made by <b>Faizan Ahmed</b> <i class="fas fa-heart heart-beat"></i>
+        <!-- 3. DASHBOARD -->
+        <div id="view-dashboard" class="hidden">
+            <div class="profile-header">
+                <div class="avatar-container"><img id="dash-avatar" class="avatar-img" src=""></div>
+                <h3 id="dash-user" style="margin:5px 0;">User</h3>
+                <div id="dash-bio" class="user-status">...</div>
+            </div>
+
+            <!-- Settings Panel (Hidden by default) -->
+            <div id="panel-settings" class="hidden" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:16px; margin-bottom:20px;">
+                <h4 style="margin-top:0;">Edit Profile</h4>
+                <input type="text" id="edit-bio" class="input-field" placeholder="New Bio" style="margin-bottom:10px;">
+                <button class="btn btn-grad" style="font-size:14px; padding:10px;" onclick="app.updateProfile()">Save Changes</button>
+            </div>
+
+            <div class="link-wrapper">
+                <div id="share-link" class="link-text">Loading link...</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-grad" onclick="app.copyLink()"><i class="fas fa-copy"></i> Copy</button>
+                <button class="btn btn-grad" style="background: linear-gradient(135deg, #25D366, #128C7E);" onclick="app.shareWhatsapp()"><i class="fab fa-whatsapp"></i> Share</button>
+            </div>
+
+            <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0;">Inbox <span id="msg-count" class="badge">0</span></h4>
+                <div style="font-size:12px; color:var(--danger); cursor:pointer;" onclick="app.clearAll()">Clear All</div>
+            </div>
+            
+            <div id="msg-list" style="margin-top:15px;"></div>
+            
+            <button class="btn btn-ghost" style="color:var(--danger); border-color:rgba(255,0,0,0.2); margin-top:30px;" onclick="app.logout()">Logout</button>
         </div>
 
-        <!-- LOADER -->
-        <div id="loader" class="loader-overlay hidden">
-            <div class="spinner"></div>
-            <p style="margin-top:15px; font-weight:bold;">Processing...</p>
+        <!-- 4. PUBLIC SENDER -->
+        <div id="view-public" class="hidden">
+            <div class="profile-header">
+                <div class="avatar-container"><img id="pub-avatar" class="avatar-img" src=""></div>
+                <p style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Send anonymous message to</p>
+                <h3 id="pub-user" style="margin:0;">...</h3>
+                <div id="pub-bio" class="user-status">...</div>
+            </div>
+
+            <textarea id="msg-text" class="input-field" rows="3" placeholder="Type something secret..." style="padding:15px;"></textarea>
+
+            <div class="action-bar">
+                <div class="action-btn" onclick="app.triggerFile('image')"><i class="fas fa-camera"></i></div>
+                <div class="action-btn" onclick="app.triggerFile('video')"><i class="fas fa-video"></i></div>
+                <div class="action-btn" id="btn-mic" onclick="app.toggleRec()"><i class="fas fa-microphone"></i></div>
+            </div>
+
+            <input type="file" id="file-image" hidden accept="image/*" onchange="app.handleFile('image')">
+            <input type="file" id="file-video" hidden accept="video/*" onchange="app.handleFile('video')">
+            
+            <!-- Preview -->
+            <div id="preview-box" class="hidden" style="position:relative; margin-bottom:15px;">
+                <div style="position:absolute; right:10px; top:10px; z-index:10; background:rgba(0,0,0,0.7); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="app.resetMedia()">❌</div>
+                <img id="prev-img" class="media-content revealed hidden" style="border-radius:12px;">
+                <video id="prev-vid" class="media-content revealed hidden" controls style="border-radius:12px;"></video>
+                <div id="audio-visual" class="hidden" style="background:#222; padding:15px; border-radius:12px; text-align:center; color:var(--accent);">Audio Recorded 🎤</div>
+            </div>
+
+            <button class="btn btn-grad" onclick="app.send()">Send Secretly 🚀</button>
+            <button class="btn btn-ghost" onclick="location.href=location.pathname" style="margin-top:20px;">Create your own link</button>
         </div>
 
     </div>
 
+    <!-- FOOTER -->
+    <div class="footer">
+        Made by <span>Faizan Ahmed</span> <i class="fas fa-bolt" style="color:#ffeb3b"></i>
+    </div>
+
     <!-- TOAST -->
-    <div id="toast" class="toast">Message</div>
+    <div id="toast" class="toast">Notification</div>
 
-    <script>
-        const app = {
-            dbUsers: 'ghost_users_v5',
-            dbMsgs: 'ghost_msgs_v5',
-            state: { mediaRecorder: null, chunks: [], tempMedia: null },
+</div>
 
-            init: () => {
-                const params = new URLSearchParams(window.location.search);
-                const toUser = params.get('to');
-                if (toUser) app.loadPublic(toUser);
-                else {
-                    const session = localStorage.getItem('ghost_session');
-                    if (session) app.loadDashboard(session);
-                    else app.nav('login');
-                }
-            },
+<script>
+    const app = {
+        dbU: 'ghost_users_v6',
+        dbM: 'ghost_msgs_v6',
+        state: { rec: null, chunks: [], media: null, currentUser: null },
 
-            nav: (view) => {
-                document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
-                document.getElementById(`view-${view}`).classList.remove('hidden');
-            },
-
-            togglePass: (id) => {
-                const input = document.getElementById(id);
-                input.type = input.type === 'password' ? 'text' : 'password';
-            },
-
-            loading: (show) => document.getElementById('loader').classList.toggle('hidden', !show),
-
-            toast: (msg) => {
-                const el = document.getElementById('toast');
-                el.innerText = msg;
-                el.classList.add('show');
-                setTimeout(() => el.classList.remove('show'), 3000);
-            },
-
-            register: (e) => {
-                e.preventDefault();
-                const user = document.getElementById('reg-user').value.trim();
-                const pass = document.getElementById('reg-pass').value.trim();
-                const avatar = document.getElementById('avatar-preview').src;
-                let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-
-                if (db[user]) return app.toast('Username Taken!');
-                db[user] = { pass, avatar };
-                localStorage.setItem(app.dbUsers, JSON.stringify(db));
-                app.toast('Account Created!');
-                app.nav('login');
-                document.getElementById('log-user').value = user;
-                document.getElementById('log-pass').value = pass;
-            },
-
-            login: (e) => {
-                e.preventDefault();
-                const user = document.getElementById('log-user').value.trim();
-                const pass = document.getElementById('log-pass').value.trim();
-                let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-
-                if (db[user] && db[user].pass === pass) {
-                    localStorage.setItem('ghost_session', user);
-                    app.loadDashboard(user);
-                } else {
-                    app.toast('Invalid Credentials');
-                }
-            },
-
-            logout: () => {
-                localStorage.removeItem('ghost_session');
-                location.reload();
-            },
-
-            loadDashboard: (user) => {
-                app.nav('dashboard');
-                let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-                document.getElementById('dash-user').innerText = user;
-                document.getElementById('dash-avatar').src = db[user].avatar;
-                const link = window.location.href.split('?')[0] + "?to=" + user;
-                document.getElementById('share-link').innerText = link;
-                app.renderMessages(user);
-            },
-
-            copyLink: () => {
-                navigator.clipboard.writeText(document.getElementById('share-link').innerText);
-                app.toast('Link Copied!');
-            },
-            
-            shareWhatsapp: () => {
-                const link = document.getElementById('share-link').innerText;
-                window.open(`https://wa.me/?text=Send%20me%20a%20secret%20message!%20${encodeURIComponent(link)}`, '_blank');
-            },
-
-            timeAgo: (date) => {
-                const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-                if (seconds < 60) return "Just now";
-                const mins = Math.floor(seconds / 60);
-                if (mins < 60) return mins + "m ago";
-                const hours = Math.floor(mins / 60);
-                if (hours < 24) return hours + "h ago";
-                return Math.floor(hours / 24) + "d ago";
-            },
-
-            renderMessages: (user) => {
-                let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
-                let userMsgs = msgs[user] || [];
-                const container = document.getElementById('msg-container');
-                container.innerHTML = "";
-
-                if(userMsgs.length === 0) {
-                    container.innerHTML = "<p style='text-align:center; color:var(--text-sec)'>No secrets yet 👻</p>";
-                    return;
-                }
-
-                userMsgs.reverse().forEach((msg, index) => {
-                    const originalIndex = userMsgs.length - 1 - index;
-                    let mediaHtml = '';
-                    if(msg.type === 'image') mediaHtml = `<img src="${msg.data}" class="media-content" onclick="app.viewFull(this.src)">`;
-                    if(msg.type === 'video') mediaHtml = `<video src="${msg.data}" controls class="media-content"></video>`;
-                    if(msg.type === 'audio') mediaHtml = `<audio src="${msg.data}" controls class="media-content"></audio>`;
-
-                    const div = document.createElement('div');
-                    div.className = 'msg-item';
-                    div.innerHTML = `
-                        <div class="msg-header">
-                            <span>${app.timeAgo(msg.date)}</span>
-                            <span style="color:var(--danger); cursor:pointer;" onclick="app.deleteMsg('${user}', ${originalIndex})"><i class="fas fa-trash"></i></span>
-                        </div>
-                        <div style="font-size:14px;">${msg.text || '<i>Media Only</i>'}</div>
-                        ${mediaHtml}
-                    `;
-                    container.appendChild(div);
-                });
-            },
-
-            deleteMsg: (user, index) => {
-                if(!confirm("Delete this?")) return;
-                let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
-                msgs[user].splice(index, 1);
-                localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
-                app.renderMessages(user);
-                app.toast("Deleted");
-            },
-
-            clearAllMessages: () => {
-                const user = localStorage.getItem('ghost_session');
-                if(!confirm("Delete ALL?")) return;
-                let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
-                msgs[user] = [];
-                localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
-                app.renderMessages(user);
-                app.toast("Inbox Cleared");
-            },
-
-            loadPublic: (user) => {
-                let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-                if (!db[user]) return document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found</h1>";
-                app.nav('public');
-                document.getElementById('pub-user').innerText = user;
-                document.getElementById('pub-avatar').src = db[user].avatar;
-            },
-
-            previewImage: (input) => {
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => document.getElementById('avatar-preview').src = e.target.result;
-                    reader.readAsDataURL(input.files[0]);
-                }
-            },
-            
-            triggerFile: (type) => document.getElementById(`file-${type}`).click(),
-
-            handleFile: (type) => {
-                const file = document.getElementById(`file-${type}`).files[0];
-                if (!file) return;
-                if (file.size > 3 * 1024 * 1024) return app.toast('File too big (>3MB)');
-                app.loading(true);
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    app.state.tempMedia = { type, data: e.target.result };
-                    document.getElementById('preview-box').classList.remove('hidden');
-                    document.getElementById(type === 'image' ? 'prev-img' : 'prev-vid').src = e.target.result;
-                    document.getElementById(type === 'image' ? 'prev-img' : 'prev-vid').classList.remove('hidden');
-                    app.loading(false);
-                };
-                reader.readAsDataURL(file);
-            },
-
-            toggleRec: async () => {
-                const btn = document.getElementById('btn-mic');
-                if (app.state.mediaRecorder && app.state.mediaRecorder.state === 'recording') {
-                    app.state.mediaRecorder.stop();
-                    btn.classList.remove('active');
-                } else {
-                    try {
-                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        app.state.mediaRecorder = new MediaRecorder(stream);
-                        app.state.chunks = [];
-                        app.state.mediaRecorder.start();
-                        btn.classList.add('active');
-                        app.toast('Recording...');
-                        app.state.mediaRecorder.ondataavailable = e => app.state.chunks.push(e.data);
-                        app.state.mediaRecorder.onstop = () => {
-                            const blob = new Blob(app.state.chunks, { type: 'audio/webm' });
-                            const reader = new FileReader();
-                            reader.readAsDataURL(blob);
-                            reader.onload = (e) => {
-                                app.state.tempMedia = { type: 'audio', data: e.target.result };
-                                document.getElementById('preview-box').classList.remove('hidden');
-                                const aud = document.getElementById('prev-aud');
-                                aud.src = e.target.result;
-                                aud.classList.remove('hidden');
-                            };
-                        };
-                    } catch (e) { app.toast('Mic Denied'); }
-                }
-            },
-
-            resetMedia: () => {
-                app.state.tempMedia = null;
-                document.getElementById('preview-box').classList.add('hidden');
-                document.querySelectorAll('.media-content').forEach(el => el.classList.add('hidden'));
-                document.getElementById('file-image').value = "";
-                document.getElementById('file-video').value = "";
-            },
-
-            send: () => {
-                const text = document.getElementById('msg-text').value.trim();
-                const media = app.state.tempMedia;
-                const user = document.getElementById('pub-user').innerText;
-                if (!text && !media) return app.toast('Empty Message!');
-                app.loading(true);
-                setTimeout(() => {
-                    try {
-                        let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
-                        if (!msgs[user]) msgs[user] = [];
-                        msgs[user].push({
-                            text, type: media ? media.type : null, data: media ? media.data : null,
-                            date: new Date().toISOString()
-                        });
-                        localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
-                        app.toast('Secret Sent! 🚀');
-                        document.getElementById('msg-text').value = "";
-                        app.resetMedia();
-                    } catch (e) { app.toast('Storage Full!'); }
-                    app.loading(false);
-                }, 1000);
-            },
-            
-            viewFull: (src) => {
-                const win = window.open("", "_blank");
-                win.document.write(`<img src="${src}" style="width:100%">`);
+        init: () => {
+            const u = new URLSearchParams(window.location.search).get('to');
+            if(u) app.loadPublic(u);
+            else {
+                const sess = localStorage.getItem('ghost_sess');
+                if(sess) app.loadDash(sess);
+                else app.nav('login');
             }
-        };
+        },
 
-        window.onload = app.init;
-    </script>
+        nav: (v) => {
+            document.querySelectorAll('[id^="view-"]').forEach(e => e.classList.add('hidden'));
+            document.getElementById(`view-${v}`).classList.remove('hidden');
+            document.getElementById('settings-btn').classList.add('hidden');
+        },
+
+        toast: (m) => {
+            const t = document.getElementById('toast');
+            t.innerText = m; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        },
+
+        // --- AUTH ---
+        previewImage: (inp, imgId) => {
+            if(inp.files[0]) {
+                const r = new FileReader();
+                r.onload = (e) => document.getElementById(imgId).src = e.target.result;
+                r.readAsDataURL(inp.files[0]);
+            }
+        },
+
+        register: (e) => {
+            e.preventDefault();
+            const u = document.getElementById('reg-user').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
+            const b = document.getElementById('reg-bio').value.trim() || "Ready for secrets";
+            const img = document.getElementById('reg-preview').src;
+            
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+            if(db[u]) return app.toast('Username Taken!');
+
+            db[u] = { pass: p, bio: b, av: img };
+            localStorage.setItem(app.dbU, JSON.stringify(db));
+            app.toast('Created! Login now.');
+            app.nav('login');
+        },
+
+        login: (e) => {
+            e.preventDefault();
+            const u = document.getElementById('log-user').value.trim();
+            const p = document.getElementById('log-pass').value.trim();
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+
+            if(db[u] && db[u].pass === p) {
+                localStorage.setItem('ghost_sess', u);
+                app.loadDash(u);
+            } else app.toast('Invalid Info');
+        },
+
+        logout: () => { localStorage.removeItem('ghost_sess'); location.reload(); },
+
+        // --- DASHBOARD ---
+        loadDash: (u) => {
+            app.state.currentUser = u;
+            app.nav('dashboard');
+            document.getElementById('settings-btn').classList.remove('hidden');
+            
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+            document.getElementById('dash-user').innerText = u;
+            document.getElementById('dash-avatar').src = db[u].av;
+            document.getElementById('dash-bio').innerText = db[u].bio;
+            
+            const lnk = window.location.href.split('?')[0] + "?to=" + u;
+            document.getElementById('share-link').innerText = lnk;
+            
+            app.renderMsgs(u);
+        },
+
+        toggleSettings: () => {
+            const p = document.getElementById('panel-settings');
+            p.classList.toggle('hidden');
+        },
+
+        updateProfile: () => {
+            const u = app.state.currentUser;
+            const newBio = document.getElementById('edit-bio').value.trim();
+            if(!newBio) return app.toast('Bio empty!');
+            
+            let db = JSON.parse(localStorage.getItem(app.dbU));
+            db[u].bio = newBio;
+            localStorage.setItem(app.dbU, JSON.stringify(db));
+            
+            document.getElementById('dash-bio').innerText = newBio;
+            app.toggleSettings();
+            app.toast('Profile Updated!');
+        },
+
+        renderMsgs: (u) => {
+            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
+            let list = msgs[u] || [];
+            const cont = document.getElementById('msg-list');
+            cont.innerHTML = "";
+            document.getElementById('msg-count').innerText = list.length;
+
+            if(list.length === 0) cont.innerHTML = "<div style='text-align:center; color:#555; margin-top:20px;'>No messages yet. Share your link!</div>";
+
+            list.reverse().forEach((m, i) => {
+                const idx = list.length - 1 - i;
+                let med = "";
+                
+                // Privacy Blur Logic
+                if(m.type === 'image') med = `
+                    <div class="media-container" onclick="this.querySelector('.media-content').classList.add('revealed')">
+                        <img src="${m.data}" class="media-content">
+                        <div class="tap-reveal"><i class="fas fa-eye"></i> Tap to Reveal</div>
+                    </div>`;
+                else if(m.type === 'video') med = `
+                    <div class="media-container" onclick="this.querySelector('.media-content').classList.add('revealed'); this.querySelector('video').play()">
+                        <video src="${m.data}" class="media-content" controls></video>
+                        <div class="tap-reveal"><i class="fas fa-play"></i> Tap to Play</div>
+                    </div>`;
+                else if(m.type === 'audio') med = `<audio src="${m.data}" controls style="width:100%; margin-top:10px;"></audio>`;
+
+                const div = document.createElement('div');
+                div.className = 'msg-card';
+                div.innerHTML = `
+                    <div class="msg-meta">
+                        <span>${app.timeAgo(m.date)}</span>
+                        <span onclick="app.delMsg('${u}', ${idx})" style="color:var(--danger); cursor:pointer;"><i class="fas fa-trash"></i></span>
+                    </div>
+                    <div style="font-size:15px; color:white;">${m.txt || '<i>Media Message</i>'}</div>
+                    ${med}
+                    <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05); text-align:right;">
+                         <a href="https://wa.me/?text=Replying to your secret: ${encodeURIComponent(m.txt || 'media')}" target="_blank" style="color:var(--success); text-decoration:none; font-size:12px; font-weight:bold;"><i class="fas fa-reply"></i> Reply on WhatsApp</a>
+                    </div>
+                `;
+                cont.appendChild(div);
+            });
+        },
+
+        // --- PUBLIC ---
+        loadPublic: (u) => {
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+            if(!db[u]) return document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found</h1>";
+            
+            app.nav('public');
+            document.getElementById('pub-user').innerText = u;
+            document.getElementById('pub-avatar').src = db[u].av;
+            document.getElementById('pub-bio').innerText = db[u].bio;
+        },
+
+        triggerFile: (t) => document.getElementById(`file-${t}`).click(),
+
+        handleFile: (t) => {
+            const f = document.getElementById(`file-${t}`).files[0];
+            if(f.size > 3*1024*1024) return app.toast('File > 3MB ❌');
+            
+            const r = new FileReader();
+            r.onload = (e) => {
+                app.state.media = { t, d: e.target.result };
+                document.getElementById('preview-box').classList.remove('hidden');
+                const el = document.getElementById(t === 'image' ? 'prev-img' : 'prev-vid');
+                el.src = e.target.result; el.classList.remove('hidden');
+            };
+            r.readAsDataURL(f);
+        },
+
+        toggleRec: async () => {
+            const btn = document.getElementById('btn-mic');
+            if(app.state.rec && app.state.rec.state === 'recording') {
+                app.state.rec.stop();
+                btn.classList.remove('active');
+            } else {
+                try {
+                    const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    app.state.rec = new MediaRecorder(s);
+                    app.state.chunks = [];
+                    app.state.rec.start();
+                    btn.classList.add('active');
+                    app.toast('Recording...');
+                    
+                    app.state.rec.ondataavailable = e => app.state.chunks.push(e.data);
+                    app.state.rec.onstop = () => {
+                        const b = new Blob(app.state.chunks, { type: 'audio/webm' });
+                        const r = new FileReader();
+                        r.onload = (e) => {
+                            app.state.media = { t: 'audio', d: e.target.result };
+                            document.getElementById('preview-box').classList.remove('hidden');
+                            document.getElementById('audio-visual').classList.remove('hidden');
+                        };
+                        r.readAsDataURL(b);
+                    };
+                } catch(e) { app.toast('Mic Denied'); }
+            }
+        },
+
+        send: () => {
+            const txt = document.getElementById('msg-text').value.trim();
+            const med = app.state.media;
+            const u = document.getElementById('pub-user').innerText;
+
+            if(!txt && !med) return app.toast('Empty Message!');
+
+            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
+            if(!msgs[u]) msgs[u] = [];
+            
+            try {
+                msgs[u].push({ txt, type: med?.t, data: med?.d, date: new Date() });
+                localStorage.setItem(app.dbM, JSON.stringify(msgs));
+                app.toast('Sent Successfully 🚀');
+                setTimeout(() => location.reload(), 1000);
+            } catch(e) { app.toast('Storage Full (Video too big)'); }
+        },
+
+        resetMedia: () => {
+            app.state.media = null;
+            document.getElementById('preview-box').classList.add('hidden');
+            document.querySelectorAll('.media-content').forEach(e => e.classList.add('hidden'));
+            document.getElementById('audio-visual').classList.add('hidden');
+        },
+
+        copyLink: () => {
+            navigator.clipboard.writeText(document.getElementById('share-link').innerText);
+            app.toast('Link Copied!');
+        },
+        
+        shareWhatsapp: () => {
+            const l = document.getElementById('share-link').innerText;
+            window.open(`https://wa.me/?text=Send%20me%20anonymous%20messages!%20${encodeURIComponent(l)}`);
+        },
+
+        delMsg: (u, i) => {
+            if(confirm('Delete?')) {
+                let m = JSON.parse(localStorage.getItem(app.dbM));
+                m[u].splice(i, 1);
+                localStorage.setItem(app.dbM, JSON.stringify(m));
+                app.renderMsgs(u);
+            }
+        },
+        
+        clearAll: () => {
+            if(confirm('Delete ALL messages?')) {
+                const u = app.state.currentUser;
+                let m = JSON.parse(localStorage.getItem(app.dbM));
+                m[u] = [];
+                localStorage.setItem(app.dbM, JSON.stringify(m));
+                app.renderMsgs(u);
+            }
+        },
+
+        timeAgo: (d) => {
+            const s = Math.floor((new Date() - new Date(d)) / 1000);
+            if(s<60) return "Just now";
+            if(s<3600) return Math.floor(s/60) + "m ago";
+            return Math.floor(s/3600) + "h ago";
+        }
+    };
+
+    window.onload = app.init;
+</script>
 </body>
 </html>
