@@ -3,490 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecretMsg - Voice & Text</title>
+    <title>Secret Link - Premium</title>
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS STYLES --- */
+        /* --- PREMIUM CSS --- */
         :root {
-            --primary: #6C63FF;
-            --secondary: #f5f5f5;
-            --danger: #ff6b6b;
-            --success: #2ecc71;
-            --text-dark: #333;
+            --primary: #4A90E2;
+            --accent: #50E3C2;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.95);
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #eef2f3;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 20px;
         }
 
-        .container {
-            background: white;
+        .app-container {
+            background: var(--glass);
             width: 100%;
-            max-width: 420px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
 
-        h2, h3 { color: var(--text-dark); margin-bottom: 15px; }
+        h2 { text-align: center; color: var(--dark); margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #7f8c8d; font-size: 0.9rem; margin-bottom: 25px; }
 
-        /* Inputs & Buttons */
+        /* Form Styling */
+        .form-group { margin-bottom: 15px; position: relative; }
+        
         input, textarea {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 14px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             box-sizing: border-box;
-            background: #fafafa;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
+            font-family: inherit;
             transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #5a52d5; }
-        .btn-secondary { background: #ddd; color: #333; }
-        
-        /* Profile Image Upload */
-        .profile-upload {
-            margin: 10px 0;
-        }
-        .preview-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-            margin-bottom: 10px;
-            display: none;
-        }
-        
-        /* Auth Toggle */
-        .auth-toggle {
-            display: flex;
-            background: #eee;
-            border-radius: 25px;
-            margin-bottom: 20px;
-            padding: 4px;
-        }
-        .toggle-btn {
-            flex: 1;
-            background: transparent;
-            color: #666;
-            margin: 0;
-            padding: 8px;
-        }
-        .active-toggle {
-            background: white;
-            color: var(--primary);
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* Voice Recorder */
-        .recorder-box {
-            margin: 15px 0;
-            padding: 15px;
             background: #f9f9f9;
-            border-radius: 10px;
-            border: 1px dashed #ccc;
         }
-        .recording-indicator {
-            color: var(--danger);
-            font-weight: bold;
-            display: none;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.5; } }
 
-        /* Messages List */
-        .msg-list {
-            text-align: left;
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        .msg-card {
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
             background: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.1);
         }
-        audio {
-            width: 100%;
-            margin-top: 10px;
-            height: 40px;
-        }
-        .timestamp { font-size: 11px; color: #999; display: block; margin-top: 5px; text-align: right; }
 
-        .hidden { display: none; }
-        
-        /* Profile Display on Public Page */
-        .public-profile-pic {
+        /* Profile Pic Upload */
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .avatar-preview {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            object-fit: cover;
             border: 4px solid var(--primary);
-            margin-bottom: 10px;
+            background-color: #eee;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/847/847969.png');
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.3s;
         }
+        .avatar-preview:hover { transform: scale(1.05); }
+        .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+        input[type="file"] { display: none; }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        .btn-primary { background: linear-gradient(to right, #4A90E2, #50E3C2); color: white; box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-text { background: none; color: var(--primary); font-size: 0.9rem; margin-top: 15px; }
+
+        /* Helpers */
+        .hidden { display: none !important; }
+        
+        /* Dashboard & Messages */
+        .link-box {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed #1565c0;
+            word-break: break-all;
+            text-align: center;
+            font-size: 0.85rem;
+            margin: 15px 0;
+        }
+
+        .msg-list { max-height: 350px; overflow-y: auto; margin-top: 20px; }
+        .msg-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Custom Toast Notification */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+        }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-
-        <!-- ================= AUTH SECTION ================= -->
-        <div id="auth-section">
-            <h2>Secret Messenger</h2>
+    <div class="app-container">
+        
+        <!-- === LOGIN FORM === -->
+        <div id="section-login">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to check your secret messages</p>
             
-            <div class="auth-toggle">
-                <button class="toggle-btn active-toggle" onclick="toggleAuth('login')" id="btn-login-view">Sign In</button>
-                <button class="toggle-btn" onclick="toggleAuth('signup')" id="btn-signup-view">Sign Up</button>
-            </div>
+            <!-- FORM tag is essential for Browser Password Manager -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <!-- autocomplete="username" helps browser identify user field -->
+                    <input type="text" id="log-user" name="username" placeholder="Username" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <!-- autocomplete="current-password" helps browser fill password -->
+                    <input type="password" id="log-pass" name="password" placeholder="Password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
 
-            <!-- Login Form -->
-            <div id="login-form">
-                <input type="text" id="login-user" placeholder="Username">
-                <input type="password" id="login-pass" placeholder="Password">
-                <button class="btn-primary" onclick="login()">Login</button>
-            </div>
+            <button class="btn btn-text" onclick="switchView('signup')">New here? Create Account</button>
+        </div>
 
-            <!-- Signup Form -->
-            <div id="signup-form" class="hidden">
-                <div class="profile-upload">
-                    <img id="preview-avatar" class="preview-img" alt="Preview">
-                    <label style="font-size:12px; display:block; margin-bottom:5px;">Upload Profile Picture:</label>
+        <!-- === SIGN UP FORM === -->
+        <div id="section-signup" class="hidden">
+            <h2>Create Account</h2>
+            <p class="subtitle">Get your own anonymous link</p>
+
+            <form id="signupForm" onsubmit="handleRegister(event)">
+                <!-- Profile Pic -->
+                <div class="avatar-upload" onclick="document.getElementById('reg-pic').click()">
+                    <div class="avatar-preview" id="avatar-preview-box">
+                        <img id="avatar-img" class="hidden">
+                    </div>
+                    <span style="font-size:12px; color:#888; margin-top:5px;">Tap to add photo</span>
                     <input type="file" id="reg-pic" accept="image/*" onchange="previewImage()">
                 </div>
-                <input type="text" id="reg-user" placeholder="Create Username">
-                <input type="password" id="reg-pass" placeholder="Create Password">
-                <button class="btn-primary" onclick="register()">Create Account</button>
-            </div>
+
+                <div class="form-group">
+                    <!-- autocomplete="username" tells browser this is a new user -->
+                    <input type="text" id="reg-user" name="username" placeholder="Choose a Username" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <!-- autocomplete="new-password" tells browser to save this new password -->
+                    <input type="password" id="reg-pass" name="password" placeholder="Create Password" autocomplete="new-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up & Save</button>
+            </form>
+
+            <button class="btn btn-text" onclick="switchView('login')">Already have an account? Sign In</button>
         </div>
 
-        <!-- ================= DASHBOARD SECTION (Inbox) ================= -->
-        <div id="dashboard-section" class="hidden">
-            <h3 id="dash-welcome">My Inbox</h3>
-            
-            <div style="background:#eef; padding:10px; border-radius:8px; font-size:13px; margin-bottom:15px; word-break:break-all;">
-                <span id="share-link">Generating link...</span>
-            </div>
-            <button class="btn-primary" onclick="copyLink()">Copy Link</button>
-            
-            <div id="inbox-messages" class="msg-list">
-                <!-- Messages will appear here -->
+        <!-- === DASHBOARD === -->
+        <div id="section-dashboard" class="hidden">
+            <h2>My Inbox</h2>
+            <p class="subtitle" id="dash-user">Logged in</p>
+
+            <div class="link-box" id="my-link">Generating...</div>
+            <button class="btn btn-primary" onclick="copyLink()">Copy Link</button>
+
+            <div style="margin-top:20px; text-align:left;">
+                <h4 style="margin-bottom:10px;">Messages Received:</h4>
+                <div id="msg-list" class="msg-list">
+                    <!-- Messages go here -->
+                </div>
             </div>
 
-            <button class="btn-secondary" onclick="logout()" style="background:#ff6b6b; color:white; margin-top:20px;">Logout</button>
+            <button class="btn btn-text" style="color:red;" onclick="logout()">Log Out</button>
         </div>
 
-        <!-- ================= PUBLIC SECTION (Sender) ================= -->
-        <div id="public-section" class="hidden">
-            <img id="receiver-pic" class="public-profile-pic" src="" alt="User">
-            <h3>Send Message to <span id="receiver-name">...</span></h3>
-            
-            <!-- Text Message -->
-            <textarea id="msg-text" rows="3" placeholder="Type your secret message..."></textarea>
-
-            <!-- Voice Recorder -->
-            <div class="recorder-box">
-                <p class="recording-indicator" id="rec-status">🔴 Recording...</p>
-                <button id="btn-start-rec" class="btn-secondary" onclick="startRecording()">🎤 Start Recording</button>
-                <button id="btn-stop-rec" class="hidden" style="background:var(--danger); color:white;" onclick="stopRecording()">⏹ Stop</button>
-                <audio id="audio-preview" controls class="hidden"></audio>
+        <!-- === PUBLIC MESSAGE SENDER === -->
+        <div id="section-public" class="hidden">
+            <div class="avatar-upload">
+                <div class="avatar-preview" style="cursor:default; border-color:var(--accent);">
+                    <img id="public-img" src="" class="hidden" style="display:block;">
+                </div>
             </div>
+            <h2>Send Message</h2>
+            <p class="subtitle">To: <b id="public-name">User</b> (Anonymous)</p>
 
-            <button class="btn-primary" onclick="sendMessage()">Send Message</button>
+            <textarea id="secret-msg" rows="4" placeholder="Type your secret message here..."></textarea>
             
-            <p style="font-size:12px; margin-top:20px; cursor:pointer; color:var(--primary);" onclick="window.location.href = window.location.pathname">
-                Create your own account
-            </p>
+            <button class="btn btn-primary" onclick="sendMessage()">Send Message</button>
+            <button class="btn btn-text" onclick="window.location.href = window.location.pathname">Get your own link</button>
         </div>
 
     </div>
 
-    <script>
-        // --- VARIABLES ---
-        const authSection = document.getElementById('auth-section');
-        const dashboardSection = document.getElementById('dashboard-section');
-        const publicSection = document.getElementById('public-section');
-        
-        let mediaRecorder;
-        let audioChunks = [];
-        let audioBase64 = null; // Stores the final audio to send
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Notification</div>
 
-        // Check URL for receiver
+    <script>
+        // --- CONFIG & STATE ---
+        const API_USERS = 'users_db_v2'; 
+        const API_MSGS = 'msgs_db_v2';
+        
+        // --- NAVIGATION LOGIC ---
         const urlParams = new URLSearchParams(window.location.search);
         const sendTo = urlParams.get('to');
 
-        // --- INITIALIZATION ---
-        window.onload = function() {
-            if (sendTo) {
-                // Sender View
-                loadPublicProfile(sendTo);
+        window.onload = () => {
+            if(sendTo) {
+                loadPublicPage(sendTo);
             } else {
-                // Auth/Dashboard View
-                const currentUser = localStorage.getItem('currentUser');
-                if (currentUser) {
-                    showDashboard(currentUser);
-                }
+                checkSession();
             }
         };
 
-        // --- AUTH FUNCTIONS ---
+        function switchView(viewName) {
+            ['section-login', 'section-signup', 'section-dashboard', 'section-public'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById('section-' + viewName).classList.remove('hidden');
+        }
 
-        function toggleAuth(view) {
-            const loginForm = document.getElementById('login-form');
-            const signupForm = document.getElementById('signup-form');
-            const btnLogin = document.getElementById('btn-login-view');
-            const btnSignup = document.getElementById('btn-signup-view');
+        // --- AUTHENTICATION (With Browser Password Saving Support) ---
 
-            if (view === 'signup') {
-                loginForm.classList.add('hidden');
-                signupForm.classList.remove('hidden');
-                btnLogin.classList.remove('active-toggle');
-                btnSignup.classList.add('active-toggle');
+        // 1. REGISTER
+        function handleRegister(e) {
+            e.preventDefault(); // Stop page reload
+            
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            const fileInput = document.getElementById('reg-pic');
+
+            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+
+            if (users[user]) {
+                showToast("Username already exists!");
+                return;
+            }
+
+            // Image handling
+            let avatar = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+            if (fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(fileInput.files[0]);
+                reader.onload = function(evt) {
+                    saveUserToDB(user, pass, evt.target.result);
+                };
             } else {
-                signupForm.classList.add('hidden');
-                loginForm.classList.remove('hidden');
-                btnSignup.classList.remove('active-toggle');
-                btnLogin.classList.add('active-toggle');
+                saveUserToDB(user, pass, avatar);
             }
         }
 
-        // Image Preview logic
+        function saveUserToDB(user, pass, avatar) {
+            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+            users[user] = { password: pass, avatar: avatar };
+            localStorage.setItem(API_USERS, JSON.stringify(users));
+            
+            showToast("Account Created! Redirecting...");
+            
+            // Logic to trigger Browser Save Password:
+            // We switch to login form and autofill it, forcing browser to notice the new credential
+            switchView('login');
+            document.getElementById('log-user').value = user;
+            document.getElementById('log-pass').value = pass;
+            // Note: User still needs to click Login once, which usually confirms the "Save" prompt
+        }
+
+        // 2. LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const user = document.getElementById('log-user').value.trim();
+            const pass = document.getElementById('log-pass').value.trim();
+            
+            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+
+            if(users[user] && users[user].password === pass) {
+                localStorage.setItem('active_session', user);
+                showToast("Login Successful!");
+                showDashboard(user);
+            } else {
+                showToast("Invalid Username or Password");
+            }
+        }
+
+        function checkSession() {
+            const active = localStorage.getItem('active_session');
+            if(active) showDashboard(active);
+            else switchView('login');
+        }
+
+        function logout() {
+            localStorage.removeItem('active_session');
+            location.reload();
+        }
+
+        // --- DASHBOARD LOGIC ---
+        function showDashboard(user) {
+            switchView('dashboard');
+            document.getElementById('dash-user').innerText = "Hello, " + user;
+            
+            const link = window.location.href.split('?')[0] + "?to=" + user;
+            document.getElementById('my-link').innerText = link;
+
+            loadMessages(user);
+        }
+
+        function loadMessages(user) {
+            let allMsgs = JSON.parse(localStorage.getItem(API_MSGS) || "{}");
+            let userMsgs = allMsgs[user] || [];
+            
+            const list = document.getElementById('msg-list');
+            list.innerHTML = "";
+            
+            if(userMsgs.length === 0) list.innerHTML = "<p style='color:#999; text-align:center'>No messages yet.</p>";
+
+            userMsgs.reverse().forEach(msg => {
+                let div = document.createElement('div');
+                div.className = 'msg-card';
+                div.innerHTML = `
+                    <div style="font-size:15px; color:#333;">${msg.text}</div>
+                    <div style="font-size:11px; color:#888; text-align:right; margin-top:5px;">${msg.date}</div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function copyLink() {
+            const txt = document.getElementById('my-link').innerText;
+            navigator.clipboard.writeText(txt);
+            showToast("Link Copied to Clipboard!");
+        }
+
+        // --- PUBLIC SENDER LOGIC ---
+        function loadPublicPage(user) {
+            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+            if(!users[user]) {
+                document.body.innerHTML = "<h2 style='text-align:center; color:white;'>User Not Found</h2>";
+                return;
+            }
+            
+            switchView('public');
+            document.getElementById('public-name').innerText = user;
+            document.getElementById('public-img').src = users[user].avatar;
+        }
+
+        function sendMessage() {
+            const txt = document.getElementById('secret-msg').value.trim();
+            if(!txt) return showToast("Message is empty!");
+
+            let allMsgs = JSON.parse(localStorage.getItem(API_MSGS) || "{}");
+            if(!allMsgs[sendTo]) allMsgs[sendTo] = [];
+
+            allMsgs[sendTo].push({
+                text: txt,
+                date: new Date().toLocaleString()
+            });
+
+            localStorage.setItem(API_MSGS, JSON.stringify(allMsgs));
+            showToast("Message Sent Successfully!");
+            document.getElementById('secret-msg').value = "";
+        }
+
+        // --- UTILS ---
         function previewImage() {
             const file = document.getElementById('reg-pic').files[0];
-            const preview = document.getElementById('preview-avatar');
-            if (file) {
+            if(file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'inline-block';
+                reader.onload = (e) => {
+                    document.getElementById('avatar-img').src = e.target.result;
+                    document.getElementById('avatar-img').classList.remove('hidden');
+                    document.getElementById('avatar-preview-box').style.backgroundImage = 'none';
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        function register() {
-            const user = document.getElementById('reg-user').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-            const fileInput = document.getElementById('reg-pic');
-
-            if (!user || !pass) return alert("Username and Password are required!");
-
-            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
-
-            if (usersDB[user]) return alert("Username already exists!");
-
-            // Save user with image (if uploaded)
-            const saveUser = (imgBase64) => {
-                usersDB[user] = {
-                    password: pass,
-                    avatar: imgBase64 || "https://cdn-icons-png.flaticon.com/512/149/149071.png" // Default image
-                };
-                localStorage.setItem('usersDB', JSON.stringify(usersDB));
-                alert("Account created! Please login.");
-                toggleAuth('login');
-            };
-
-            if (fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    saveUser(e.target.result);
-                }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                saveUser(null);
-            }
+        function showToast(message) {
+            const x = document.getElementById("toast");
+            x.innerText = message;
+            x.className = "toast show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
-
-        function login() {
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
-
-            if (usersDB[user] && usersDB[user].password === pass) {
-                localStorage.setItem('currentUser', user);
-                showDashboard(user);
-            } else {
-                alert("Invalid credentials!");
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            location.reload();
-        }
-
-        // --- DASHBOARD FUNCTIONS ---
-
-        function showDashboard(user) {
-            authSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            document.getElementById('dash-welcome').innerText = "Hello, " + user;
-
-            // Generate Link
-            const link = window.location.href.split('?')[0] + "?to=" + user;
-            document.getElementById('share-link').innerText = link;
-
-            loadMessages(user);
-        }
-
-        function copyLink() {
-            const link = document.getElementById('share-link').innerText;
-            navigator.clipboard.writeText(link);
-            alert("Link copied!");
-        }
-
-        function loadMessages(user) {
-            const msgBox = document.getElementById('inbox-messages');
-            let messagesDB = JSON.parse(localStorage.getItem('messagesDB') || "{}");
-            let userMsgs = messagesDB[user] || [];
-
-            msgBox.innerHTML = "";
-            if (userMsgs.length === 0) {
-                msgBox.innerHTML = "<p style='color:#999;'>No messages yet.</p>";
-                return;
-            }
-
-            // Show latest first
-            userMsgs.reverse().forEach(msg => {
-                const div = document.createElement('div');
-                div.className = 'msg-card';
-                
-                let contentHtml = "";
-                
-                // Text part
-                if (msg.text) {
-                    contentHtml += `<p style="margin:0 0 5px 0;">${msg.text}</p>`;
-                }
-                
-                // Audio part
-                if (msg.audio) {
-                    contentHtml += `<audio controls src="${msg.audio}"></audio>`;
-                }
-
-                div.innerHTML = contentHtml + `<span class="timestamp">${msg.time}</span>`;
-                msgBox.appendChild(div);
-            });
-        }
-
-        // --- PUBLIC / SENDER FUNCTIONS ---
-
-        function loadPublicProfile(username) {
-            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
-            
-            if (!usersDB[username]) {
-                document.body.innerHTML = "<h2 style='text-align:center;'>User not found!</h2>";
-                return;
-            }
-
-            authSection.classList.add('hidden');
-            publicSection.classList.remove('hidden');
-            document.getElementById('receiver-name').innerText = username;
-            document.getElementById('receiver-pic').src = usersDB[username].avatar;
-        }
-
-        // AUDIO RECORDING LOGIC
-        async function startRecording() {
-            audioChunks = [];
-            audioBase64 = null;
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                
-                mediaRecorder.start();
-                document.getElementById('rec-status').style.display = 'block';
-                document.getElementById('btn-start-rec').classList.add('hidden');
-                document.getElementById('btn-stop-rec').classList.remove('hidden');
-                document.getElementById('audio-preview').classList.add('hidden');
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    
-                    // Show preview
-                    const audioEl = document.getElementById('audio-preview');
-                    audioEl.src = audioUrl;
-                    audioEl.classList.remove('hidden');
-
-                    // Convert to Base64 for storage
-                    const reader = new FileReader();
-                    reader.readAsDataURL(audioBlob);
-                    reader.onloadend = () => {
-                        audioBase64 = reader.result;
-                    };
-                };
-
-            } catch (err) {
-                alert("Microphone permission denied! Cannot record audio.");
-                console.error(err);
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder) {
-                mediaRecorder.stop();
-                document.getElementById('rec-status').style.display = 'none';
-                document.getElementById('btn-start-rec').classList.remove('hidden');
-                document.getElementById('btn-stop-rec').classList.add('hidden');
-            }
-        }
-
-        function sendMessage() {
-            const text = document.getElementById('msg-text').value.trim();
-            
-            if (!text && !audioBase64) {
-                return alert("Please type a message or record audio first!");
-            }
-
-            let messagesDB = JSON.parse(localStorage.getItem('messagesDB') || "{}");
-            if (!messagesDB[sendTo]) messagesDB[sendTo] = [];
-
-            const newMsg = {
-                text: text,
-                audio: audioBase64,
-                time: new Date().toLocaleString()
-            };
-
-            messagesDB[sendTo].push(newMsg);
-            
-            // Try to save (might fail if audio is too long for localStorage)
-            try {
-                localStorage.setItem('messagesDB', JSON.stringify(messagesDB));
-                alert("Message Sent!");
-                document.getElementById('msg-text').value = "";
-                document.getElementById('audio-preview').classList.add('hidden');
-                audioBase64 = null;
-            } catch (e) {
-                alert("Message too large! Try a shorter voice note.");
-            }
-        }
-
     </script>
 </body>
 </html>
