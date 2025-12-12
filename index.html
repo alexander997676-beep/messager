@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Ultimate</title>
+    <title>FaizanMsg Ultimate Pro</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     
@@ -28,6 +28,20 @@
         .input-field { width: 100%; background: var(--surface-light); border: 1px solid transparent; padding: 15px; border-radius: 15px; color: white; margin-bottom: 10px; }
         .btn { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; background: var(--accent-grad); color: white; }
         
+        /* --- PROFILE UPLOAD CIRCLE --- */
+        .profile-upload {
+            width: 100px; height: 100px; border-radius: 50%; background: var(--surface-light);
+            border: 2px dashed var(--accent); margin: 0 auto 20px; display: flex; 
+            align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer;
+        }
+        .profile-upload img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-upload i { font-size: 24px; color: var(--text-sub); }
+        
+        .user-avatar {
+            width: 80px; height: 80px; border-radius: 50%; object-fit: cover; 
+            border: 3px solid var(--accent); margin: 0 auto 15px; display: block; background: #333;
+        }
+
         /* --- MEDIA UPLOAD BUTTONS --- */
         .media-bar { display: flex; gap: 10px; margin-bottom: 15px; }
         .media-btn {
@@ -35,11 +49,8 @@
             border-radius: 15px; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; transition: 0.3s;
         }
         .media-btn.selected { border-color: var(--accent); color: var(--accent); background: rgba(139, 92, 246, 0.1); }
-        .media-btn i { font-size: 20px; }
-        .media-btn span { font-size: 10px; }
-        input[type="file"] { display: none; }
-
-        /* --- MEDIA PLAYERS IN INBOX --- */
+        
+        /* --- PLAYERS --- */
         .msg-media { width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid var(--glass); }
         video.msg-media, audio.msg-media { outline: none; background: #000; }
         
@@ -56,10 +67,8 @@
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 100; pointer-events: none; }
         .toast.show { opacity: 1; }
 
-        /* File Preview Area */
         #preview-area { margin-bottom: 15px; text-align: center; }
         .preview-thumb { max-height: 150px; border-radius: 10px; max-width: 100%; }
-        .file-info { font-size: 12px; color: var(--accent); margin-top: 5px; }
 
     </style>
 </head>
@@ -73,6 +82,16 @@
             <h1 style="text-align:center; margin-bottom:20px;">FaizanMsg <span style="color:var(--accent)">Ultimate</span></h1>
             
             <div id="form-box">
+                <!-- Profile Pic Upload (Hidden by default, shown in Signup) -->
+                <div id="auth-pic-wrapper" class="hidden">
+                    <label class="profile-upload">
+                        <img id="auth-pic-preview" class="hidden">
+                        <i id="auth-pic-icon" class="fas fa-camera"></i>
+                        <input type="file" id="auth-pic-input" accept="image/*" style="display:none" onchange="app.handleAuthPic(this)">
+                    </label>
+                    <p style="text-align:center; font-size:12px; color:#666; margin-bottom:15px;">Set Profile Photo</p>
+                </div>
+
                 <input type="email" id="auth-email" class="input-field" placeholder="Email">
                 <input type="text" id="auth-user" class="input-field hidden" placeholder="Username">
                 <input type="password" id="auth-pass" class="input-field" placeholder="Password">
@@ -100,6 +119,8 @@
     <div id="view-public" class="view-section">
         <div class="scroll-view">
             <div style="text-align:center; margin-bottom:30px;">
+                <!-- Target User Image -->
+                <img id="pub-img" src="" class="user-avatar" alt="User">
                 <h2 style="font-size:24px;">Send Secret</h2>
                 <p style="color:#666;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
             </div>
@@ -123,14 +144,14 @@
             <!-- PREVIEW -->
             <div id="preview-area" class="hidden">
                 <div id="preview-content"></div>
-                <div id="file-name" class="file-info"></div>
+                <div id="file-name" style="font-size:12px; color:var(--accent); margin-top:5px;"></div>
                 <button onclick="app.clearFile()" style="background:none; border:none; color:red; margin-top:5px;">Remove File</button>
             </div>
 
             <textarea id="msg-text" class="input-field" rows="4" placeholder="Type a message..."></textarea>
-            <button class="btn" onclick="app.sendMessage()">Send Heavy File 🚀</button>
+            <button class="btn" onclick="app.sendMessage()">Send Message 🚀</button>
             <br><br>
-            <center><a href="?" style="color:#555; text-decoration:none; font-size:12px;">Back to Login</a></center>
+            <center><a href="?" style="color:#555; text-decoration:none; font-size:12px;">Create Account</a></center>
         </div>
     </div>
 
@@ -138,7 +159,9 @@
     <div id="view-profile" class="view-section">
         <div class="scroll-view">
             <div class="card" style="text-align:center;">
-                <div style="width:80px; height:80px; background:#333; border-radius:50%; margin:0 auto 15px; display:grid; place-items:center; font-size:30px;">👤</div>
+                <!-- User Profile Pic -->
+                <img id="p-img" src="" class="user-avatar">
+                
                 <h2 id="p-user">User</h2>
                 <p id="p-email" style="color:#666; font-size:12px;">Email</p>
             </div>
@@ -162,9 +185,10 @@
 <div id="toast" class="toast">Alert</div>
 
 <script>
-    // --- INDEXED DB HELPER (To handle Unlimited MBs) ---
-    const DB_NAME = 'FaizanMsgDB';
+    // --- INDEXED DB HELPER ---
+    const DB_NAME = 'FaizanMsgUltimateDB';
     const DB_VER = 1;
+    const DEFAULT_PIC = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
     const db = {
         open: () => {
@@ -210,7 +234,7 @@
 
     // --- MAIN APP ---
     const app = {
-        state: { user: null, email: null, file: null, fileType: null },
+        state: { user: null, email: null, file: null, fileType: null, authFile: null },
 
         init: async () => {
             const params = new URLSearchParams(window.location.search);
@@ -229,7 +253,127 @@
             }
         },
 
-        // --- MEDIA HANDLING ---
+        // --- AUTH PIC HANDLING ---
+        handleAuthPic: (input) => {
+            const file = input.files[0];
+            if(file) {
+                app.state.authFile = file;
+                const url = URL.createObjectURL(file);
+                document.getElementById('auth-pic-preview').src = url;
+                document.getElementById('auth-pic-preview').classList.remove('hidden');
+                document.getElementById('auth-pic-icon').classList.add('hidden');
+            }
+        },
+
+        // --- AUTH & NAV ---
+        toggleAuth: () => {
+            const isLogin = !document.getElementById('auth-user').classList.contains('hidden');
+            if(isLogin) {
+                // Switch to Login
+                document.getElementById('auth-pic-wrapper').classList.add('hidden');
+                document.getElementById('auth-user').classList.add('hidden');
+                document.getElementById('btn-signup').classList.add('hidden');
+                document.getElementById('btn-login').classList.remove('hidden');
+                document.getElementById('auth-toggle-text').innerText = "New here?";
+            } else {
+                // Switch to Signup
+                document.getElementById('auth-pic-wrapper').classList.remove('hidden');
+                document.getElementById('auth-user').classList.remove('hidden');
+                document.getElementById('btn-signup').classList.remove('hidden');
+                document.getElementById('btn-login').classList.add('hidden');
+                document.getElementById('auth-toggle-text').innerText = "Have account?";
+            }
+        },
+
+        register: async () => {
+            const email = document.getElementById('auth-email').value.toLowerCase();
+            const user = document.getElementById('auth-user').value;
+            const pass = document.getElementById('auth-pass').value;
+            
+            if(!email || !user || !pass) return app.toast("Fill all fields");
+
+            const exists = await db.get('users', email);
+            if(exists) return app.toast('Email taken');
+
+            // Save user with profile pic (as Blob)
+            const userData = { 
+                email, 
+                username: user, 
+                password: pass,
+                pic: app.state.authFile // Storing heavy image in IndexedDB
+            };
+
+            await db.put('users', userData);
+            app.toast('Created! Please Login.');
+            app.toggleAuth();
+        },
+
+        login: async () => {
+            const email = document.getElementById('auth-email').value.toLowerCase();
+            const pass = document.getElementById('auth-pass').value;
+            const u = await db.get('users', email);
+
+            if(u && u.password === pass) {
+                localStorage.setItem('f_user', u.username);
+                localStorage.setItem('f_email', email);
+                app.state.user = u.username;
+                app.state.email = email;
+                app.nav('inbox');
+            } else app.toast('Invalid Details');
+        },
+
+        logout: () => { localStorage.clear(); location.reload(); },
+
+        nav: (v) => {
+            document.querySelectorAll('.view-section').forEach(x => x.classList.remove('active'));
+            document.getElementById(`view-${v}`).classList.add('active');
+            
+            const dock = document.getElementById('nav-dock');
+            
+            if(v === 'inbox' || v === 'profile') {
+                dock.classList.remove('hidden');
+                if(v === 'inbox') app.renderInbox();
+                if(v === 'profile') app.renderProfile();
+            } else {
+                dock.classList.add('hidden');
+            }
+        },
+
+        // --- PROFILE DISPLAY ---
+        renderProfile: async () => {
+            // Get user data from DB to show Pic
+            const u = await db.get('users', app.state.email);
+            
+            document.getElementById('p-user').innerText = '@' + app.state.user;
+            document.getElementById('p-email').innerText = app.state.email;
+            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
+
+            const imgEl = document.getElementById('p-img');
+            if(u && u.pic) {
+                imgEl.src = URL.createObjectURL(u.pic);
+            } else {
+                imgEl.src = DEFAULT_PIC;
+            }
+        },
+
+        // --- PUBLIC VIEW ---
+        loadPublic: async (to) => {
+            app.nav('public');
+            document.getElementById('pub-target').innerText = to;
+            
+            // Find target user by username to show their pic
+            const allUsers = await db.getAll('users');
+            const targetUser = allUsers.find(u => u.username === to);
+            
+            const imgEl = document.getElementById('pub-img');
+            if(targetUser && targetUser.pic) {
+                imgEl.src = URL.createObjectURL(targetUser.pic);
+            } else {
+                imgEl.src = DEFAULT_PIC;
+            }
+        },
+
+        // --- MEDIA SENDING ---
         handleFile: (input, type) => {
             const file = input.files[0];
             if (!file) return;
@@ -237,7 +381,6 @@
             app.state.file = file;
             app.state.fileType = type;
 
-            // UI Updates
             document.querySelectorAll('.media-btn').forEach(b => b.classList.remove('selected'));
             input.parentElement.classList.add('selected');
             
@@ -273,7 +416,6 @@
             document.querySelectorAll('input[type="file"]').forEach(i => i.value = "");
         },
 
-        // --- MESSAGING ---
         sendMessage: async () => {
             const text = document.getElementById('msg-text').value;
             const target = document.getElementById('pub-target').innerText;
@@ -283,7 +425,7 @@
             const msgData = {
                 to: target,
                 text: text,
-                media: app.state.file, // Saving Blob directly (Unlimited size)
+                media: app.state.file,
                 type: app.state.fileType,
                 date: new Date()
             };
@@ -319,79 +461,6 @@
                 `;
                 list.appendChild(d);
             });
-        },
-
-        // --- AUTH & NAV ---
-        toggleAuth: () => {
-            const isLogin = !document.getElementById('auth-user').classList.contains('hidden');
-            if(isLogin) {
-                // Switch to Login
-                document.getElementById('auth-user').classList.add('hidden');
-                document.getElementById('btn-signup').classList.add('hidden');
-                document.getElementById('btn-login').classList.remove('hidden');
-                document.getElementById('auth-toggle-text').innerText = "New here?";
-            } else {
-                // Switch to Signup
-                document.getElementById('auth-user').classList.remove('hidden');
-                document.getElementById('btn-signup').classList.remove('hidden');
-                document.getElementById('btn-login').classList.add('hidden');
-                document.getElementById('auth-toggle-text').innerText = "Have account?";
-            }
-        },
-
-        register: async () => {
-            const email = document.getElementById('auth-email').value;
-            const user = document.getElementById('auth-user').value;
-            const pass = document.getElementById('auth-pass').value;
-            
-            const exists = await db.get('users', email);
-            if(exists) return app.toast('Email taken');
-
-            await db.put('users', { email, username: user, password: pass });
-            app.toast('Created! Please Login.');
-            app.toggleAuth();
-        },
-
-        login: async () => {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
-            const u = await db.get('users', email);
-
-            if(u && u.password === pass) {
-                localStorage.setItem('f_user', u.username);
-                localStorage.setItem('f_email', email);
-                app.state.user = u.username;
-                app.state.email = email;
-                app.nav('inbox');
-            } else app.toast('Invalid Details');
-        },
-
-        logout: () => { localStorage.clear(); location.reload(); },
-
-        nav: (v) => {
-            document.querySelectorAll('.view-section').forEach(x => x.classList.remove('active'));
-            document.getElementById(`view-${v}`).classList.add('active');
-            
-            const dock = document.getElementById('nav-dock');
-            
-            if(v === 'inbox' || v === 'profile') {
-                dock.classList.remove('hidden');
-                if(v === 'inbox') app.renderInbox();
-                if(v === 'profile') app.renderProfile();
-            } else {
-                dock.classList.add('hidden');
-            }
-        },
-
-        renderProfile: () => {
-            document.getElementById('p-user').innerText = '@' + app.state.user;
-            document.getElementById('p-email').innerText = app.state.email;
-            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
-        },
-
-        loadPublic: (to) => {
-            app.nav('public');
-            document.getElementById('pub-target').innerText = to;
         },
 
         copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
