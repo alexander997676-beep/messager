@@ -2,334 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostChat Final</title>
-    <!-- Icons and Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GhostChat</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- PROFESSIONAL DARK THEME --- */
-        :root {
-            --bg: #111b21;
-            --header: #202c33;
-            --card: #202c33;
-            --primary: #00a884;
-            --text-main: #e9edef;
-            --text-sec: #8696a0;
-            --msg-out: #005c4b;
-            --msg-in: #202c33;
-            --danger: #ef4444;
-        }
-
-        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: #000; color: var(--text-main); height: 100vh; display: flex; justify-content: center; }
-
-        .app { width: 100%; max-width: 480px; background: var(--bg); height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid #333; border-right: 1px solid #333; }
-
-        /* SCREENS */
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; transition: 0.3s; z-index: 10; }
-        .hidden { transform: translateX(100%); z-index: 5; }
-        .active { transform: translateX(0); z-index: 20; }
-
-        /* AUTH FORMS */
-        .auth-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; }
-        .auth-title { font-size: 28px; color: var(--primary); font-weight: bold; text-align: center; margin-bottom: 5px; }
-        .auth-sub { text-align: center; color: var(--text-sec); margin-bottom: 30px; font-size: 14px; }
-        
-        input { width: 100%; padding: 15px; background: #2a3942; border: 1px solid #333; border-radius: 8px; color: white; margin-bottom: 12px; font-size: 16px; }
-        
-        .btn { width: 100%; padding: 15px; background: var(--primary); color: #111; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-text { background: none; color: var(--primary); margin-top: 15px; font-size: 14px; }
-
-        /* HEADER */
-        .header { padding: 15px; background: var(--header); display: flex; align-items: center; justify-content: space-between; height: 60px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .avatar { width: 35px; height: 35px; background: #6a7f8a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; margin-right: 10px; }
-
-        /* CONTACTS LIST */
-        .add-box { padding: 15px; background: #182229; display: flex; gap: 10px; border-bottom: 1px solid #333; }
-        .list-area { flex: 1; overflow-y: auto; }
-        .contact-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; cursor: pointer; transition: 0.2s; }
-        .contact-item:hover { background: #202c33; }
-
-        /* CHAT ROOM */
-        .chat-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-color: #0b141a; background-blend-mode: overlay; }
-        
-        .msg { max-width: 75%; padding: 8px 12px; border-radius: 8px; margin-bottom: 5px; font-size: 15px; position: relative; word-wrap: break-word; }
-        .msg-out { background: var(--msg-out); align-self: flex-end; border-top-right-radius: 0; }
-        .msg-in { background: var(--msg-in); align-self: flex-start; border-top-left-radius: 0; }
-        .time { font-size: 10px; color: rgba(255,255,255,0.6); text-align: right; display: block; margin-top: 3px; }
-
-        .input-area { padding: 10px; background: var(--header); display: flex; gap: 10px; align-items: center; }
-        
-        /* TOAST */
-        .toast { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #333; padding: 10px 20px; border-radius: 30px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100; font-size: 13px; border: 1px solid #555; }
-        .toast.show { opacity: 1; top: 50px; }
-        .error { color: #ff6b6b; border-color: #ff6b6b; }
-
+        body { background: #111b21; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #202c33; padding: 30px; border-radius: 10px; width: 300px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #2a3942; border: none; color: white; border-radius: 5px; box-sizing: border-box;}
+        button { width: 100%; padding: 12px; background: #00a884; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        a { color: #00a884; text-decoration: none; display: block; margin-top: 15px; font-size: 14px; }
     </style>
 </head>
 <body>
-
-<div class="app">
-
-    <!-- === 1. AUTH SCREEN (Login/Signup) === -->
-    <div id="screen-auth" class="screen active">
-        <!-- LOGIN FORM -->
-        <div id="form-login" class="auth-container">
-            <div class="auth-title">GhostChat Login</div>
-            <p class="auth-sub">Enter your credentials to connect.</p>
-            
-            <input type="text" id="log-user" placeholder="Username">
-            <input type="password" id="log-pass" placeholder="Password">
-            
-            <button class="btn" onclick="app.login()">Sign In</button>
-            <button class="btn btn-text" onclick="app.toggleAuth('signup')">Create new account</button>
-        </div>
-
-        <!-- SIGNUP FORM -->
-        <div id="form-signup" class="auth-container hidden" style="display:none;">
-            <div class="auth-title">Create Account</div>
-            <p class="auth-sub">Choose a unique username.</p>
-            
-            <input type="text" id="reg-user" placeholder="Choose Username">
-            <input type="password" id="reg-pass" placeholder="Create Password">
-            
-            <button class="btn" onclick="app.signup()">Sign Up</button>
-            <button class="btn btn-text" onclick="app.toggleAuth('login')">Back to Login</button>
-        </div>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <a href="signup.html">Create New Account</a>
     </div>
 
-    <!-- === 2. DASHBOARD (Contacts) === -->
-    <div id="screen-dash" class="screen hidden">
-        <div class="header">
-            <div style="display:flex; align-items:center;">
-                <div class="avatar" id="my-av">Me</div>
-                <div id="my-name" style="font-weight:bold;">User</div>
-            </div>
-            <button onclick="app.logout()" style="background:none; border:none; color:var(--danger); cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button>
-        </div>
+    <script>
+        // Check if already logged in
+        if(localStorage.getItem('gc_session')) window.location.href = 'dashboard.html';
 
-        <div class="add-box">
-            <input type="text" id="friend-name" placeholder="Enter Friend's Username" style="margin:0;">
-            <button onclick="app.addContact()" style="width:50px; margin:0; border-radius:8px; background:var(--primary); color:white; border:none; cursor:pointer;"><i class="fas fa-plus"></i></button>
-        </div>
-        <div style="padding:10px; font-size:12px; color:#666; text-align:center;">Tip: You can only add registered users.</div>
+        function login() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            const users = JSON.parse(localStorage.getItem('gc_users') || "{}");
 
-        <div class="list-area" id="contact-list"></div>
-    </div>
-
-    <!-- === 3. CHAT ROOM === -->
-    <div id="screen-chat" class="screen hidden">
-        <div class="header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <i class="fas fa-arrow-left" onclick="app.nav('dash')" style="cursor:pointer; padding:5px;"></i>
-                <div class="avatar" id="chat-av">?</div>
-                <div id="chat-name" style="font-weight:bold;">User</div>
-            </div>
-        </div>
-
-        <div class="chat-body" id="msg-box"></div>
-
-        <div class="input-area">
-            <input type="text" id="msg-input" placeholder="Type a message..." style="margin:0;">
-            <button onclick="app.send()" style="width:50px; margin:0; padding:12px; border-radius:50%; background:var(--primary); color:white; border:none; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <div id="toast" class="toast">Alert</div>
-</div>
-
-<script>
-    const app = {
-        user: null, // Logged in user
-        target: null, // Chatting with
-        refresh: null, // Timer for auto-reload
-        dbUsers: 'gc7_users_db', // Stores: { username: password }
-        
-        init: () => {
-            const session = localStorage.getItem('gc7_session');
-            if(session) {
-                app.user = session;
-                app.loadDash();
+            if (users[u] && users[u] === p) {
+                localStorage.setItem('gc_session', u);
+                window.location.href = 'dashboard.html'; // Redirect to Dashboard
             } else {
-                app.nav('auth');
+                alert("Invalid Username or Password");
             }
-        },
-
-        // --- NAVIGATION ---
-        nav: (s) => {
-            document.querySelectorAll('.screen').forEach(el => {
-                el.classList.remove('active');
-                el.classList.add('hidden');
-            });
-            document.getElementById(`screen-${s}`).classList.remove('hidden');
-            document.getElementById(`screen-${s}`).classList.add('active');
-            
-            if(s !== 'chat' && app.refresh) clearInterval(app.refresh);
-        },
-
-        toggleAuth: (mode) => {
-            document.getElementById('form-login').style.display = mode === 'login' ? 'flex' : 'none';
-            document.getElementById('form-signup').style.display = mode === 'signup' ? 'flex' : 'none';
-        },
-
-        toast: (msg, isErr = false) => {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.className = isErr ? 'toast show error' : 'toast show';
-            setTimeout(() => t.className = 'toast', 2500);
-        },
-
-        // --- 1. AUTHENTICATION LOGIC ---
-        
-        signup: () => {
-            const u = document.getElementById('reg-user').value.trim();
-            const p = document.getElementById('reg-pass').value.trim();
-
-            if(!u || !p) return app.toast('Fill all fields', true);
-
-            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-            
-            if(users[u]) {
-                app.toast('Username already taken!', true);
-            } else {
-                users[u] = p; // Store user & password
-                localStorage.setItem(app.dbUsers, JSON.stringify(users));
-                app.toast('Account Created! Login now.');
-                app.toggleAuth('login');
-            }
-        },
-
-        login: () => {
-            const u = document.getElementById('log-user').value.trim();
-            const p = document.getElementById('log-pass').value.trim();
-            
-            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-
-            if(users[u] && users[u] === p) {
-                localStorage.setItem('gc7_session', u);
-                app.user = u;
-                document.getElementById('log-user').value = "";
-                document.getElementById('log-pass').value = "";
-                app.loadDash();
-            } else {
-                app.toast('Invalid Username or Password', true);
-            }
-        },
-
-        logout: () => {
-            localStorage.removeItem('gc7_session');
-            location.reload();
-        },
-
-        // --- 2. DASHBOARD & CONTACTS ---
-        
-        loadDash: () => {
-            app.nav('dash');
-            document.getElementById('my-name').innerText = app.user;
-            document.getElementById('my-av').innerText = app.user[0].toUpperCase();
-            app.renderContacts();
-        },
-
-        addContact: () => {
-            const fname = document.getElementById('friend-name').value.trim();
-            if(!fname) return;
-            if(fname === app.user) return app.toast("Can't add yourself", true);
-
-            // VERIFICATION: Check if user exists in DB
-            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-            
-            if(!users[fname]) {
-                app.toast(`User "${fname}" not found!`, true);
-                return;
-            }
-
-            // Save to my contacts
-            let contacts = JSON.parse(localStorage.getItem(`gc7_contacts_${app.user}`) || "[]");
-            if(!contacts.includes(fname)) {
-                contacts.push(fname);
-                localStorage.setItem(`gc7_contacts_${app.user}`, JSON.stringify(contacts));
-                app.toast(`${fname} Added!`);
-                document.getElementById('friend-name').value = "";
-            } else {
-                app.toast('Already in contacts');
-            }
-            app.renderContacts();
-        },
-
-        renderContacts: () => {
-            const list = JSON.parse(localStorage.getItem(`gc7_contacts_${app.user}`) || "[]");
-            const el = document.getElementById('contact-list');
-            el.innerHTML = "";
-            
-            if(list.length === 0) el.innerHTML = "<div style='text-align:center; padding:20px; color:#555;'>No contacts yet.</div>";
-
-            list.forEach(c => {
-                const div = document.createElement('div');
-                div.className = 'contact-item';
-                div.onclick = () => app.openChat(c);
-                div.innerHTML = `
-                    <div class="avatar">${c[0].toUpperCase()}</div>
-                    <div style="font-weight:bold; color:#e9edef;">${c}</div>
-                `;
-                el.appendChild(div);
-            });
-        },
-
-        // --- 3. REAL-TIME CHAT SYSTEM ---
-
-        getChatID: (u1, u2) => `gc7_msg_${[u1, u2].sort().join('_')}`,
-
-        openChat: (name) => {
-            app.target = name;
-            app.nav('chat');
-            document.getElementById('chat-name').innerText = name;
-            document.getElementById('chat-av').innerText = name[0].toUpperCase();
-            
-            app.renderMsgs();
-            // Auto refresh for "Real Time" effect
-            app.refresh = setInterval(app.renderMsgs, 1000);
-        },
-
-        send: () => {
-            const txt = document.getElementById('msg-input').value.trim();
-            if(!txt) return;
-
-            const id = app.getChatID(app.user, app.target);
-            let msgs = JSON.parse(localStorage.getItem(id) || "[]");
-            
-            msgs.push({
-                s: app.user, // Sender
-                t: txt,      // Text
-                time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-            });
-
-            localStorage.setItem(id, JSON.stringify(msgs));
-            document.getElementById('msg-input').value = "";
-            app.renderMsgs();
-        },
-
-        renderMsgs: () => {
-            const id = app.getChatID(app.user, app.target);
-            const msgs = JSON.parse(localStorage.getItem(id) || "[]");
-            const cont = document.getElementById('msg-box');
-
-            if(cont.childElementCount === msgs.length) return; // Prevent flicker
-
-            cont.innerHTML = "";
-            msgs.forEach(m => {
-                const isMe = m.s === app.user;
-                const div = document.createElement('div');
-                div.className = `msg ${isMe ? 'msg-out' : 'msg-in'}`;
-                div.innerHTML = `${m.t}<span class="time">${m.time}</span>`;
-                cont.appendChild(div);
-            });
-            cont.scrollTop = cont.scrollHeight;
         }
-    };
-
-    window.onload = app.init;
-</script>
+    </script>
 </body>
 </html>
