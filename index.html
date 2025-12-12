@@ -3,337 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Link - Premium</title>
-    <!-- Modern Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>SecretMsg Pro - Media Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- PREMIUM CSS --- */
+        /* --- PRO DESIGN (WHATSAPP/INSTAGRAM STYLE) --- */
         :root {
-            --primary: #4A90E2;
-            --accent: #50E3C2;
-            --dark: #2C3E50;
-            --light: #ECF0F1;
-            --glass: rgba(255, 255, 255, 0.95);
+            --primary: #8338ec;
+            --gradient: linear-gradient(135deg, #8338ec, #3a86ff);
+            --bg: #f0f2f5;
+            --white: #ffffff;
+            --dark: #1f1f1f;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
             margin: 0;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            min-height: 100vh;
         }
 
-        .app-container {
-            background: var(--glass);
+        .app-card {
+            background: var(--white);
             width: 100%;
-            max-width: 400px;
-            padding: 2rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
+            max-width: 450px;
+            min-height: 600px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        h2 { text-align: center; color: var(--dark); margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #7f8c8d; font-size: 0.9rem; margin-bottom: 25px; }
+        /* Header */
+        .header {
+            background: var(--gradient);
+            padding: 20px;
+            color: white;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .header h2 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; opacity: 0.9; font-size: 14px; }
 
-        /* Form Styling */
-        .form-group { margin-bottom: 15px; position: relative; }
+        /* Scrollable Content Area */
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Inputs & Forms */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { font-size: 12px; color: #666; font-weight: bold; margin-left: 5px; }
         
-        input, textarea {
+        input[type="text"], input[type="password"], textarea {
             width: 100%;
-            padding: 14px 15px;
-            border: 2px solid #e0e0e0;
+            padding: 14px;
+            border: 2px solid #eee;
             border-radius: 12px;
             box-sizing: border-box;
             font-family: inherit;
+            margin-top: 5px;
             transition: 0.3s;
-            background: #f9f9f9;
         }
-
-        input:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            background: white;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.1);
-        }
-
-        /* Profile Pic Upload */
-        .avatar-upload {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .avatar-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid var(--primary);
-            background-color: #eee;
-            background-image: url('https://cdn-icons-png.flaticon.com/512/847/847969.png');
-            background-size: cover;
-            background-position: center;
-            cursor: pointer;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-        .avatar-preview:hover { transform: scale(1.05); }
-        .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
-        input[type="file"] { display: none; }
+        input:focus, textarea:focus { border-color: #3a86ff; outline: none; background: #f8fbff; }
 
         /* Buttons */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             border: none;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        .btn-primary { background: var(--gradient); color: white; box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3); }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-text { background: transparent; color: #8338ec; }
+
+        /* MEDIA UPLOAD SECTION */
+        .media-bar {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            justify-content: center;
+        }
+        .media-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #eee;
+            background: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
-            font-size: 1rem;
         }
-        .btn-primary { background: linear-gradient(to right, #4A90E2, #50E3C2); color: white; box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3); }
-        .btn-primary:hover { transform: translateY(-2px); }
-        .btn-text { background: none; color: var(--primary); font-size: 0.9rem; margin-top: 15px; }
-
-        /* Helpers */
-        .hidden { display: none !important; }
+        .media-btn.active { background: #e0e7ff; border-color: #3a86ff; color: #3a86ff; }
         
-        /* Dashboard & Messages */
-        .link-box {
-            background: #e3f2fd;
-            color: #1565c0;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed #1565c0;
-            word-break: break-all;
+        /* Previews */
+        .preview-box {
+            margin-top: 10px;
             text-align: center;
-            font-size: 0.85rem;
-            margin: 15px 0;
+            display: none;
+        }
+        .preview-media {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            border: 2px dashed #ccc;
         }
 
-        .msg-list { max-height: 350px; overflow-y: auto; margin-top: 20px; }
+        /* Messages */
         .msg-card {
             background: white;
             padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--accent);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #8338ec;
         }
+        .msg-text { font-size: 15px; color: #333; margin-bottom: 8px; }
+        .msg-media { width: 100%; border-radius: 8px; margin-top: 5px; }
+        .timestamp { font-size: 11px; color: #aaa; text-align: right; display: block; margin-top: 5px; }
 
-        /* Custom Toast Notification */
-        .toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
+        /* Recording Animation */
+        .recording-ui {
+            background: #ffebec;
+            color: #ff3b30;
+            padding: 10px;
+            border-radius: 10px;
             text-align: center;
-            border-radius: 8px;
-            padding: 12px;
-            position: fixed;
-            z-index: 1000;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
+            font-weight: bold;
+            display: none;
+            animation: pulse 1s infinite;
         }
-        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .hidden { display: none !important; }
+        .file-input-hidden { display: none; }
+        
+        /* Toast Notification */
+        .toast {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 20px; border-radius: 30px;
+            font-size: 13px; opacity: 0; transition: 0.3s; pointer-events: none;
+        }
+        .toast.show { opacity: 1; bottom: 40px; }
 
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="app-card">
         
-        <!-- === LOGIN FORM === -->
-        <div id="section-login">
-            <h2>Welcome Back</h2>
-            <p class="subtitle">Sign in to check your secret messages</p>
-            
-            <!-- FORM tag is essential for Browser Password Manager -->
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <!-- autocomplete="username" helps browser identify user field -->
-                    <input type="text" id="log-user" name="username" placeholder="Username" autocomplete="username" required>
-                </div>
-                <div class="form-group">
-                    <!-- autocomplete="current-password" helps browser fill password -->
-                    <input type="password" id="log-pass" name="password" placeholder="Password" autocomplete="current-password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign In</button>
-            </form>
-
-            <button class="btn btn-text" onclick="switchView('signup')">New here? Create Account</button>
+        <!-- HEADER -->
+        <div class="header">
+            <h2 id="page-title">SecretMsg</h2>
+            <p id="page-subtitle">Send anonymous text, photos & videos</p>
         </div>
 
-        <!-- === SIGN UP FORM === -->
-        <div id="section-signup" class="hidden">
-            <h2>Create Account</h2>
-            <p class="subtitle">Get your own anonymous link</p>
+        <div class="content-area">
 
-            <form id="signupForm" onsubmit="handleRegister(event)">
-                <!-- Profile Pic -->
-                <div class="avatar-upload" onclick="document.getElementById('reg-pic').click()">
-                    <div class="avatar-preview" id="avatar-preview-box">
-                        <img id="avatar-img" class="hidden">
+            <!-- === 1. LOGIN SECTION === -->
+            <div id="view-login">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>USERNAME</label>
+                        <input type="text" id="log-user" name="username" autocomplete="username" required placeholder="Enter your username">
                     </div>
-                    <span style="font-size:12px; color:#888; margin-top:5px;">Tap to add photo</span>
-                    <input type="file" id="reg-pic" accept="image/*" onchange="previewImage()">
-                </div>
-
-                <div class="form-group">
-                    <!-- autocomplete="username" tells browser this is a new user -->
-                    <input type="text" id="reg-user" name="username" placeholder="Choose a Username" autocomplete="username" required>
-                </div>
-                <div class="form-group">
-                    <!-- autocomplete="new-password" tells browser to save this new password -->
-                    <input type="password" id="reg-pass" name="password" placeholder="Create Password" autocomplete="new-password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign Up & Save</button>
-            </form>
-
-            <button class="btn btn-text" onclick="switchView('login')">Already have an account? Sign In</button>
-        </div>
-
-        <!-- === DASHBOARD === -->
-        <div id="section-dashboard" class="hidden">
-            <h2>My Inbox</h2>
-            <p class="subtitle" id="dash-user">Logged in</p>
-
-            <div class="link-box" id="my-link">Generating...</div>
-            <button class="btn btn-primary" onclick="copyLink()">Copy Link</button>
-
-            <div style="margin-top:20px; text-align:left;">
-                <h4 style="margin-bottom:10px;">Messages Received:</h4>
-                <div id="msg-list" class="msg-list">
-                    <!-- Messages go here -->
-                </div>
+                    <div class="form-group">
+                        <label>PASSWORD</label>
+                        <input type="password" id="log-pass" name="password" autocomplete="current-password" required placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </form>
+                <button class="btn btn-text" onclick="nav('signup')">Create new account</button>
             </div>
 
-            <button class="btn btn-text" style="color:red;" onclick="logout()">Log Out</button>
-        </div>
-
-        <!-- === PUBLIC MESSAGE SENDER === -->
-        <div id="section-public" class="hidden">
-            <div class="avatar-upload">
-                <div class="avatar-preview" style="cursor:default; border-color:var(--accent);">
-                    <img id="public-img" src="" class="hidden" style="display:block;">
-                </div>
+            <!-- === 2. SIGNUP SECTION === -->
+            <div id="view-signup" class="hidden">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>CHOOSE USERNAME</label>
+                        <input type="text" id="reg-user" name="username" autocomplete="username" required placeholder="e.g. ali_king">
+                    </div>
+                    <div class="form-group">
+                        <label>CREATE PASSWORD</label>
+                        <input type="password" id="reg-pass" name="password" autocomplete="new-password" required placeholder="Something secret">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up & Save</button>
+                </form>
+                <button class="btn btn-text" onclick="nav('login')">Back to Login</button>
             </div>
-            <h2>Send Message</h2>
-            <p class="subtitle">To: <b id="public-name">User</b> (Anonymous)</p>
 
-            <textarea id="secret-msg" rows="4" placeholder="Type your secret message here..."></textarea>
-            
-            <button class="btn btn-primary" onclick="sendMessage()">Send Message</button>
-            <button class="btn btn-text" onclick="window.location.href = window.location.pathname">Get your own link</button>
+            <!-- === 3. DASHBOARD (INBOX) === -->
+            <div id="view-dashboard" class="hidden">
+                <div style="background:#eef2ff; padding:10px; border-radius:10px; text-align:center; font-size:12px; margin-bottom:20px;">
+                    <b id="share-link-text">...</b>
+                </div>
+                <button class="btn btn-primary" onclick="copyLink()" style="margin-top:0;">Copy My Link 🔗</button>
+                
+                <h4 style="margin-top:25px; color:#444;">Inbox 📥</h4>
+                <div id="inbox-list">
+                    <!-- Messages appear here -->
+                </div>
+                
+                <button class="btn btn-text" style="color:red" onclick="logout()">Logout</button>
+            </div>
+
+            <!-- === 4. PUBLIC SENDER === -->
+            <div id="view-public" class="hidden">
+                <p style="text-align:center; color:#666;">Sending to: <b id="receiver-name">User</b></p>
+                
+                <!-- Text Area -->
+                <textarea id="msg-text" rows="3" placeholder="Type message..."></textarea>
+
+                <!-- Media Selection Bar -->
+                <div class="media-bar">
+                    <div class="media-btn" onclick="triggerFile('image')" title="Photo">📷</div>
+                    <div class="media-btn" onclick="triggerFile('video')" title="Video">🎥</div>
+                    <div class="media-btn" onclick="toggleAudio()" title="Voice" id="btn-mic">🎤</div>
+                </div>
+
+                <!-- Hidden Inputs -->
+                <input type="file" id="file-image" accept="image/*" class="file-input-hidden" onchange="previewFile('image')">
+                <input type="file" id="file-video" accept="video/*" class="file-input-hidden" onchange="previewFile('video')">
+
+                <!-- Preview Area -->
+                <div id="preview-area" class="preview-box">
+                    <p style="font-size:12px; color:red;" id="file-warning"></p>
+                    <img id="img-prev" class="preview-media hidden">
+                    <video id="vid-prev" class="preview-media hidden" controls></video>
+                    <div id="audio-ui" class="recording-ui">Recording... <br><small>Click Mic to Stop</small></div>
+                    <audio id="audio-prev" controls class="hidden" style="width:100%; margin-top:10px;"></audio>
+                </div>
+
+                <button class="btn btn-primary" onclick="sendMessage()">Send Secretly 🚀</button>
+                <button class="btn btn-text" onclick="window.location.href=window.location.pathname">Get your own link</button>
+            </div>
+
         </div>
-
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">Notification</div>
+    <div id="toast" class="toast">Action Successful</div>
 
     <script>
-        // --- CONFIG & STATE ---
-        const API_USERS = 'users_db_v2'; 
-        const API_MSGS = 'msgs_db_v2';
-        
-        // --- NAVIGATION LOGIC ---
+        // --- CONFIG ---
+        const DB_USERS = 'users_db_pro';
+        const DB_MSGS = 'msgs_db_pro';
+        const MAX_SIZE_MB = 3; // Limit file size (LocalStorage limit is ~5MB)
+
+        // --- STATE ---
+        let mediaRecorder;
+        let audioChunks = [];
+        let finalMedia = { type: null, data: null }; // Stores current media (img/vid/audio)
+
+        // --- NAVIGATION ---
         const urlParams = new URLSearchParams(window.location.search);
         const sendTo = urlParams.get('to');
 
         window.onload = () => {
-            if(sendTo) {
-                loadPublicPage(sendTo);
+            if (sendTo) {
+                // Public View
+                if(checkUserExists(sendTo)){
+                    nav('public');
+                    document.getElementById('receiver-name').innerText = sendTo;
+                    document.getElementById('page-title').innerText = "Send Message";
+                } else {
+                    document.body.innerHTML = "<h1 style='text-align:center'>User Not Found</h1>";
+                }
             } else {
-                checkSession();
+                // Auth View
+                const session = localStorage.getItem('active_session');
+                if(session) showDashboard(session);
+                else nav('login');
             }
         };
 
-        function switchView(viewName) {
-            ['section-login', 'section-signup', 'section-dashboard', 'section-public'].forEach(id => {
+        function nav(view) {
+            ['view-login', 'view-signup', 'view-dashboard', 'view-public'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
-            document.getElementById('section-' + viewName).classList.remove('hidden');
+            document.getElementById('view-' + view).classList.remove('hidden');
         }
 
-        // --- AUTHENTICATION (With Browser Password Saving Support) ---
+        function checkUserExists(user) {
+            let db = JSON.parse(localStorage.getItem(DB_USERS) || "{}");
+            return db.hasOwnProperty(user);
+        }
 
-        // 1. REGISTER
+        // --- AUTHENTICATION ---
         function handleRegister(e) {
-            e.preventDefault(); // Stop page reload
-            
+            e.preventDefault();
             const user = document.getElementById('reg-user').value.trim();
             const pass = document.getElementById('reg-pass').value.trim();
-            const fileInput = document.getElementById('reg-pic');
+            let db = JSON.parse(localStorage.getItem(DB_USERS) || "{}");
 
-            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+            if(db[user]) return showToast("Username Taken ❌");
 
-            if (users[user]) {
-                showToast("Username already exists!");
-                return;
-            }
-
-            // Image handling
-            let avatar = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-            if (fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.readAsDataURL(fileInput.files[0]);
-                reader.onload = function(evt) {
-                    saveUserToDB(user, pass, evt.target.result);
-                };
-            } else {
-                saveUserToDB(user, pass, avatar);
-            }
-        }
-
-        function saveUserToDB(user, pass, avatar) {
-            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
-            users[user] = { password: pass, avatar: avatar };
-            localStorage.setItem(API_USERS, JSON.stringify(users));
+            db[user] = pass;
+            localStorage.setItem(DB_USERS, JSON.stringify(db));
             
-            showToast("Account Created! Redirecting...");
-            
-            // Logic to trigger Browser Save Password:
-            // We switch to login form and autofill it, forcing browser to notice the new credential
-            switchView('login');
+            showToast("Account Created! ✅");
+            // Auto fill login to trigger browser save
+            nav('login');
             document.getElementById('log-user').value = user;
             document.getElementById('log-pass').value = pass;
-            // Note: User still needs to click Login once, which usually confirms the "Save" prompt
         }
 
-        // 2. LOGIN
         function handleLogin(e) {
             e.preventDefault();
-            
             const user = document.getElementById('log-user').value.trim();
             const pass = document.getElementById('log-pass').value.trim();
-            
-            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
+            let db = JSON.parse(localStorage.getItem(DB_USERS) || "{}");
 
-            if(users[user] && users[user].password === pass) {
+            if(db[user] === pass) {
                 localStorage.setItem('active_session', user);
-                showToast("Login Successful!");
                 showDashboard(user);
             } else {
-                showToast("Invalid Username or Password");
+                showToast("Wrong Password ❌");
             }
-        }
-
-        function checkSession() {
-            const active = localStorage.getItem('active_session');
-            if(active) showDashboard(active);
-            else switchView('login');
         }
 
         function logout() {
@@ -341,92 +340,171 @@
             location.reload();
         }
 
-        // --- DASHBOARD LOGIC ---
+        // --- DASHBOARD ---
         function showDashboard(user) {
-            switchView('dashboard');
-            document.getElementById('dash-user').innerText = "Hello, " + user;
-            
+            nav('dashboard');
+            document.getElementById('page-title').innerText = "Welcome, " + user;
             const link = window.location.href.split('?')[0] + "?to=" + user;
-            document.getElementById('my-link').innerText = link;
-
+            document.getElementById('share-link-text').innerText = link;
             loadMessages(user);
         }
 
         function loadMessages(user) {
-            let allMsgs = JSON.parse(localStorage.getItem(API_MSGS) || "{}");
-            let userMsgs = allMsgs[user] || [];
-            
-            const list = document.getElementById('msg-list');
+            let db = JSON.parse(localStorage.getItem(DB_MSGS) || "{}");
+            let msgs = db[user] || [];
+            const list = document.getElementById('inbox-list');
             list.innerHTML = "";
-            
-            if(userMsgs.length === 0) list.innerHTML = "<p style='color:#999; text-align:center'>No messages yet.</p>";
 
-            userMsgs.reverse().forEach(msg => {
+            if(msgs.length === 0) list.innerHTML = "<p style='text-align:center;color:#999'>No messages yet.</p>";
+
+            msgs.reverse().forEach(msg => {
+                let mediaHTML = "";
+                if(msg.mediaType === 'image') mediaHTML = `<img src="${msg.mediaData}" class="msg-media">`;
+                if(msg.mediaType === 'video') mediaHTML = `<video src="${msg.mediaData}" controls class="msg-media"></video>`;
+                if(msg.mediaType === 'audio') mediaHTML = `<audio src="${msg.mediaData}" controls style="width:100%; margin-top:10px;"></audio>`;
+
                 let div = document.createElement('div');
                 div.className = 'msg-card';
                 div.innerHTML = `
-                    <div style="font-size:15px; color:#333;">${msg.text}</div>
-                    <div style="font-size:11px; color:#888; text-align:right; margin-top:5px;">${msg.date}</div>
+                    <div class="msg-text">${msg.text || "<i>Shared Media</i>"}</div>
+                    ${mediaHTML}
+                    <span class="timestamp">${msg.date}</span>
                 `;
                 list.appendChild(div);
             });
         }
 
         function copyLink() {
-            const txt = document.getElementById('my-link').innerText;
+            const txt = document.getElementById('share-link-text').innerText;
             navigator.clipboard.writeText(txt);
-            showToast("Link Copied to Clipboard!");
+            showToast("Link Copied! Share it 📲");
         }
 
-        // --- PUBLIC SENDER LOGIC ---
-        function loadPublicPage(user) {
-            let users = JSON.parse(localStorage.getItem(API_USERS) || "{}");
-            if(!users[user]) {
-                document.body.innerHTML = "<h2 style='text-align:center; color:white;'>User Not Found</h2>";
+        // --- MEDIA HANDLING (The Heavy Lifting) ---
+
+        function triggerFile(type) {
+            resetMedia();
+            document.getElementById('file-' + type).click();
+        }
+
+        function resetMedia() {
+            finalMedia = { type: null, data: null };
+            document.getElementById('preview-area').style.display = 'none';
+            document.getElementById('img-prev').classList.add('hidden');
+            document.getElementById('vid-prev').classList.add('hidden');
+            document.getElementById('audio-prev').classList.add('hidden');
+            document.getElementById('audio-ui').style.display = 'none';
+            document.getElementById('btn-mic').classList.remove('active');
+            document.getElementById('file-warning').innerText = "";
+        }
+
+        function previewFile(type) {
+            const file = document.getElementById('file-' + type).files[0];
+            if(!file) return;
+
+            // Size Check
+            if(file.size > MAX_SIZE_MB * 1024 * 1024) {
+                showToast(`File too big! Limit: ${MAX_SIZE_MB}MB ⚠️`);
+                document.getElementById('file-warning').innerText = "File too large. It may not send.";
                 return;
             }
-            
-            switchView('public');
-            document.getElementById('public-name').innerText = user;
-            document.getElementById('public-img').src = users[user].avatar;
-        }
 
-        function sendMessage() {
-            const txt = document.getElementById('secret-msg').value.trim();
-            if(!txt) return showToast("Message is empty!");
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('preview-area').style.display = 'block';
+                finalMedia.type = type;
+                finalMedia.data = e.target.result;
 
-            let allMsgs = JSON.parse(localStorage.getItem(API_MSGS) || "{}");
-            if(!allMsgs[sendTo]) allMsgs[sendTo] = [];
-
-            allMsgs[sendTo].push({
-                text: txt,
-                date: new Date().toLocaleString()
-            });
-
-            localStorage.setItem(API_MSGS, JSON.stringify(allMsgs));
-            showToast("Message Sent Successfully!");
-            document.getElementById('secret-msg').value = "";
-        }
-
-        // --- UTILS ---
-        function previewImage() {
-            const file = document.getElementById('reg-pic').files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('avatar-img').src = e.target.result;
-                    document.getElementById('avatar-img').classList.remove('hidden');
-                    document.getElementById('avatar-preview-box').style.backgroundImage = 'none';
+                if(type === 'image') {
+                    const img = document.getElementById('img-prev');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                } else if(type === 'video') {
+                    const vid = document.getElementById('vid-prev');
+                    vid.src = e.target.result;
+                    vid.classList.remove('hidden');
                 }
-                reader.readAsDataURL(file);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- AUDIO RECORDING ---
+        async function toggleAudio() {
+            if(mediaRecorder && mediaRecorder.state === "recording") {
+                // STOP RECORDING
+                mediaRecorder.stop();
+                document.getElementById('btn-mic').classList.remove('active');
+                document.getElementById('audio-ui').style.display = 'none';
+            } else {
+                // START RECORDING
+                resetMedia();
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.start();
+                    document.getElementById('preview-area').style.display = 'block';
+                    document.getElementById('audio-ui').style.display = 'block';
+                    document.getElementById('btn-mic').classList.add('active');
+
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    
+                    mediaRecorder.onstop = () => {
+                        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onloadend = () => {
+                            finalMedia.type = 'audio';
+                            finalMedia.data = reader.result;
+                            const aud = document.getElementById('audio-prev');
+                            aud.src = reader.result;
+                            aud.classList.remove('hidden');
+                        }
+                    };
+                } catch(e) {
+                    showToast("Microphone Access Denied 🎤❌");
+                }
             }
         }
 
-        function showToast(message) {
-            const x = document.getElementById("toast");
-            x.innerText = message;
-            x.className = "toast show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        // --- SENDING LOGIC ---
+        function sendMessage() {
+            const txt = document.getElementById('msg-text').value.trim();
+            
+            if(!txt && !finalMedia.data) return showToast("Empty Message 🤷‍♂️");
+
+            let db = JSON.parse(localStorage.getItem(DB_MSGS) || "{}");
+            if(!db[sendTo]) db[sendTo] = [];
+
+            const newMsg = {
+                text: txt,
+                mediaType: finalMedia.type,
+                mediaData: finalMedia.data,
+                date: new Date().toLocaleString()
+            };
+
+            // Try-Catch to handle Storage Full Error
+            try {
+                db[sendTo].push(newMsg);
+                localStorage.setItem(DB_MSGS, JSON.stringify(db));
+                
+                showToast("Sent Successfully! 🚀");
+                
+                // Reset UI
+                document.getElementById('msg-text').value = "";
+                resetMedia();
+            } catch (err) {
+                showToast("Storage Full! Video/Photo too big ⚠️");
+                console.error(err);
+            }
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
     </script>
 </body>
