@@ -3,514 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- PWA / Full Screen Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <meta name="mobile-web-app-capable" content="yes">
-
     <title>FaizanMsg Supreme</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- SUPREME THEME ENGINE --- */
+        /* --- THEME --- */
         :root {
             --hue: 260;
             --bg-deep: #000000;
             --primary: hsl(var(--hue), 90%, 65%);
-            --primary-glow: hsla(var(--hue), 90%, 65%, 0.4);
             --surface: rgba(20, 20, 20, 0.7);
-            --surface-top: rgba(30, 30, 30, 0.9);
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
-            --text-muted: #94a3b8;
             --font: 'Plus Jakarta Sans', sans-serif;
         }
 
-        * { box-sizing: border-box; outline: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { font-family: var(--font); background: var(--bg-deep); color: var(--text); margin: 0; height: 100vh; overflow: hidden; }
 
-        /* --- DYNAMIC BACKGROUND --- */
+        /* --- BACKGROUND --- */
         .orb-bg { position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 10s infinite ease-in-out alternate; }
-        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--primary); }
-        .orb-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #22d3ee, transparent); animation-delay: -5s; }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 30px); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; }
+        .orb-1 { top: 0; left: 0; width: 60vw; height: 60vw; background: var(--primary); }
+        .orb-2 { bottom: 0; right: 0; width: 60vw; height: 60vw; background: #22d3ee; }
 
-        /* --- APP SHELL --- */
+        /* --- LAYOUT --- */
         .app-container {
             width: 100%; max-width: 450px; height: 100%; margin: 0 auto;
             display: flex; flex-direction: column; position: relative;
-            background: rgba(0,0,0,0.05); backdrop-filter: blur(30px);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3); backdrop-filter: blur(30px);
         }
-
-        /* --- SPLASH SCREEN --- */
-        #splash {
-            position: absolute; inset: 0; background: #000; z-index: 9999;
-            display: flex; align-items: center; justify-content: center; flex-direction: column;
-            transition: opacity 0.5s;
+        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
+        
+        /* --- INPUTS & BUTTONS --- */
+        .input-field {
+            width: 100%; background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+            padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-size: 16px;
         }
-        .loader { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; margin-top: 20px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- SCROLL AREA (Fix for Logout Button) --- */
-        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 150px; scroll-behavior: smooth; }
-        .scroll-view::-webkit-scrollbar { width: 0; }
-
-        /* --- COMPONENTS --- */
-        .card { background: var(--surface); border: 1px solid var(--border); padding: 20px; border-radius: 24px; margin-bottom: 15px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3); transition: 0.2s; }
-        .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; background: var(--primary); color: white; box-shadow: 0 8px 20px -5px var(--primary-glow); transition: 0.2s; }
+        .btn {
+            width: 100%; padding: 16px; border-radius: 16px; border: none;
+            font-weight: 700; font-size: 16px; cursor: pointer;
+            background: var(--primary); color: white; transition: 0.2s;
+        }
         .btn:active { transform: scale(0.97); }
-        .input-field { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-family: var(--font); }
-        .input-field:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
-        /* --- AVATAR --- */
-        .avatar-group { text-align: center; margin-bottom: 20px; position: relative; }
+        /* --- AVATAR FIX --- */
+        .avatar-group { text-align: center; margin-bottom: 25px; position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
         .avatar {
             width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary); background: #222; cursor: pointer;
+            border: 3px solid var(--primary); background: #222; display: block;
         }
         .avatar-edit {
-            position: absolute; bottom: 5px; right: 50%; transform: translateX(45px);
-            background: white; color: black; width: 35px; height: 35px; border-radius: 50%;
-            display: grid; place-items: center; font-size: 16px; cursor: pointer; border: 2px solid #000;
+            position: absolute; bottom: 0; right: 0;
+            background: white; color: black; width: 32px; height: 32px; border-radius: 50%;
+            display: grid; place-items: center; font-size: 14px; cursor: pointer; border: 2px solid #000;
         }
 
-        /* --- FULL SCREEN IMAGE VIEWER --- */
-        .image-viewer {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000;
-            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
+        /* --- CHAT UI --- */
+        .chat-dock { display: flex; align-items: center; gap: 10px; background: rgba(30,30,30,0.9); padding: 10px; border-radius: 50px; border: 1px solid var(--border); margin-top: 10px; }
+        .action-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
+        .msg-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 5px; }
+
+        /* --- FILE PREVIEW --- */
+        .file-chip {
+            display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1);
+            padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border);
+            margin: 10px 0; width: fit-content; max-width: 100%;
         }
-        .image-viewer.show { opacity: 1; pointer-events: all; }
-        .image-viewer img { max-width: 95%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 50px rgba(255,255,255,0.1); }
-        .close-viewer { position: absolute; top: 30px; right: 30px; color: white; font-size: 30px; cursor: pointer; }
+        .chip-thumb { width: 30px; height: 30px; border-radius: 5px; object-fit: cover; background: #000; display: grid; place-items: center; font-size: 12px; }
+        .chip-info { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .chip-x { color: #ff5555; cursor: pointer; padding-left: 5px; }
 
-        /* --- CHAT INPUT (Bottom) --- */
-        .chat-dock { display: flex; align-items: flex-end; gap: 10px; background: var(--surface-top); padding: 12px; border-radius: 24px; border: 1px solid var(--border); margin-top: 10px; }
-        .action-btn { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1); color: var(--text); display: grid; place-items: center; font-size: 18px; cursor: pointer; flex-shrink: 0; }
-        .msg-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px; }
-
-        /* --- FILE CHIP --- */
-        .file-chip { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; animation: slideUp 0.3s; }
-        .chip-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: #000; display: grid; place-items: center; font-size: 18px; }
-        .chip-info { flex: 1; overflow: hidden; }
-        .chip-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .chip-size { font-size: 10px; color: var(--text-muted); }
-        .chip-x { color: #ff5555; padding: 5px; cursor: pointer; }
-
-        /* --- THEME SELECTOR --- */
-        .theme-grid { display: flex; gap: 10px; justify-content: center; margin: 15px 0; }
-        .theme-dot { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .theme-dot.active { border-color: white; transform: scale(1.1); }
-
-        /* --- QR CODE --- */
-        .qr-box { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
-        
-        /* --- ATTACHMENT MENU --- */
-        .attach-menu { position: absolute; bottom: 85px; left: 15px; width: 180px; background: #111; border: 1px solid var(--border); border-radius: 18px; padding: 8px; transform: scale(0); transform-origin: bottom left; transition: 0.2s; opacity: 0; pointer-events: none; }
-        .attach-menu.open { transform: scale(1); opacity: 1; pointer-events: all; }
-        .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; color: white; cursor: pointer; }
+        /* --- MENUS --- */
+        .attach-menu { position: absolute; bottom: 85px; left: 20px; width: 160px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 16px; padding: 5px; display: none; }
+        .attach-menu.show { display: block; animation: popUp 0.2s; }
+        .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px; color: white; cursor: pointer; border-radius: 8px; }
         .menu-item:hover { background: rgba(255,255,255,0.1); }
 
         /* --- UTILS --- */
-        .view { display: none; animation: fadeIn 0.4s; }
-        .view.active { display: block; }
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.4s; }
         .hidden { display: none !important; }
-        .dock { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.9); padding: 10px 15px; border-radius: 40px; display: flex; gap: 15px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; }
-        .dock-item { font-size: 20px; width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; color: #666; transition: 0.3s; }
-        .dock-item.active { background: var(--primary); color: white; transform: translateY(-5px); box-shadow: 0 5px 15px var(--primary-glow); }
-        .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: 700; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .dock { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.95); padding: 10px 20px; border-radius: 40px; display: flex; gap: 25px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; }
+        .dock i { font-size: 24px; color: #666; transition: 0.3s; cursor: pointer; }
+        .dock i.active { color: var(--primary); transform: translateY(-3px); }
+        .card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; display: none; z-index: 999; }
+        
+        @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+        @keyframes popUp { from {transform:scale(0.8); opacity:0;} to {transform:scale(1); opacity:1;} }
     </style>
 </head>
 <body>
 
-<div id="splash">
-    <h1 style="font-size: 30px; color:white;">FaizanMsg <span style="color:var(--primary)">Supreme</span></h1>
-    <div class="loader"></div>
-</div>
-
 <div class="orb-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
-<!-- FULL SCREEN IMAGE VIEWER -->
-<div id="image-viewer" class="image-viewer" onclick="app.closeImageViewer()">
-    <div class="close-viewer">&times;</div>
-    <img id="viewer-img" src="" onclick="event.stopPropagation()">
-</div>
 
 <div class="app-container">
 
     <!-- 1. AUTH SCREEN -->
-    <div id="view-auth" class="view">
+    <div id="view-auth" class="view active">
         <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
             <div style="text-align:center; margin-bottom: 30px;">
-                <h1>Welcome</h1>
-                <p style="color:var(--text-muted);">Secure Anonymous Messaging</p>
+                <h1 id="auth-title">Login</h1>
+                <p style="color:#aaa;">Secure Anonymous Messaging</p>
             </div>
 
-            <div id="auth-forms">
-                <div id="signup-fields" class="hidden">
-                    <div class="avatar-group">
-                        <img id="auth-pic-prev" class="avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
-                        <label class="avatar-edit"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)"></label>
-                    </div>
-                </div>
-
-                <input type="email" id="in-email" class="input-field" placeholder="Email Address">
-                <input type="text" id="in-user" class="input-field hidden" placeholder="Username (Unique)">
-                <input type="password" id="in-pass" class="input-field" placeholder="Password">
-                <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Your Bio..."></textarea>
-
-                <button id="btn-main" class="btn" onclick="app.login()">Login</button>
-                <div style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-muted);">
-                    <span id="auth-switch-label">New here?</span> 
-                    <a href="#" onclick="app.switchAuth()" style="color:var(--primary); font-weight:bold; text-decoration:none;">Create Account</a>
+            <!-- Profile Pic (Only for Signup) -->
+            <div id="signup-pic" class="hidden">
+                <div class="avatar-group">
+                    <img id="auth-pic-prev" class="avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+                    <label class="avatar-edit"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)"></label>
                 </div>
             </div>
+
+            <!-- Inputs -->
+            <input type="email" id="in-email" class="input-field" placeholder="Email Address">
+            <input type="text" id="in-user" class="input-field hidden" placeholder="Username (Unique)">
+            <input type="password" id="in-pass" class="input-field" placeholder="Password">
+            <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Write a short Bio..."></textarea>
+
+            <!-- Buttons -->
+            <button id="btn-submit" class="btn" onclick="app.doAuth()">Login</button>
+            
+            <p style="text-align:center; margin-top:20px; font-size:14px; color:#aaa;">
+                <span id="auth-text">New here?</span> 
+                <a href="#" onclick="app.toggleAuthMode()" style="color:var(--primary); font-weight:bold; text-decoration:none;">Create Account</a>
+            </p>
         </div>
     </div>
 
     <!-- 2. INBOX -->
     <div id="view-inbox" class="view">
         <div class="scroll-view">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2>Inbox</h2>
-                <div style="display:flex; gap:10px;">
-                    <i class="fas fa-search" onclick="app.toggleSearch()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"></i>
-                    <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"></i>
-                </div>
-            </div>
-            
-            <input type="text" id="search-bar" class="input-field hidden" placeholder="Search messages..." onkeyup="app.searchMsgs()">
+            <h2 style="margin-bottom:20px">Inbox <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="float:right; font-size:18px; cursor:pointer"></i></h2>
             <div id="msg-list"></div>
         </div>
     </div>
 
-    <!-- 3. PROFILE / SETTINGS -->
-    <div id="view-profile" class="view">
-        <div class="scroll-view">
-            <div class="card" style="text-align:center;">
-                <!-- AVATAR - Clicking opens viewer, Icon opens edit -->
-                <div style="position:relative; width:100px; margin:0 auto;">
-                    <img id="p-img" class="avatar" onclick="app.viewImage(this.src)">
-                    <label class="avatar-edit" style="right:0; transform:none;"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.updateProfilePic(this)"></label>
-                </div>
-                
-                <h2 id="p-user" style="margin-top:10px;">User</h2>
-                <p id="p-bio" style="color:var(--text-muted); font-size:13px; margin:5px 0;">Bio...</p>
-                
-                <div class="qr-box">
-                    <img id="p-qr" src="" width="120" height="120" style="display:block;" onclick="app.viewImage(this.src)">
-                </div>
-                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; font-size:12px; color:var(--primary); overflow:hidden; text-overflow:ellipsis;" id="p-link">Link</div>
-                <button class="btn" onclick="app.copyLink()" style="margin-top:10px; font-size:13px; padding:10px;">Copy Link</button>
-            </div>
-
-            <div class="card">
-                <h3>App Settings</h3>
-                <div class="theme-grid">
-                    <div class="theme-dot" style="background:#8b5cf6" onclick="app.setTheme(260)"></div>
-                    <div class="theme-dot" style="background:#3b82f6" onclick="app.setTheme(210)"></div>
-                    <div class="theme-dot" style="background:#10b981" onclick="app.setTheme(150)"></div>
-                    <div class="theme-dot" style="background:#f97316" onclick="app.setTheme(25)"></div>
-                </div>
-                <button class="btn" onclick="app.toggleFullScreen()" style="background:var(--surface-top); color:white; font-size:14px; padding:10px; margin-top:10px;">
-                    <i class="fas fa-expand"></i> Go Fullscreen (Hide URL)
-                </button>
-            </div>
-
-            <button class="btn" onclick="app.logout()" style="background:rgba(220, 38, 38, 0.2); color:#ff5555; margin-top:20px;">Log Out</button>
-        </div>
-    </div>
-
-    <!-- 4. PUBLIC SEND -->
+    <!-- 3. PUBLIC SEND -->
     <div id="view-public" class="view">
         <div class="scroll-view">
-            <div style="text-align:center; margin-top:20px; margin-bottom:30px;">
-                <img id="pub-img" class="avatar" style="border-color:white;" onclick="app.viewImage(this.src)">
-                <h2 style="font-size:24px; margin-top:10px;">Send Secret</h2>
-                <p style="color:var(--text-muted);">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
-                <div id="pub-bio" style="font-size:12px; font-style:italic; color:rgba(255,255,255,0.6); margin-top:5px;"></div>
+            <div style="text-align:center; margin:30px 0;">
+                <img id="pub-img" class="avatar" style="margin:0 auto 15px;">
+                <h2 style="font-size:24px;">Send Secret</h2>
+                <p style="color:#aaa;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
+                <div id="pub-bio" style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:5px;"></div>
             </div>
 
-            <!-- FILE CHIP PREVIEW -->
-            <div id="file-preview" class="hidden"></div>
+            <!-- FILE PREVIEW -->
+            <div id="file-preview"></div>
 
             <div class="chat-dock">
                 <div class="action-btn" id="attach-btn" onclick="app.toggleMenu()"><i class="fas fa-plus"></i></div>
-                <textarea id="msg-input" class="msg-input" rows="1" placeholder="Type secret message..."></textarea>
+                <textarea id="msg-input" class="msg-input" rows="1" placeholder="Type a message..."></textarea>
+                <div class="action-btn" onclick="app.sendMsg()" style="background:var(--primary);"><i class="fas fa-paper-plane"></i></div>
             </div>
-            <button class="btn" onclick="app.sendMsg()" style="margin-top:15px; background:linear-gradient(to right, var(--primary), #ec4899);">Send 🚀</button>
 
-            <!-- Attach Menu -->
+            <!-- Menu -->
             <div id="attach-menu" class="attach-menu">
                 <label class="menu-item"><i class="fas fa-image" style="color:#4ade80"></i> Photo <input type="file" hidden accept="image/*" onchange="app.handleFile(this, 'image')"></label>
                 <label class="menu-item"><i class="fas fa-video" style="color:#60a5fa"></i> Video <input type="file" hidden accept="video/*" onchange="app.handleFile(this, 'video')"></label>
                 <label class="menu-item"><i class="fas fa-microphone" style="color:#fbbf24"></i> Audio <input type="file" hidden accept="audio/*" onchange="app.handleFile(this, 'audio')"></label>
             </div>
 
-            <div style="text-align:center; margin-top:40px; opacity:0.5; font-size:12px;">Powered by FaizanMsg Supreme</div>
+            <div style="text-align:center; margin-top:50px;"><a href="?" style="color:#555; text-decoration:none; font-size:12px;">Create Account</a></div>
+        </div>
+    </div>
+
+    <!-- 4. PROFILE -->
+    <div id="view-profile" class="view">
+        <div class="scroll-view">
+            <div class="card" style="text-align:center;">
+                <img id="p-img" class="avatar" style="margin:0 auto;">
+                <h2 id="p-user" style="margin-top:10px;">User</h2>
+                <p id="p-bio" style="color:#aaa; font-size:13px; margin:5px 0;">Bio</p>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; font-size:12px; margin-top:10px; color:var(--primary);" id="p-link">Link</div>
+                <button class="btn" onclick="app.copyLink()" style="margin-top:10px; padding:10px; font-size:14px;">Copy Link</button>
+            </div>
+            <button class="btn" onclick="app.logout()" style="background:rgba(255,0,0,0.2); color:#ff5555;">Log Out</button>
         </div>
     </div>
 
     <!-- DOCK -->
     <div id="dock" class="dock hidden">
-        <div class="dock-item active" onclick="app.nav('inbox', this)"><i class="fas fa-comment-dots"></i></div>
-        <div class="dock-item" onclick="app.nav('profile', this)"><i class="fas fa-user-circle"></i></div>
+        <i class="fas fa-comment-dots active" onclick="app.nav('inbox', this)"></i>
+        <i class="fas fa-user" onclick="app.nav('profile', this)"></i>
     </div>
 
 </div>
 
-<!-- STORY VIEWER -->
-<div id="story-modal" style="position:fixed; inset:0; background:black; z-index:2000; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:0.3s;">
-    <div style="width:100%; max-width:400px; padding:20px; text-align:center;">
-        <div style="background:var(--primary); padding:5px 15px; border-radius:20px; display:inline-block; font-size:12px; font-weight:800; margin-bottom:20px;">SECRET</div>
-        <div id="story-media"></div>
-        <h2 id="story-text" style="font-size:24px; line-height:1.4; margin:20px 0;"></h2>
-        <div id="story-date" style="color:#666; font-size:12px;"></div>
-        <br>
-        <button class="btn" onclick="document.getElementById('story-modal').style.opacity=0; document.getElementById('story-modal').style.pointerEvents='none';" style="width:auto; padding:10px 40px; background:rgba(255,255,255,0.2);">Close</button>
-    </div>
+<!-- IMAGE VIEWER -->
+<div id="img-viewer" style="position:fixed; inset:0; background:black; display:none; align-items:center; justify-content:center; z-index:2000;" onclick="this.style.display='none'">
+    <img id="view-img-src" style="max-width:100%; max-height:100%;">
 </div>
 
-<div id="toast" class="toast">Alert</div>
+<div id="toast" class="toast">Msg</div>
 
 <script>
-    const DB_NAME = 'FaizanSupremeFixed'; const DB_VER = 1;
-    const DEF_PIC = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    const DB_NAME='FaizanMsgFinal'; const DB_VER=1;
+    const DEF_PIC='https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
-    const db = {
-        open: () => new Promise(r => {
-            const req = indexedDB.open(DB_NAME, DB_VER);
-            req.onupgradeneeded = e => {
-                const d = e.target.result;
-                if(!d.objectStoreNames.contains('u')) d.createObjectStore('u', {keyPath:'e'});
-                if(!d.objectStoreNames.contains('m')) d.createObjectStore('m', {keyPath:'id', autoIncrement:true});
+    const db={
+        open:()=>new Promise(r=>{
+            const q=indexedDB.open(DB_NAME,DB_VER);
+            q.onupgradeneeded=e=>{
+                const d=e.target.result;
+                if(!d.objectStoreNames.contains('u'))d.createObjectStore('u',{keyPath:'e'});
+                if(!d.objectStoreNames.contains('m'))d.createObjectStore('m',{keyPath:'id',autoIncrement:true});
             };
-            req.onsuccess = () => r(req.result);
+            q.onsuccess=()=>r(q.result);
         }),
-        op: async (s, m, f, d) => {
-            const dbo = await db.open();
-            return new Promise(r => {
-                const req = d ? dbo.transaction(s,m).objectStore(s)[f](d) : dbo.transaction(s,m).objectStore(s)[f]();
-                req.onsuccess = () => r(req.result);
+        op:async(s,m,f,d)=>{
+            const o=await db.open();
+            return new Promise(r=>{
+                const t=o.transaction(s,m).objectStore(s)[f](d);
+                t.onsuccess=()=>r(t.result);
             });
         }
     };
 
-    const app = {
-        state: { u:null, e:null, authFile:null, msgFile:null, msgType:null },
+    const app={
+        s:{mode:'login', authFile:null, msgFile:null, msgType:null, u:null, e:null},
 
-        init: async () => {
-            setTimeout(() => document.getElementById('splash').style.opacity = 0, 1500);
-            setTimeout(() => document.getElementById('splash').style.display = 'none', 2000);
-
-            const hue = localStorage.getItem('theme') || 260;
-            app.setTheme(hue);
-
-            const q = new URLSearchParams(window.location.search);
+        init:async()=>{
+            const q=new URLSearchParams(window.location.search);
             if(q.get('to')) return app.loadPublic(q.get('to'));
 
-            const u = localStorage.getItem('u');
-            const e = localStorage.getItem('e');
+            const u=localStorage.getItem('u'); const e=localStorage.getItem('e');
+            if(u&&e){ app.s.u=u; app.s.e=e; app.nav('inbox', document.querySelector('.dock i')); }
+        },
 
-            if(u && e) {
-                app.state.u = u; app.state.e = e;
-                app.nav('inbox', document.querySelector('.dock-item'));
+        // --- AUTH LOGIC (FIXED) ---
+        toggleAuthMode:()=>{
+            app.s.mode = app.s.mode==='login' ? 'signup' : 'login';
+            const isSign = app.s.mode==='signup';
+            
+            // Toggle visibility
+            document.getElementById('signup-pic').classList.toggle('hidden', !isSign);
+            document.getElementById('in-user').classList.toggle('hidden', !isSign);
+            document.getElementById('in-bio').classList.toggle('hidden', !isSign);
+            
+            // Text Updates
+            document.getElementById('auth-title').innerText = isSign ? "Create Account" : "Login";
+            document.getElementById('btn-submit').innerText = isSign ? "Register" : "Login";
+            document.getElementById('auth-text').innerText = isSign ? "Have account?" : "New here?";
+            document.querySelector('#auth-text + a').innerText = isSign ? "Login" : "Create Account";
+        },
+
+        handleAuthPic:(i)=>{ if(i.files[0]){ app.s.authFile=i.files[0]; document.getElementById('auth-pic-prev').src=URL.createObjectURL(i.files[0]); }},
+
+        doAuth:async()=>{
+            const e=document.getElementById('in-email').value.toLowerCase();
+            const p=document.getElementById('in-pass').value;
+            
+            if(app.s.mode==='login'){
+                const u=await db.op('u','readonly','get',e);
+                if(u && u.pass===p){
+                    localStorage.setItem('u',u.user); localStorage.setItem('e',e);
+                    app.s.u=u.user; app.s.e=e;
+                    app.nav('inbox', document.querySelector('.dock i'));
+                } else app.toast('Invalid Email or Password');
             } else {
-                document.getElementById('view-auth').classList.add('active');
+                const u=document.getElementById('in-user').value;
+                const b=document.getElementById('in-bio').value;
+                if(!e||!u||!p) return app.toast('Fill all fields');
+                
+                const ex=await db.op('u','readonly','get',e);
+                if(ex) return app.toast('Email taken');
+                
+                await db.op('u','readwrite','put',{e, user:u, pass:p, bio:b, pic:app.s.authFile});
+                app.toast('Account Created! Login now.');
+                app.toggleAuthMode();
             }
         },
 
-        // --- FULLSCREEN & IMAGE VIEW ---
-        toggleFullScreen: () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(e => app.toast("Fullscreen failed"));
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
+        logout:()=>{ localStorage.clear(); location.reload(); },
+
+        // --- PUBLIC SEND ---
+        loadPublic:async(to)=>{
+            app.nav('public');
+            document.getElementById('pub-target').innerText=to;
+            const all=await db.op('u','readonly','getAll');
+            const tgt=all.find(x=>x.user===to);
+            if(tgt){
+                document.getElementById('pub-bio').innerText=tgt.bio||'';
+                if(tgt.pic) document.getElementById('pub-img').src=URL.createObjectURL(tgt.pic);
+                else document.getElementById('pub-img').src=DEF_PIC;
+            } else document.getElementById('pub-img').src=DEF_PIC;
         },
 
-        viewImage: (src) => {
-            document.getElementById('viewer-img').src = src;
-            document.getElementById('image-viewer').classList.add('show');
-        },
-        closeImageViewer: () => document.getElementById('image-viewer').classList.remove('show'),
-
-        // --- THEME ---
-        setTheme: (h) => {
-            document.documentElement.style.setProperty('--hue', h);
-            localStorage.setItem('theme', h);
+        toggleMenu:()=>{ 
+            const m=document.getElementById('attach-menu');
+            m.classList.toggle('show');
         },
 
-        // --- AUTH ---
-        switchAuth: () => {
-            const log = !document.getElementById('in-user').classList.contains('hidden');
-            ['in-user','in-bio','signup-fields','btn-signup'].forEach(i => document.getElementById(i).classList.toggle('hidden'));
-            document.getElementById('btn-main').innerText = log ? "Login" : "Register";
-            document.getElementById('btn-main').onclick = log ? app.register : app.login;
-            document.getElementById('auth-switch-label').innerText = log ? "Have account?" : "New here?";
-        },
-        handleAuthPic: (i) => { if(i.files[0]) { app.state.authFile = i.files[0]; document.getElementById('auth-pic-prev').src = URL.createObjectURL(i.files[0]); } },
-        
-        register: async () => {
-            const e = document.getElementById('in-email').value.toLowerCase();
-            const u = document.getElementById('in-user').value;
-            const p = document.getElementById('in-pass').value;
-            const b = document.getElementById('in-bio').value;
-            if(!e || !u || !p) return app.toast('Fill required fields');
+        handleFile:(i,t)=>{
+            const f=i.files[0]; if(!f)return;
+            app.s.msgFile=f; app.s.msgType=t;
+            document.getElementById('attach-menu').classList.remove('show');
             
-            const ex = await db.op('u', 'readonly', 'get', e);
-            if(ex) return app.toast('Email taken');
-            
-            const all = await db.op('u', 'readonly', 'getAll');
-            if(all.find(x => x.username === u)) return app.toast('Username taken');
-
-            await db.op('u', 'readwrite', 'put', {e, username:u, password:p, bio:b, pic:app.state.authFile});
-            app.toast('Account Created!'); app.switchAuth();
-        },
-        
-        login: async () => {
-            const e = document.getElementById('in-email').value.toLowerCase();
-            const p = document.getElementById('in-pass').value;
-            const u = await db.op('u', 'readonly', 'get', e);
-            if(u && u.password === p) {
-                localStorage.setItem('u', u.username); localStorage.setItem('e', e);
-                app.state.u = u.username; app.state.e = e;
-                app.nav('inbox', document.querySelector('.dock-item'));
-            } else app.toast('Invalid Details');
-        },
-        logout: () => { localStorage.clear(); location.reload(); },
-
-        // --- PROFILE UPDATE ---
-        updateProfilePic: async (input) => {
-            if(input.files[0]) {
-                const u = await db.op('u', 'readonly', 'get', app.state.e);
-                u.pic = input.files[0];
-                await db.op('u', 'readwrite', 'put', u);
-                app.renderProfile();
-                app.toast("Profile Pic Updated");
-            }
-        },
-
-        // --- FILE CHIP LOGIC ---
-        handleFile: (i, t) => {
-            const f = i.files[0]; if(!f) return;
-            app.state.msgFile = f; app.state.msgType = t;
-            document.getElementById('attach-menu').classList.remove('open');
-            
-            const prev = document.getElementById('file-preview');
-            prev.classList.remove('hidden');
-            
+            const prev=document.getElementById('file-preview');
             let icon = t==='image'?'fa-image':(t==='video'?'fa-video':'fa-music');
-            let thumb = t==='image' ? `<img src="${URL.createObjectURL(f)}" class="chip-thumb">` : `<div class="chip-thumb"><i class="fas ${icon}"></i></div>`;
+            let thumb = t==='image' ? `<img src="${URL.createObjectURL(f)}" class="chip-thumb">` : `<div class="chip-thumb"><i class="fas ${icon}" style="color:white"></i></div>`;
             
-            prev.innerHTML = `
-                <div class="file-chip">
-                    ${thumb}
-                    <div class="chip-info"><div class="chip-name">${f.name}</div><div class="chip-size">${(f.size/1024/1024).toFixed(1)} MB</div></div>
-                    <div class="chip-x" onclick="app.clearFile()"><i class="fas fa-times"></i></div>
-                </div>`;
-        },
-        clearFile: () => { app.state.msgFile=null; document.getElementById('file-preview').innerHTML=''; document.getElementById('file-preview').classList.add('hidden'); },
-
-        // --- CORE FEATURES ---
-        sendMsg: async () => {
-            const txt = document.getElementById('msg-input').value;
-            const to = document.getElementById('pub-target').innerText;
-            if(!txt && !app.state.msgFile) return app.toast('Empty');
-            
-            await db.op('m', 'readwrite', 'put', { to, text:txt, media:app.state.msgFile, type:app.state.msgType, date:new Date() });
-            app.toast('Sent Successfully!');
-            document.getElementById('msg-input').value = ''; app.clearFile();
+            prev.innerHTML=`<div class="file-chip">${thumb}<div class="chip-info">${f.name}</div><div class="chip-x" onclick="app.clearFile()"><i class="fas fa-times"></i></div></div>`;
         },
 
-        renderInbox: async () => {
-            const all = await db.op('m', 'readonly', 'getAll');
-            const my = all.filter(m => m.to === app.state.u).reverse();
-            const l = document.getElementById('msg-list');
-            l.innerHTML = my.length ? '' : '<div style="text-align:center;opacity:0.5;margin-top:50px">No Secrets</div>';
+        clearFile:()=>{ app.s.msgFile=null; document.getElementById('file-preview').innerHTML=''; },
+
+        sendMsg:async()=>{
+            const txt=document.getElementById('msg-input').value;
+            const to=document.getElementById('pub-target').innerText;
+            if(!txt && !app.s.msgFile) return app.toast('Empty');
             
-            my.forEach(m => {
-                const icon = m.media ? `<i class="fas fa-paperclip" style="color:var(--primary)"></i>` : '';
-                const d = document.createElement('div'); d.className = 'card';
-                d.innerHTML = `<div style="font-size:11px;color:var(--primary);font-weight:800;margin-bottom:5px">SECRET</div>
-                <div style="font-size:15px">${icon} ${m.text || 'Media File'}</div>
-                <div style="font-size:10px;opacity:0.5;margin-top:10px">${new Date(m.date).toLocaleTimeString()}</div>`;
-                d.onclick = () => {
-                    const mod = document.getElementById('story-modal');
-                    document.getElementById('story-text').innerText = m.text || '';
-                    document.getElementById('story-date').innerText = new Date(m.date).toLocaleString();
-                    const ma = document.getElementById('story-media'); ma.innerHTML='';
-                    if(m.media) {
-                        const u = URL.createObjectURL(m.media);
-                        if(m.type==='image') ma.innerHTML=`<img src="${u}" style="max-width:100%;border-radius:10px" onclick="app.viewImage(this.src)">`;
-                        else if(m.type==='video') ma.innerHTML=`<video src="${u}" controls style="max-width:100%;border-radius:10px"></video>`;
-                        else ma.innerHTML=`<audio src="${u}" controls style="width:100%"></audio>`;
-                    }
-                    mod.style.opacity=1; mod.style.pointerEvents='all';
-                };
+            await db.op('m','readwrite','put',{to, txt, media:app.s.msgFile, type:app.s.msgType, date:new Date()});
+            app.toast('Sent!');
+            document.getElementById('msg-input').value='';
+            app.clearFile();
+        },
+
+        // --- INBOX ---
+        renderInbox:async()=>{
+            const all=await db.op('m','readonly','getAll');
+            const my=all.filter(x=>x.to===app.s.u).reverse();
+            const l=document.getElementById('msg-list');
+            l.innerHTML = my.length ? '' : '<div style="text-align:center;margin-top:50px;opacity:0.5">No secrets yet</div>';
+            
+            my.forEach(m=>{
+                let med='';
+                if(m.media){
+                    const u=URL.createObjectURL(m.media);
+                    if(m.type==='image') med=`<img src="${u}" style="max-width:100%;border-radius:10px;margin-top:5px" onclick="app.viewImg('${u}')">`;
+                    else if(m.type==='video') med=`<video src="${u}" controls style="max-width:100%;border-radius:10px;margin-top:5px"></video>`;
+                    else med=`<audio src="${u}" controls style="width:100%;margin-top:5px"></audio>`;
+                }
+                const d=document.createElement('div'); d.className='card';
+                d.innerHTML=`<div style="font-size:11px;color:var(--primary);font-weight:bold">SECRET</div>${med}<div style="font-size:16px;margin-top:5px">${m.txt}</div><div style="font-size:10px;opacity:0.5;margin-top:5px">${new Date(m.date).toLocaleString()}</div>`;
                 l.appendChild(d);
             });
         },
 
-        renderProfile: async () => {
-            const u = await db.op('u', 'readonly', 'get', app.state.e);
-            document.getElementById('p-user').innerText = '@'+app.state.u;
-            document.getElementById('p-bio').innerText = u.bio || 'No bio';
-            const link = window.location.origin + window.location.pathname + "?to=" + app.state.u;
-            document.getElementById('p-link').innerText = link;
-            document.getElementById('p-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
-            if(u.pic) document.getElementById('p-img').src = URL.createObjectURL(u.pic);
-            else document.getElementById('p-img').src = DEF_PIC;
-        },
-
-        loadPublic: async (to) => {
-            app.nav('public');
-            document.getElementById('pub-target').innerText = to;
-            const users = await db.op('u', 'readonly', 'getAll');
-            const tgt = users.find(x => x.username === to);
-            if(tgt) {
-                document.getElementById('pub-bio').innerText = tgt.bio || '';
-                if(tgt.pic) document.getElementById('pub-img').src = URL.createObjectURL(tgt.pic);
-                else document.getElementById('pub-img').src = DEF_PIC;
-            } else document.getElementById('pub-img').src = DEF_PIC;
-            
-            document.body.onclick = e => { if(!e.target.closest('#attach-btn')) document.getElementById('attach-menu').classList.remove('open'); };
+        renderProfile:async()=>{
+            const u=await db.op('u','readonly','get',app.s.e);
+            document.getElementById('p-user').innerText='@'+app.s.u;
+            document.getElementById('p-bio').innerText=u.bio||'No bio';
+            document.getElementById('p-link').innerText=window.location.origin+window.location.pathname+"?to="+app.s.u;
+            if(u.pic) document.getElementById('p-img').src=URL.createObjectURL(u.pic);
+            else document.getElementById('p-img').src=DEF_PIC;
         },
 
         // --- UTILS ---
-        nav: (v, b) => {
+        nav:(v,el)=>{
             document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
             document.getElementById('view-'+v).classList.add('active');
-            const d = document.getElementById('dock');
-            if(v==='inbox'||v==='profile') {
+            
+            const d=document.getElementById('dock');
+            if(v==='inbox'||v==='profile'){
                 d.classList.remove('hidden');
-                document.querySelectorAll('.dock-item').forEach(i=>i.classList.remove('active'));
-                if(b) b.classList.add('active');
+                document.querySelectorAll('.dock i').forEach(i=>i.classList.remove('active'));
+                if(el) el.classList.add('active');
                 if(v==='inbox') app.renderInbox();
                 if(v==='profile') app.renderProfile();
             } else d.classList.add('hidden');
         },
-        toggleMenu: () => document.getElementById('attach-menu').classList.toggle('open'),
-        toggleSearch: () => document.getElementById('search-bar').classList.toggle('hidden'),
-        searchMsgs: () => {
-            const q = document.getElementById('search-bar').value.toLowerCase();
-            document.querySelectorAll('#msg-list .card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(q) ? 'block' : 'none';
-            });
-        },
-        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
-        toast: (m) => { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+        viewImg:(u)=>{ document.getElementById('img-viewer').style.display='flex'; document.getElementById('view-img-src').src=u; },
+        copyLink:()=>{ navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
+        toast:(m)=>{ const t=document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none',2000); }
     };
 
-    window.onload = app.init;
+    window.onload=app.init;
 </script>
 </body>
 </html>
