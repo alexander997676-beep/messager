@@ -3,468 +3,591 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Ultimate</title>
+    <title>FaizanMsg Elite</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME & UTILS --- */
+        /* --- ELITE THEME VARIABLES --- */
         :root {
-            --bg: #000; --surface: #121212; --surface-light: #1e1e1e;
-            --accent: #8b5cf6; --accent-grad: linear-gradient(135deg, #8b5cf6, #ec4899);
-            --text: #fff; --text-sub: #9ca3af;
-            --glass: rgba(255, 255, 255, 0.08);
+            --bg-deep: #050505;
+            --surface: rgba(20, 20, 20, 0.6);
+            --surface-light: rgba(255, 255, 255, 0.05);
+            --primary: #6366f1;
+            --primary-grad: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
             --font: 'Outfit', sans-serif;
+            --danger: #ef4444;
         }
 
         * { box-sizing: border-box; outline: none; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); margin: 0; height: 100vh; display: flex; justify-content: center; overflow: hidden; }
-
-        .app-container { width: 100%; max-width: 480px; height: 100%; position: relative; display: flex; flex-direction: column; background: #050505; }
-        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 150px; scroll-behavior: smooth; }
         
-        /* --- CARDS & INPUTS --- */
-        .card { background: var(--surface); border: 1px solid var(--glass); padding: 15px; border-radius: 20px; margin-bottom: 15px; position: relative; }
-        .input-field { width: 100%; background: var(--surface-light); border: 1px solid transparent; padding: 15px; border-radius: 15px; color: white; margin-bottom: 10px; }
-        .btn { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; background: var(--accent-grad); color: white; }
-        
-        /* --- PROFILE UPLOAD CIRCLE --- */
-        .profile-upload {
-            width: 100px; height: 100px; border-radius: 50%; background: var(--surface-light);
-            border: 2px dashed var(--accent); margin: 0 auto 20px; display: flex; 
-            align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer;
-        }
-        .profile-upload img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-upload i { font-size: 24px; color: var(--text-sub); }
-        
-        .user-avatar {
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid var(--accent); margin: 0 auto 15px; display: block; background: #333;
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-deep);
+            color: var(--text);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        /* --- CHAT BAR STYLE --- */
-        .chat-input-container {
-            display: flex; align-items: flex-end; gap: 10px; background: var(--surface);
-            padding: 10px; border-radius: 20px; border: 1px solid var(--glass);
+        /* --- ANIMATED BACKGROUND --- */
+        .aurora-bg {
+            position: absolute; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.15), transparent 60%),
+                        radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.15), transparent 60%);
+            animation: pulseBg 10s infinite alternate;
         }
-        .plus-btn {
-            width: 45px; height: 45px; border-radius: 50%; background: var(--surface-light);
-            border: 1px solid var(--glass); color: var(--accent); font-size: 20px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: 0.3s; flex-shrink: 0;
-        }
-        .plus-btn:active { transform: scale(0.9); background: var(--glass); }
-        .msg-input {
-            flex: 1; background: transparent; border: none; color: white; font-family: inherit;
-            font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px;
+        @keyframes pulseBg { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+
+        /* --- APP SHELL --- */
+        .app-container {
+            width: 100%; max-width: 480px; height: 100%;
+            display: flex; flex-direction: column;
+            position: relative;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
         }
 
-        /* --- ATTACHMENT MENU --- */
-        .attach-menu {
-            position: absolute; bottom: 85px; left: 20px;
-            background: #1a1a1a; border: 1px solid var(--glass);
-            border-radius: 16px; padding: 10px; width: 200px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 5px;
-            z-index: 100; transform-origin: bottom left; transition: 0.2s;
+        .scroll-view {
+            flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 140px;
+            scroll-behavior: smooth;
         }
-        .attach-menu.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
+        .scroll-view::-webkit-scrollbar { width: 0px; }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.5px; }
+        .text-grad { background: var(--primary-grad); -webkit-background-clip: text; color: transparent; }
         
-        .menu-item {
-            display: flex; align-items: center; gap: 15px; padding: 12px;
-            border-radius: 10px; color: white; cursor: pointer; transition: 0.2s;
+        /* --- COMPONENTS --- */
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 20px; border-radius: 24px; margin-bottom: 16px;
+            transition: transform 0.2s; position: relative; overflow: hidden;
         }
-        .menu-item:hover { background: rgba(255,255,255,0.1); }
-        .menu-icon { width: 30px; text-align: center; font-size: 18px; }
-        .icon-photo { color: #22c55e; } 
-        .icon-video { color: #3b82f6; } 
-        .icon-audio { color: #f97316; } 
+        .card:active { transform: scale(0.98); }
 
-        input[type="file"] { display: none; }
-
-        /* --- PLAYERS --- */
-        .msg-media { width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid var(--glass); }
-        video.msg-media, audio.msg-media { outline: none; background: #000; }
-        
-        /* --- NAV & UTILS --- */
-        .dock-nav {
-            position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%);
-            background: rgba(20, 20, 20, 0.95); padding: 12px 30px; border-radius: 50px;
-            display: flex; gap: 40px; border: 1px solid var(--glass); z-index: 50;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .input-field {
+            width: 100%; background: var(--surface-light); border: 1px solid var(--border);
+            padding: 18px; border-radius: 18px; color: white; margin-bottom: 12px;
+            font-size: 16px; transition: 0.3s;
         }
-        .dock-item { font-size: 22px; color: #666; transition: 0.3s; cursor: pointer; }
-        .dock-item.active { color: var(--accent); transform: translateY(-5px); }
+        .input-field:focus { border-color: #a855f7; background: rgba(255,255,255,0.1); }
 
-        .view-section { display: none; animation: fadeIn 0.3s ease; }
-        .view-section.active { display: block; }
-        @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+        .btn {
+            width: 100%; padding: 18px; border-radius: 18px; border: none;
+            font-weight: 700; font-size: 16px; cursor: pointer;
+            background: var(--primary-grad); color: white;
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.5);
+            transition: 0.3s;
+        }
+        .btn:active { transform: scale(0.95); opacity: 0.9; }
+
+        /* --- AVATAR --- */
+        .avatar-box {
+            width: 110px; height: 110px; border-radius: 50%;
+            padding: 4px; background: var(--primary-grad);
+            margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%;
+            object-fit: cover; border: 4px solid #000; background: #222;
+        }
+        .edit-icon {
+            position: absolute; bottom: 0; right: 0; background: white; color: black;
+            width: 32px; height: 32px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 14px;
+            border: 3px solid #000;
+        }
+
+        /* --- CHAT BAR --- */
+        .chat-bar {
+            display: flex; align-items: flex-end; gap: 12px;
+            background: rgba(30,30,30,0.8); backdrop-filter: blur(10px);
+            padding: 12px; border-radius: 24px; border: 1px solid var(--border);
+        }
+        .icon-btn {
+            width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+            background: rgba(255,255,255,0.1); color: var(--text);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; transition: 0.3s; cursor: pointer;
+        }
+        .icon-btn.active { background: var(--primary); color: white; transform: rotate(45deg); }
         
+        .chat-input {
+            flex: 1; background: transparent; border: none; color: white;
+            font-size: 16px; padding: 14px 5px; resize: none; max-height: 120px;
+            font-family: var(--font);
+        }
+
+        /* --- MENUS --- */
+        .attach-sheet {
+            position: absolute; bottom: 100px; left: 20px; width: 220px;
+            background: #1a1a1a; border: 1px solid var(--border);
+            border-radius: 20px; padding: 8px;
+            transform: scale(0.8); opacity: 0; pointer-events: none;
+            transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: bottom left;
+            z-index: 100;
+        }
+        .attach-sheet.open { transform: scale(1); opacity: 1; pointer-events: all; }
+        
+        .sheet-item {
+            display: flex; align-items: center; gap: 15px; padding: 14px;
+            border-radius: 14px; color: white; transition: 0.2s;
+        }
+        .sheet-item:active { background: rgba(255,255,255,0.1); }
+        .sheet-icon { font-size: 20px; width: 30px; text-align: center; }
+
+        /* --- NAVIGATION --- */
+        .dock {
+            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(20px);
+            padding: 10px 10px; border-radius: 30px; border: 1px solid var(--border);
+            display: flex; gap: 10px; z-index: 50;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+        }
+        .dock-btn {
+            width: 55px; height: 55px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; color: #666; transition: 0.3s;
+        }
+        .dock-btn.active { background: var(--surface-light); color: white; }
+
+        /* --- STORY MODE OVERLAY --- */
+        .story-modal {
+            position: fixed; inset: 0; background: #000; z-index: 200;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.4s;
+        }
+        .story-modal.show { opacity: 1; pointer-events: all; }
+        .story-content {
+            width: 85%; aspect-ratio: 9/16; max-height: 70vh;
+            background: linear-gradient(180deg, #111 0%, #000 100%);
+            border: 1px solid #333; border-radius: 30px;
+            padding: 30px; display: flex; flex-direction: column; justify-content: center; text-align: center;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
+        }
+        .story-badge {
+            background: var(--primary-grad); padding: 8px 16px; border-radius: 100px;
+            font-size: 11px; font-weight: 800; letter-spacing: 1px;
+            position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+            text-transform: uppercase;
+        }
+
+        /* --- UTILS --- */
         .hidden { display: none !important; }
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; opacity: 0; transition: 0.3s; z-index: 200; pointer-events: none; }
-        .toast.show { opacity: 1; }
+        .toast {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            background: white; color: black; padding: 12px 24px; border-radius: 50px;
+            font-weight: 700; font-size: 14px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 300;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        
+        .file-preview { margin: 15px 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); position: relative; }
+        .media-content { width: 100%; display: block; }
+        .remove-file { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
 
-        #preview-area { margin-bottom: 15px; text-align: center; }
-        .preview-thumb { max-height: 150px; border-radius: 10px; max-width: 100%; }
-        .file-tag { display: inline-block; padding: 5px 10px; background: rgba(139, 92, 246, 0.2); color: var(--accent); border-radius: 20px; font-size: 12px; margin-bottom: 10px; }
+        /* View Transitions */
+        .view { display: none; animation: fadeUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .view.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
 
+<div class="aurora-bg"></div>
+
 <div class="app-container">
 
-    <!-- 1. AUTH SCREEN -->
-    <div id="view-auth" class="view-section active">
+    <!-- 1. AUTHENTICATION -->
+    <div id="view-auth" class="view active">
         <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
-            <h1 style="text-align:center; margin-bottom:20px;">FaizanMsg <span style="color:var(--accent)">Ultimate</span></h1>
-            
-            <div id="form-box">
-                <div id="auth-pic-wrapper" class="hidden">
-                    <label class="profile-upload">
-                        <img id="auth-pic-preview" class="hidden">
-                        <i id="auth-pic-icon" class="fas fa-camera"></i>
-                        <input type="file" id="auth-pic-input" accept="image/*" style="display:none" onchange="app.handleAuthPic(this)">
+            <div style="text-align:center; margin-bottom: 40px;">
+                <h1 style="font-size: 36px;">FaizanMsg <span class="text-grad">Elite</span></h1>
+                <p style="color:var(--text-muted);">Anonymous Messages 2.0</p>
+            </div>
+
+            <div id="auth-forms">
+                <!-- Profile Pic (Only for Signup) -->
+                <div id="auth-pic-container" class="hidden">
+                    <label class="avatar-box" style="cursor:pointer">
+                        <img id="auth-pic-prev" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+                        <div class="edit-icon"><i class="fas fa-camera"></i></div>
+                        <input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)">
                     </label>
-                    <p style="text-align:center; font-size:12px; color:#666; margin-bottom:15px;">Set Profile Photo</p>
                 </div>
 
-                <input type="email" id="auth-email" class="input-field" placeholder="Email">
-                <input type="text" id="auth-user" class="input-field hidden" placeholder="Username">
-                <input type="password" id="auth-pass" class="input-field" placeholder="Password">
-                
-                <button id="btn-login" class="btn" onclick="app.login()">Login</button>
-                <button id="btn-signup" class="btn hidden" onclick="app.register()">Sign Up</button>
-                
-                <p style="text-align:center; margin-top:20px; font-size:14px; color:#888;">
-                    <span id="auth-toggle-text">New here?</span> 
-                    <a href="#" onclick="app.toggleAuth()" style="color:white;">Click here</a>
+                <input type="email" id="in-email" class="input-field" placeholder="Email Address">
+                <input type="text" id="in-user" class="input-field hidden" placeholder="Username (Unique)">
+                <input type="password" id="in-pass" class="input-field" placeholder="Password">
+
+                <button id="btn-login" class="btn" onclick="app.login()">Login <i class="fas fa-arrow-right"></i></button>
+                <button id="btn-signup" class="btn hidden" onclick="app.register()">Create Account</button>
+
+                <p style="text-align:center; margin-top:30px; color:var(--text-muted); font-size:14px;">
+                    <span id="auth-switch-text">New here?</span> 
+                    <a href="#" onclick="app.switchAuth()" style="color:white; font-weight:bold; text-decoration:none;">Switch</a>
                 </p>
             </div>
         </div>
     </div>
 
     <!-- 2. INBOX -->
-    <div id="view-inbox" class="view-section">
+    <div id="view-inbox" class="view">
         <div class="scroll-view">
-            <h2 style="margin-bottom:20px;">Inbox <i class="fas fa-sync" style="float:right; font-size:16px; opacity:0.5; cursor: pointer;" onclick="app.renderInbox()"></i></h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+                <h2>Inbox</h2>
+                <div onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-sync-alt"></i></div>
+            </div>
             <div id="msg-list"></div>
         </div>
     </div>
 
     <!-- 3. PUBLIC SEND -->
-    <div id="view-public" class="view-section">
+    <div id="view-public" class="view">
         <div class="scroll-view">
-            <div style="text-align:center; margin-bottom:30px;">
-                <img id="pub-img" src="" class="user-avatar" alt="User">
+            <div style="text-align:center; margin-bottom:40px; margin-top:20px;">
+                <div class="avatar-box" style="width:100px; height:100px;">
+                    <img id="pub-img" class="avatar-img">
+                </div>
                 <h2 style="font-size:24px;">Send Secret</h2>
-                <p style="color:#666;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
+                <p style="color:var(--text-muted); margin-top:5px;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
             </div>
 
-            <!-- PREVIEW AREA -->
-            <div id="preview-area" class="hidden">
-                <div class="file-tag" id="file-name">File Selected</div>
-                <div id="preview-content"></div>
-                <button onclick="app.clearFile()" style="background:none; border:none; color:red; margin-top:5px; cursor:pointer; font-size:12px;">Remove <i class="fas fa-times"></i></button>
+            <div id="file-preview-area" class="hidden">
+                <div class="file-preview">
+                    <div id="preview-content"></div>
+                    <div class="remove-file" onclick="app.clearFile()"><i class="fas fa-times"></i></div>
+                </div>
             </div>
 
-            <!-- CHAT BAR -->
-            <div class="chat-input-container">
-                <div class="plus-btn" onclick="app.toggleAttach()"><i class="fas fa-plus"></i></div>
-                <textarea id="msg-text" class="msg-input" rows="1" placeholder="Type a message..."></textarea>
+            <div class="chat-bar">
+                <div class="icon-btn" id="attach-btn" onclick="app.toggleMenu()"><i class="fas fa-plus"></i></div>
+                <textarea id="msg-input" class="chat-input" rows="1" placeholder="Type a message..."></textarea>
             </div>
             
-            <button class="btn" type="button" onclick="app.sendMessage()" style="margin-top:15px;">Send 🚀</button>
-            
-            <!-- ATTACHMENT MENU -->
-            <div id="attach-menu" class="attach-menu hidden">
-                <label class="menu-item">
-                    <i class="fas fa-image menu-icon icon-photo"></i> Photo
-                    <input type="file" accept="image/*" onchange="app.handleFile(this, 'image')">
+            <button class="btn" onclick="app.sendMsg()" style="margin-top:20px;">Send Message 🚀</button>
+
+            <!-- Attach Menu -->
+            <div id="attach-sheet" class="attach-sheet">
+                <label class="sheet-item">
+                    <span class="sheet-icon" style="color:#4ade80"><i class="fas fa-image"></i></span> Photo
+                    <input type="file" hidden accept="image/*" onchange="app.handleFile(this, 'image')">
                 </label>
-                <label class="menu-item">
-                    <i class="fas fa-video menu-icon icon-video"></i> Video
-                    <input type="file" accept="video/*" onchange="app.handleFile(this, 'video')">
+                <label class="sheet-item">
+                    <span class="sheet-icon" style="color:#60a5fa"><i class="fas fa-video"></i></span> Video
+                    <input type="file" hidden accept="video/*" onchange="app.handleFile(this, 'video')">
                 </label>
-                <label class="menu-item">
-                    <i class="fas fa-microphone menu-icon icon-audio"></i> Audio
-                    <input type="file" accept="audio/*" onchange="app.handleFile(this, 'audio')">
+                <label class="sheet-item">
+                    <span class="sheet-icon" style="color:#fbbf24"><i class="fas fa-microphone"></i></span> Audio
+                    <input type="file" hidden accept="audio/*" onchange="app.handleFile(this, 'audio')">
                 </label>
             </div>
 
-            <br><br>
-            <center><a href="?" style="color:#555; text-decoration:none; font-size:12px;">Create Account</a></center>
+            <div style="margin-top:50px; text-align:center;">
+                <a href="?" style="color:var(--text-muted); text-decoration:none; font-size:13px;">Get your own App</a>
+            </div>
         </div>
     </div>
 
     <!-- 4. PROFILE -->
-    <div id="view-profile" class="view-section">
+    <div id="view-profile" class="view">
         <div class="scroll-view">
-            <div class="card" style="text-align:center;">
-                <img id="p-img" src="" class="user-avatar">
-                <h2 id="p-user">User</h2>
-                <p id="p-email" style="color:#666; font-size:12px;">Email</p>
+            <div class="card" style="text-align:center; padding:40px 20px;">
+                <div class="avatar-box">
+                    <img id="p-img" class="avatar-img">
+                </div>
+                <h2 id="p-user" style="font-size:24px;">Username</h2>
+                <p id="p-email" style="color:var(--text-muted);">Email</p>
             </div>
+
             <div class="card">
-                <p style="font-size:12px; color:#666;">Your Link:</p>
-                <div id="p-link" style="color:var(--accent); font-family:monospace; margin:5px 0; overflow:hidden; text-overflow:ellipsis;">...</div>
-                <button class="btn" onclick="app.copyLink()" style="padding:10px; font-size:14px; margin-top:10px;">Copy Link</button>
+                <h3 style="font-size:16px; margin-bottom:10px;">Your Secret Link</h3>
+                <div id="p-link" style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; color:var(--primary); font-family:monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">...</div>
+                <button class="btn" onclick="app.copyLink()" style="margin-top:15px; background:var(--surface); border:1px solid var(--border);">Copy Link</button>
             </div>
-            <button class="btn" onclick="app.logout()" style="background:#330000; color:#ff4444;">Log Out</button>
+
+            <button class="btn" onclick="app.logout()" style="background:rgba(239, 68, 68, 0.15); color:var(--danger); box-shadow:none;">Log Out</button>
         </div>
     </div>
 
-    <!-- NAV -->
-    <div id="nav-dock" class="dock-nav hidden">
-        <i class="fas fa-envelope dock-item active" onclick="app.nav('inbox')"></i>
-        <i class="fas fa-user dock-item" onclick="app.nav('profile')"></i>
+    <!-- NAVIGATION DOCK -->
+    <div id="dock" class="dock hidden">
+        <div class="dock-btn active" onclick="app.nav('inbox', this)"><i class="fas fa-inbox"></i></div>
+        <div class="dock-btn" onclick="app.nav('profile', this)"><i class="fas fa-user"></i></div>
     </div>
 
 </div>
 
-<div id="toast" class="toast">Alert</div>
+<!-- STORY MODE MODAL -->
+<div id="story-modal" class="story-modal">
+    <div class="story-content">
+        <div class="story-badge">FaizanMsg Elite</div>
+        <div id="story-media-area" style="margin-bottom:20px;"></div>
+        <h2 id="story-text" style="font-size:22px; line-height:1.4;"></h2>
+        <p id="story-time" style="color:#666; font-size:12px; margin-top:20px;"></p>
+    </div>
+    <div style="margin-top:30px; display:flex; gap:15px;">
+        <button class="btn" onclick="app.closeStory()" style="width:auto; padding:12px 30px; background:rgba(255,255,255,0.1);">Close</button>
+        <button class="btn" id="story-del-btn" style="width:auto; padding:12px 30px; background:var(--danger);">Delete</button>
+    </div>
+</div>
+
+<div id="toast" class="toast">Notification</div>
 
 <script>
-    // --- DATABASE ---
-    const DB_NAME = 'FaizanMsgUltimateDB';
+    // --- DATABASE (IndexedDB) ---
+    const DB_NAME = 'FaizanMsgElite';
     const DB_VER = 1;
-    const DEFAULT_PIC = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    const DEFAULT_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
     const db = {
         open: () => new Promise((res, rej) => {
-            const req = indexedDB.open(DB_NAME, DB_VER);
-            req.onupgradeneeded = e => {
+            const r = indexedDB.open(DB_NAME, DB_VER);
+            r.onupgradeneeded = e => {
                 const d = e.target.result;
                 if(!d.objectStoreNames.contains('users')) d.createObjectStore('users', { keyPath: 'email' });
-                if(!d.objectStoreNames.contains('messages')) d.createObjectStore('messages', { autoIncrement: true });
+                if(!d.objectStoreNames.contains('msgs')) d.createObjectStore('msgs', { keyPath: 'id', autoIncrement:true });
             };
-            req.onsuccess = () => res(req.result);
-            req.onerror = () => rej(req.error);
+            r.onsuccess = () => res(r.result);
         }),
-        put: async (s, d) => {
-            const dbo = await db.open();
-            return new Promise((res, rej) => {
-                const req = dbo.transaction(s, 'readwrite').objectStore(s).put(d);
+        op: async (store, mode, method, data) => {
+            const d = await db.open();
+            return new Promise((res) => {
+                const tx = d.transaction(store, mode);
+                const req = data ? tx.objectStore(store)[method](data) : tx.objectStore(store)[method]();
                 req.onsuccess = () => res(req.result);
-                req.onerror = () => rej(req.error);
-            });
-        },
-        get: async (s, k) => {
-            const dbo = await db.open();
-            return new Promise((res, rej) => {
-                const req = dbo.transaction(s, 'readonly').objectStore(s).get(k);
-                req.onsuccess = () => res(req.result);
-                req.onerror = () => rej(req.error);
-            });
-        },
-        getAll: async (s) => {
-            const dbo = await db.open();
-            return new Promise((res, rej) => {
-                const req = dbo.transaction(s, 'readonly').objectStore(s).getAll();
-                req.onsuccess = () => res(req.result);
-                req.onerror = () => rej(req.error);
             });
         }
     };
 
     // --- APP LOGIC ---
     const app = {
-        state: { user: null, email: null, file: null, fileType: null, authFile: null },
+        state: { user:null, email:null, authFile:null, msgFile:null, msgType:null },
 
         init: async () => {
-            const params = new URLSearchParams(window.location.search);
-            const to = params.get('to');
+            const urlParams = new URLSearchParams(window.location.search);
+            const to = urlParams.get('to');
+            
             if(to) {
                 app.loadPublic(to);
             } else {
-                const u = localStorage.getItem('f_user');
-                const e = localStorage.getItem('f_email');
-                if(u && e) { app.state.user = u; app.state.email = e; app.nav('inbox'); }
+                const u = localStorage.getItem('u');
+                const e = localStorage.getItem('e');
+                if(u && e) {
+                    app.state.user = u; app.state.email = e;
+                    app.nav('inbox', document.querySelector('.dock-btn'));
+                }
             }
-        },
-
-        // --- NEW ATTACHMENT MENU LOGIC ---
-        toggleAttach: () => {
-            const menu = document.getElementById('attach-menu');
-            menu.classList.toggle('hidden');
-        },
-
-        handleFile: (input, type) => {
-            const file = input.files[0];
-            if (!file) return;
-
-            app.state.file = file;
-            app.state.fileType = type;
-
-            document.getElementById('attach-menu').classList.add('hidden');
-            
-            const area = document.getElementById('preview-area');
-            const content = document.getElementById('preview-content');
-            const name = document.getElementById('file-name');
-            
-            area.classList.remove('hidden');
-            name.innerText = `${type.toUpperCase()}: ${file.name}`;
-            content.innerHTML = '';
-
-            if (type === 'image') {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.className = 'preview-thumb';
-                content.appendChild(img);
-            } else if (type === 'video') {
-                const vid = document.createElement('video');
-                vid.src = URL.createObjectURL(file);
-                vid.className = 'preview-thumb';
-                vid.controls = true;
-                content.appendChild(vid);
-            } else {
-                content.innerHTML = '<div style="background:#222; padding:20px; border-radius:10px;"><i class="fas fa-microphone-lines" style="font-size:30px; color:#f97316;"></i> Audio File</div>';
-            }
-        },
-
-        clearFile: () => {
-            app.state.file = null;
-            app.state.fileType = null;
-            document.getElementById('preview-area').classList.add('hidden');
-            document.querySelectorAll('input[type="file"]').forEach(i => i.value = "");
         },
 
         // --- AUTH ---
+        switchAuth: () => {
+            const isLogin = document.getElementById('in-user').classList.contains('hidden');
+            document.getElementById('in-user').classList.toggle('hidden');
+            document.getElementById('auth-pic-container').classList.toggle('hidden');
+            document.getElementById('btn-login').classList.toggle('hidden');
+            document.getElementById('btn-signup').classList.toggle('hidden');
+            document.getElementById('auth-switch-text').innerText = isLogin ? "Have Account?" : "New Here?";
+        },
+
         handleAuthPic: (input) => {
-            const file = input.files[0];
-            if(file) {
-                app.state.authFile = file;
-                document.getElementById('auth-pic-preview').src = URL.createObjectURL(file);
-                document.getElementById('auth-pic-preview').classList.remove('hidden');
-                document.getElementById('auth-pic-icon').classList.add('hidden');
+            if(input.files[0]) {
+                app.state.authFile = input.files[0];
+                document.getElementById('auth-pic-prev').src = URL.createObjectURL(input.files[0]);
             }
         },
 
-        toggleAuth: () => {
-            const isLogin = !document.getElementById('auth-user').classList.contains('hidden');
-            document.getElementById('auth-pic-wrapper').classList.toggle('hidden', isLogin);
-            document.getElementById('auth-user').classList.toggle('hidden', isLogin);
-            document.getElementById('btn-signup').classList.toggle('hidden', isLogin);
-            document.getElementById('btn-login').classList.toggle('hidden', !isLogin);
-            document.getElementById('auth-toggle-text').innerText = isLogin ? "New here?" : "Have account?";
-        },
-
         register: async () => {
-            const email = document.getElementById('auth-email').value.toLowerCase();
-            const user = document.getElementById('auth-user').value;
-            const pass = document.getElementById('auth-pass').value;
-            if(!email || !user || !pass) return app.toast("Fill all fields");
+            const e = document.getElementById('in-email').value.toLowerCase();
+            const u = document.getElementById('in-user').value;
+            const p = document.getElementById('in-pass').value;
             
-            // CHECK 1: EMAIL EXISTS?
-            const emailExists = await db.get('users', email);
-            if(emailExists) return app.toast('Email already taken');
+            if(!e || !u || !p) return app.toast('Fill all fields');
 
-            // CHECK 2: USERNAME EXISTS?
-            const allUsers = await db.getAll('users');
-            const userTaken = allUsers.find(u => u.username === user);
-            if(userTaken) return app.toast('Username Taken');
+            // Check Duplicate
+            const exists = await db.op('users', 'readonly', 'get', e);
+            if(exists) return app.toast('Email Taken');
+            const all = await db.op('users', 'readonly', 'getAll');
+            if(all.find(x => x.username === u)) return app.toast('Username Taken');
 
-            await db.put('users', { email, username: user, password: pass, pic: app.state.authFile });
-            app.toast('Created! Please Login.');
-            app.toggleAuth();
+            await db.op('users', 'readwrite', 'put', { email:e, username:u, password:p, pic: app.state.authFile });
+            app.toast('Created! Login now.');
+            app.switchAuth();
         },
 
         login: async () => {
-            const email = document.getElementById('auth-email').value.toLowerCase();
-            const pass = document.getElementById('auth-pass').value;
-            const u = await db.get('users', email);
-            if(u && u.password === pass) {
-                localStorage.setItem('f_user', u.username);
-                localStorage.setItem('f_email', email);
-                app.state.user = u.username;
-                app.state.email = email;
-                app.nav('inbox');
-            } else app.toast('Invalid Details');
+            const e = document.getElementById('in-email').value.toLowerCase();
+            const p = document.getElementById('in-pass').value;
+            const user = await db.op('users', 'readonly', 'get', e);
+
+            if(user && user.password === p) {
+                localStorage.setItem('u', user.username);
+                localStorage.setItem('e', e);
+                app.state.user = user.username;
+                app.state.email = e;
+                app.nav('inbox', document.querySelector('.dock-btn'));
+            } else app.toast('Invalid Credentials');
         },
 
         logout: () => { localStorage.clear(); location.reload(); },
 
-        // --- NAV ---
-        nav: (v) => {
-            document.querySelectorAll('.view-section').forEach(x => x.classList.remove('active'));
-            document.getElementById(`view-${v}`).classList.add('active');
-            const dock = document.getElementById('nav-dock');
+        // --- NAVIGATION ---
+        nav: (view, btn) => {
+            document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
             
-            if(v === 'inbox' || v === 'profile') {
-                dock.classList.remove('hidden');
-                document.querySelectorAll('.dock-item').forEach(i => i.classList.remove('active'));
-                if(v === 'inbox') document.querySelector('.fa-envelope').classList.add('active');
-                if(v === 'profile') document.querySelector('.fa-user').classList.add('active');
-                if(v === 'inbox') app.renderInbox();
-                if(v === 'profile') app.renderProfile();
-            } else dock.classList.add('hidden');
+            if(view === 'inbox' || view === 'profile') {
+                document.getElementById('dock').classList.remove('hidden');
+                document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+                if(btn) btn.classList.add('active');
+                if(view === 'inbox') app.renderInbox();
+                if(view === 'profile') app.renderProfile();
+            } else {
+                document.getElementById('dock').classList.add('hidden');
+            }
         },
 
-        // --- VIEWS ---
-        renderProfile: async () => {
-            const u = await db.get('users', app.state.email);
-            document.getElementById('p-user').innerText = '@' + app.state.user;
-            document.getElementById('p-email').innerText = app.state.email;
-            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
-            document.getElementById('p-img').src = (u && u.pic) ? URL.createObjectURL(u.pic) : DEFAULT_PIC;
-        },
-
+        // --- SENDING ---
         loadPublic: async (to) => {
             app.nav('public');
             document.getElementById('pub-target').innerText = to;
-            const allUsers = await db.getAll('users');
-            const targetUser = allUsers.find(u => u.username === to);
-            document.getElementById('pub-img').src = (targetUser && targetUser.pic) ? URL.createObjectURL(targetUser.pic) : DEFAULT_PIC;
+            const users = await db.op('users', 'readonly', 'getAll');
+            const tgt = users.find(u => u.username === to);
+            document.getElementById('pub-img').src = (tgt && tgt.pic) ? URL.createObjectURL(tgt.pic) : DEFAULT_AVATAR;
             
+            // Close menu on click outside
             document.body.onclick = (e) => {
-                if(!e.target.closest('.plus-btn') && !e.target.closest('.attach-menu')) {
-                    document.getElementById('attach-menu').classList.add('hidden');
+                if(!e.target.closest('#attach-btn') && !e.target.closest('#attach-sheet')) {
+                    document.getElementById('attach-sheet').classList.remove('open');
+                    document.getElementById('attach-btn').classList.remove('active');
                 }
-            };
+            }
         },
 
-        sendMessage: async () => {
-            const textInput = document.getElementById('msg-text');
-            const text = textInput.value;
-            const target = document.getElementById('pub-target').innerText;
-            if (!text && !app.state.file) return app.toast('Empty Message');
+        toggleMenu: () => {
+            document.getElementById('attach-sheet').classList.toggle('open');
+            document.getElementById('attach-btn').classList.toggle('active');
+        },
 
-            await db.put('messages', {
-                to: target, text: text,
-                media: app.state.file, type: app.state.fileType,
+        handleFile: (input, type) => {
+            const f = input.files[0];
+            if(!f) return;
+            app.state.msgFile = f;
+            app.state.msgType = type;
+            app.toggleMenu(); // Close menu
+
+            document.getElementById('file-preview-area').classList.remove('hidden');
+            const con = document.getElementById('preview-content');
+            con.innerHTML = '';
+            
+            if(type === 'image') {
+                const img = document.createElement('img'); img.src = URL.createObjectURL(f); img.style.width='100%';
+                con.appendChild(img);
+            } else if(type === 'video') {
+                const v = document.createElement('video'); v.src = URL.createObjectURL(f); v.controls = true; v.style.width='100%';
+                con.appendChild(v);
+            } else {
+                con.innerHTML = '<div style="padding:15px; text-align:center"><i class="fas fa-music"></i> Audio Selected</div>';
+            }
+        },
+
+        clearFile: () => {
+            app.state.msgFile = null; app.state.msgType = null;
+            document.getElementById('file-preview-area').classList.add('hidden');
+        },
+
+        sendMsg: async () => {
+            const txt = document.getElementById('msg-input').value;
+            const to = document.getElementById('pub-target').innerText;
+
+            if(!txt && !app.state.msgFile) return app.toast('Empty Message');
+
+            await db.op('msgs', 'readwrite', 'put', {
+                to: to, text: txt,
+                media: app.state.msgFile, type: app.state.msgType,
                 date: new Date()
             });
 
             app.toast('Sent Successfully!');
-            
-            // STAY ON PAGE, CLEAR INPUTS
-            textInput.value = "";
+            document.getElementById('msg-input').value = "";
             app.clearFile();
         },
 
+        // --- INBOX & STORY ---
         renderInbox: async () => {
-            const allMsgs = await db.getAll('messages');
-            const myMsgs = allMsgs.filter(m => m.to === app.state.user);
+            const all = await db.op('msgs', 'readonly', 'getAll');
+            const my = all.filter(m => m.to === app.state.user).reverse();
             const list = document.getElementById('msg-list');
-            list.innerHTML = myMsgs.length ? '' : '<div style="text-align:center; margin-top:50px; opacity:0.5">No Messages</div>';
+            list.innerHTML = my.length ? '' : '<div style="text-align:center; opacity:0.5; margin-top:50px;">No secrets yet...</div>';
 
-            myMsgs.reverse().forEach(m => {
-                let mediaHtml = '';
-                if (m.media) {
-                    const url = URL.createObjectURL(m.media);
-                    if (m.type === 'image') mediaHtml = `<img src="${url}" class="msg-media">`;
-                    else if (m.type === 'video') mediaHtml = `<video src="${url}" controls class="msg-media"></video>`;
-                    else if (m.type === 'audio') mediaHtml = `<audio src="${url}" controls class="msg-media"></audio>`;
-                }
-                const d = document.createElement('div');
-                d.className = 'card';
-                d.innerHTML = `<div style="font-size:12px; color:var(--accent); font-weight:bold;">SECRET</div>${mediaHtml}<p style="margin-top:10px; font-size:16px;">${m.text}</p><div style="font-size:10px; opacity:0.5; margin-top:5px; text-align:right;">${new Date(m.date).toLocaleTimeString()}</div>`;
-                list.appendChild(d);
+            my.forEach(m => {
+                const hasMedia = m.media ? '<i class="fas fa-paperclip" style="color:var(--primary)"></i> ' : '';
+                const el = document.createElement('div');
+                el.className = 'card';
+                el.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span style="font-size:12px; color:var(--primary); font-weight:bold;">SECRET</span>
+                        <span style="font-size:11px; color:#666;">${new Date(m.date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <div style="font-size:16px;">${hasMedia}${m.text || 'Media File'}</div>
+                    <div style="font-size:11px; color:#555; margin-top:10px;">Tap to view details</div>
+                `;
+                el.onclick = () => app.openStory(m);
+                list.appendChild(el);
             });
         },
 
-        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
-        toast: (m) => { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+        openStory: (m) => {
+            const modal = document.getElementById('story-modal');
+            const mediaArea = document.getElementById('story-media-area');
+            
+            document.getElementById('story-text').innerText = m.text || "";
+            document.getElementById('story-time').innerText = new Date(m.date).toLocaleString();
+            
+            mediaArea.innerHTML = '';
+            if(m.media) {
+                const url = URL.createObjectURL(m.media);
+                if(m.type === 'image') mediaArea.innerHTML = `<img src="${url}" style="max-width:100%; max-height:300px; border-radius:10px;">`;
+                else if(m.type === 'video') mediaArea.innerHTML = `<video src="${url}" controls style="max-width:100%; max-height:300px; border-radius:10px;"></video>`;
+                else mediaArea.innerHTML = `<audio src="${url}" controls style="width:100%"></audio>`;
+            }
+
+            document.getElementById('story-del-btn').onclick = async () => {
+                if(confirm('Delete this message?')) {
+                    const d = await db.open(); // Manual delete via Key
+                    const tx = d.transaction('msgs', 'readwrite');
+                    tx.objectStore('msgs').delete(m.id);
+                    app.closeStory();
+                    app.renderInbox();
+                    app.toast('Deleted');
+                }
+            };
+
+            modal.classList.add('show');
+        },
+
+        closeStory: () => document.getElementById('story-modal').classList.remove('show'),
+
+        // --- PROFILE ---
+        renderProfile: async () => {
+            const u = await db.op('users', 'readonly', 'get', app.state.email);
+            document.getElementById('p-user').innerText = '@' + app.state.user;
+            document.getElementById('p-email').innerText = app.state.email;
+            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
+            document.getElementById('p-img').src = (u && u.pic) ? URL.createObjectURL(u.pic) : DEFAULT_AVATAR;
+        },
+
+        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Link Copied!'); },
+        toast: (m) => { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
     };
 
     window.onload = app.init;
