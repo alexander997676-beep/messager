@@ -2,586 +2,603 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FaizanMsg Ultimate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FaizanMsg Hyper</title>
+    <meta name="theme-color" content="#4f46e5">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* --- ULTIMATE THEME --- */
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent: #ec4899;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --bg-gradient: linear-gradient(135deg, #a5b4fc 0%, #f9a8d4 100%);
+            --primary: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.4);
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+            --text-sub: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            --radius: 20px;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --glass-bg: rgba(30, 41, 59, 0.85);
-                --glass-border: rgba(255, 255, 255, 0.1);
-                --text-main: #f8fafc;
+                --bg-body: #0f172a;
+                --bg-card: #1e293b;
+                --text-main: #f9fafb;
                 --text-sub: #94a3b8;
-                --bg-gradient: linear-gradient(135deg, #0f172a 0%, #312e81 100%);
+                --border: #334155;
+                --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
             }
         }
 
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--text-main);
+            overflow: hidden; /* Prevent body scroll, handle in app */
         }
 
-        /* --- GLASS CARD --- */
-        .app-container {
+        /* --- MAIN APP CONTAINER --- */
+        .app-shell {
             width: 100%;
-            max-width: 480px;
-            height: 90vh;
-            max-height: 800px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            height: 100vh;
+            background: var(--bg-card);
+            position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            position: relative;
+            box-shadow: var(--shadow);
         }
 
+        @media (min-width: 500px) {
+            .app-shell { height: 90vh; border-radius: var(--radius); border: 1px solid var(--border); }
+        }
+
+        /* --- HEADER --- */
         .header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--glass-border);
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(var(--bg-card), 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .header h1 { margin: 0; font-size: 22px; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
-        .header p { margin: 5px 0 0; font-size: 13px; color: var(--text-sub); }
+        .brand { font-weight: 800; font-size: 20px; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-main); padding: 5px; }
 
-        .scroll-content {
+        /* --- SCROLLABLE CONTENT --- */
+        .main-view {
             flex: 1;
-            padding: 20px;
             overflow-y: auto;
-            scrollbar-width: thin;
+            padding: 20px;
+            scroll-behavior: smooth;
         }
 
-        /* --- FORMS & INPUTS --- */
-        .input-group { margin-bottom: 15px; }
-        .input-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        input[type="text"], input[type="password"], textarea {
-            width: 100%;
-            padding: 16px;
-            border-radius: 16px;
+        /* --- FORMS --- */
+        .input-box {
+            background: var(--bg-body);
             border: 2px solid transparent;
-            background: rgba(100, 116, 139, 0.1);
+            padding: 16px;
+            width: 100%;
+            border-radius: 14px;
             color: var(--text-main);
             font-family: inherit;
-            box-sizing: border-box;
-            font-size: 15px;
+            margin-bottom: 15px;
             transition: 0.3s;
+            outline: none;
         }
-        input:focus, textarea:focus { outline: none; background: rgba(100, 116, 139, 0.05); border-color: var(--primary); }
+        .input-box:focus { border-color: var(--primary); background: var(--bg-card); }
 
         .btn {
             width: 100%;
             padding: 16px;
-            border-radius: 16px;
+            border-radius: 14px;
             border: none;
-            font-weight: 700;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px var(--primary-glow);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-ghost { background: transparent; color: var(--text-sub); margin-top: 10px; }
+        .btn:active { transform: scale(0.98); }
+        .btn-sec { background: transparent; color: var(--text-sub); box-shadow: none; border: 1px solid var(--border); margin-top: 10px; }
+        .btn-danger { background: #ef4444; color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 
-        /* --- MEDIA UPLOAD --- */
-        .media-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .media-tile {
+        /* --- MEDIA UPLOAD GRID --- */
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .upload-item {
+            background: var(--bg-body);
+            border-radius: 14px;
             aspect-ratio: 1;
-            background: rgba(100, 116, 139, 0.1);
-            border-radius: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.3s;
-            border: 2px dashed transparent;
+            border: 2px dashed var(--border);
             color: var(--text-sub);
+            transition: 0.3s;
         }
-        .media-tile:hover { background: rgba(99, 102, 241, 0.1); color: var(--primary); border-color: var(--primary); }
-        .media-tile i { font-size: 24px; margin-bottom: 5px; font-style: normal; }
+        .upload-item:hover, .upload-item.active { border-color: var(--primary); color: var(--primary); background: rgba(79, 70, 229, 0.05); }
+        .upload-item span { font-size: 24px; margin-bottom: 5px; }
+        .upload-item p { margin: 0; font-size: 11px; font-weight: 600; }
 
-        /* --- PREVIEW --- */
-        #preview-container { margin-top: 15px; display: none; position: relative; }
-        .preview-file { width: 100%; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .remove-media {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.6); color: white;
-            width: 30px; height: 30px; border-radius: 50%;
+        /* --- PREVIEW AREA --- */
+        .preview-zone {
+            margin-top: 20px;
+            background: var(--bg-body);
+            padding: 10px;
+            border-radius: 14px;
+            display: none;
+            position: relative;
+        }
+        .preview-media { width: 100%; border-radius: 10px; display: block; }
+        .close-preview {
+            position: absolute; top: -10px; right: -10px;
+            background: #ef4444; color: white;
+            width: 28px; height: 28px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-weight: bold;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         /* --- MESSAGES --- */
-        .msg-bubble {
-            background: rgba(255,255,255,0.7);
-            border: 1px solid var(--glass-border);
-            padding: 16px;
-            border-radius: 18px;
-            margin-bottom: 15px;
+        .msg-card {
+            background: var(--bg-body);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            animation: slideUp 0.3s ease-out;
             position: relative;
         }
-        @media (prefers-color-scheme: dark) { .msg-bubble { background: rgba(30, 41, 59, 0.6); } }
-        
-        .msg-content { font-size: 15px; line-height: 1.5; white-space: pre-wrap; }
-        .msg-attachment {
-            margin-top: 10px;
+        .msg-text { font-size: 15px; line-height: 1.5; margin-bottom: 10px; white-space: pre-wrap; }
+        .msg-media {
             width: 100%;
             border-radius: 12px;
-            max-height: 300px;
+            background: black;
+            max-height: 400px;
             object-fit: contain;
-            background: #000;
+            margin-top: 5px;
         }
-        .msg-meta { font-size: 11px; color: var(--text-sub); margin-top: 8px; text-align: right; }
+        .msg-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .msg-time { font-size: 11px; color: var(--text-sub); }
+        .msg-actions { display: flex; gap: 10px; }
+        .action-icon { cursor: pointer; font-size: 14px; padding: 5px; border-radius: 5px; transition: 0.2s; }
+        .action-icon:hover { background: rgba(0,0,0,0.1); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- UTILS --- */
         .hidden { display: none !important; }
-        .loader { width: 20px; height: 20px; border: 3px solid #ffffff; border-bottom-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
+        .loader-bar {
+            width: 100%; height: 4px; background: var(--border);
+            border-radius: 2px; overflow: hidden; margin-top: 10px; display: none;
+        }
+        .loader-fill {
+            height: 100%; background: var(--primary);
+            width: 0%; transition: width 0.2s;
+            animation: loading 1.5s infinite ease-in-out;
+        }
+        @keyframes loading { 0% { width: 0%; transform: translateX(-100%); } 100% { width: 100%; transform: translateX(0); } }
+        
         /* Toast */
         .toast {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-            background: var(--text-main); color: var(--glass-bg);
-            padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px;
-            opacity: 0; pointer-events: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 100;
-            white-space: nowrap;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9);
+            background: #111; color: #fff; padding: 12px 24px; border-radius: 50px;
+            font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
+            white-space: nowrap; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        .toast.active { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.show { opacity: 1; transform: translateX(-50%) scale(1); bottom: 40px; }
 
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-shell">
     
     <!-- HEADER -->
     <div class="header">
-        <h1 id="app-title">FaizanMsg Ultimate</h1>
-        <p id="app-subtitle">Secure, Large File Transfer</p>
+        <div class="brand">FaizanMsg <span style="font-size:12px; color:var(--text-sub); font-weight:normal;">Hyper</span></div>
+        <button class="header-btn hidden" id="logout-btn" onclick="logout()" title="Logout">↪️</button>
     </div>
 
-    <div class="scroll-content">
-        
-        <!-- 1. AUTH SCREEN -->
-        <div id="view-auth">
-            <div id="form-login">
-                <div class="input-group">
-                    <label class="input-label">Username</label>
-                    <input type="text" id="login-user" placeholder="Enter username">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <input type="password" id="login-pass" placeholder="Enter password">
-                </div>
-                <button class="btn btn-primary" onclick="login()">Login</button>
-                <button class="btn btn-ghost" onclick="toggleAuth('signup')">Create Account</button>
-            </div>
-
-            <div id="form-signup" class="hidden">
-                <div class="input-group">
-                    <label class="input-label">New Username</label>
-                    <input type="text" id="reg-user" placeholder="Choose a username">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">New Password</label>
-                    <input type="password" id="reg-pass" placeholder="Create a password">
-                </div>
-                <button class="btn btn-primary" onclick="signup()">Create Account</button>
-                <button class="btn btn-ghost" onclick="toggleAuth('login')">Back to Login</button>
-            </div>
+    <!-- 1. AUTH SCREEN -->
+    <div id="view-auth" class="main-view">
+        <h2 style="text-align:center; margin-bottom:30px;">Login</h2>
+        <div id="login-form">
+            <input type="text" id="log-user" class="input-box" placeholder="Username">
+            <input type="password" id="log-pass" class="input-box" placeholder="Password">
+            <button class="btn" onclick="handleLogin()">Enter Dashboard</button>
+            <button class="btn btn-sec" onclick="toggleAuth(true)">Register New Account</button>
         </div>
-
-        <!-- 2. DASHBOARD (INBOX) -->
-        <div id="view-dashboard" class="hidden">
-            <div style="background: rgba(99, 102, 241, 0.1); padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-                <p style="margin:0; font-size:12px; color:var(--primary); font-weight:bold; margin-bottom:8px;">YOUR SECRET LINK</p>
-                <div style="font-family: monospace; font-size: 11px; word-break: break-all; color: var(--text-main);" id="my-link">...</div>
-                <button class="btn btn-primary" style="margin-top:10px; padding:10px; font-size:13px;" onclick="copyLink()">Copy Link 🔗</button>
-            </div>
-
-            <h3 style="color:var(--text-main);">Inbox</h3>
-            <div id="msg-list">
-                <!-- Messages Load Here -->
-                <p style="text-align:center; color:var(--text-sub); margin-top:50px;">Loading messages...</p>
-            </div>
-            
-            <button class="btn btn-ghost" style="color:#ef4444; margin-top:30px;" onclick="logout()">Logout</button>
+        <div id="reg-form" class="hidden">
+            <input type="text" id="reg-user" class="input-box" placeholder="Pick Username">
+            <input type="password" id="reg-pass" class="input-box" placeholder="Create Password">
+            <button class="btn" onclick="handleRegister()">Create Account</button>
+            <button class="btn btn-sec" onclick="toggleAuth(false)">Back to Login</button>
         </div>
-
-        <!-- 3. PUBLIC SEND SCREEN -->
-        <div id="view-send" class="hidden">
-            <p style="text-align:center; font-size:14px; margin-bottom:20px;">Sending to: <b id="send-to-name" style="color:var(--primary)">...</b></p>
-            
-            <textarea id="msg-text" rows="4" placeholder="Write a secret message..."></textarea>
-
-            <div class="media-actions">
-                <label class="media-tile">
-                    <i>📷</i> Photo
-                    <input type="file" id="file-photo" accept="image/*" hidden onchange="handleFileSelect(this, 'image')">
-                </label>
-                <label class="media-tile">
-                    <i>🎥</i> Video
-                    <input type="file" id="file-video" accept="video/*" hidden onchange="handleFileSelect(this, 'video')">
-                </label>
-                <div class="media-tile" onclick="recordAudio()" id="btn-mic">
-                    <i>🎤</i> Audio
-                </div>
-            </div>
-
-            <!-- Preview -->
-            <div id="preview-container">
-                <div class="remove-media" onclick="clearMedia()">×</div>
-                <img id="prev-img" class="preview-file hidden">
-                <video id="prev-vid" class="preview-file hidden" controls></video>
-                <audio id="prev-aud" class="preview-file hidden" controls style="margin-top:10px;"></audio>
-                <p id="file-info" style="font-size:11px; text-align:center; color:var(--text-sub); margin-top:5px;"></p>
-            </div>
-
-            <button class="btn btn-primary" style="margin-top:20px;" onclick="sendData()">
-                <div class="loader" id="send-loader"></div>
-                <span id="send-text">Send Securely 🚀</span>
-            </button>
-
-             <button class="btn btn-ghost" onclick="window.location.href = window.location.pathname">Create your own link</button>
-        </div>
-
     </div>
+
+    <!-- 2. DASHBOARD (INBOX) -->
+    <div id="view-dash" class="main-view hidden">
+        <div style="background: linear-gradient(135deg, var(--primary), #ec4899); padding: 20px; border-radius: 16px; color: white; text-align: center; margin-bottom: 25px;">
+            <p style="margin:0; font-size:13px; opacity:0.9;">YOUR SECRET LINK</p>
+            <div id="share-link" style="font-family: monospace; font-size: 14px; margin: 10px 0; font-weight:bold; word-break: break-all;">...</div>
+            <button onclick="copyLink()" style="background:white; color:var(--primary); border:none; padding:8px 16px; border-radius:20px; font-weight:bold; font-size:12px; cursor:pointer;">Copy Link 📋</button>
+        </div>
+
+        <h3 style="border-bottom:1px solid var(--border); padding-bottom:10px;">Your Messages</h3>
+        <div id="msg-list"></div>
+    </div>
+
+    <!-- 3. SENDER VIEW -->
+    <div id="view-send" class="main-view hidden">
+        <div style="text-align:center; margin-bottom:20px;">
+            <span style="background:var(--bg-body); padding:5px 15px; border-radius:20px; font-size:12px; color:var(--text-sub);">
+                Sending to: <b id="receiver-name" style="color:var(--text-main)">...</b>
+            </span>
+        </div>
+
+        <textarea id="msg-text" class="input-box" rows="4" placeholder="Type a message..."></textarea>
+
+        <div class="upload-grid">
+            <div class="upload-item" onclick="triggerFile('image')">
+                <span>📷</span> <p>Photo</p>
+            </div>
+            <div class="upload-item" onclick="triggerFile('video')">
+                <span>🎥</span> <p>Video</p>
+            </div>
+            <div class="upload-item" id="mic-btn" onclick="toggleMic()">
+                <span>🎤</span> <p>Audio</p>
+            </div>
+        </div>
+
+        <!-- Hidden Inputs -->
+        <input type="file" id="inp-image" accept="image/*" hidden onchange="previewFile(this, 'image')">
+        <input type="file" id="inp-video" accept="video/*" hidden onchange="previewFile(this, 'video')">
+
+        <!-- Preview -->
+        <div id="preview-box" class="preview-zone">
+            <div class="close-preview" onclick="resetMedia()">×</div>
+            <img id="prev-img" class="preview-media hidden">
+            <video id="prev-vid" class="preview-media hidden" controls></video>
+            <audio id="prev-audio" class="preview-media hidden" controls style="margin-top:20px;"></audio>
+            <p id="file-meta" style="font-size:11px; text-align:center; color:var(--text-sub); margin-top:5px;"></p>
+        </div>
+
+        <div class="loader-bar" id="progress-bar"><div class="loader-fill"></div></div>
+
+        <button class="btn" style="margin-top:20px;" onclick="sendMessage()" id="send-btn">Send Securely 🚀</button>
+        <button class="btn btn-sec" onclick="window.location.reload()">Get Your Own Link</button>
+    </div>
+
 </div>
 
 <div id="toast" class="toast">Notification</div>
 
 <script>
-    /**
-     * CORE TECHNOLOGY: INDEXEDDB
-     * This allows storage of massive files (Blobs) directly in the browser
-     * without the 5MB limit of localStorage.
-     */
-    
-    const DB_NAME = "FaizanMsgUltimateDB";
-    const DB_VERSION = 1;
-    const STORE_USERS = "users"; // Still use LocalStorage for Auth (small data)
+    // --- DATABASE CORE (IndexedDB for Large Files) ---
+    const DB_NAME = "FaizanMsgHyperDB";
+    const DB_VER = 1;
     let db;
-    let currentMedia = null; // Stores the File/Blob object
-    let mediaRecorder = null;
+    
+    // Auth (Small data uses LocalStorage)
+    const USERS_KEY = "faizan_users_v2";
+
+    // Media State
+    let currentMedia = { blob: null, type: null, name: null };
+    let mediaRecorder;
     let audioChunks = [];
 
-    // --- INITIALIZATION ---
-    
-    // Check URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetUser = urlParams.get('to');
-
-    initDB().then(() => {
-        if (targetUser) {
-            // Check if user exists in our "simulated" user base
-            const users = JSON.parse(localStorage.getItem(STORE_USERS) || "{}");
-            if(users[targetUser]) {
-                showView('view-send');
-                document.getElementById('send-to-name').innerText = targetUser;
-                document.getElementById('app-subtitle').innerText = "Large File Support Enabled";
-            } else {
-                document.body.innerHTML = "<h2 style='color:white;text-align:center'>User not found</h2>";
-            }
-        } else {
-            // Check session
-            const session = localStorage.getItem('active_session');
-            if(session) showDashboard(session);
-            else showView('view-auth');
+    // --- INIT ---
+    window.onload = async () => {
+        try {
+            await initDB();
+            checkRoute();
+        } catch(e) {
+            alert("Database Error: " + e);
         }
-    });
-
-    // --- INDEXEDDB HELPERS ---
+    };
 
     function initDB() {
         return new Promise((resolve, reject) => {
-            const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                // Create Object Store for Messages
-                // We use 'id' as key, but we will index by 'receiver' to query faster
+            const req = indexedDB.open(DB_NAME, DB_VER);
+            req.onupgradeneeded = e => {
+                const db = e.target.result;
+                // Store messages with auto-increment ID
                 const store = db.createObjectStore("messages", { keyPath: "id", autoIncrement: true });
-                store.createIndex("receiver", "receiver", { unique: false });
+                store.createIndex("to", "to", { unique: false });
             };
-
-            request.onsuccess = (event) => {
-                db = event.target.result;
-                resolve(db);
-            };
-
-            request.onerror = (event) => {
-                console.error("Database error:", event.target.error);
-                reject("DB Error");
-            };
+            req.onsuccess = e => { db = e.target.result; resolve(); };
+            req.onerror = e => reject(e);
         });
     }
 
-    function saveMessageToDB(msgObj) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction(["messages"], "readwrite");
-            const store = transaction.objectStore("messages");
-            const request = store.add(msgObj);
-
-            request.onsuccess = () => resolve();
-            request.onerror = () => reject(request.error);
-        });
+    function checkRoute() {
+        const params = new URLSearchParams(window.location.search);
+        const toUser = params.get('to');
+        
+        if (toUser) {
+            // Public Send View
+            const users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
+            if(users[toUser]) {
+                nav('send');
+                document.getElementById('receiver-name').innerText = toUser;
+            } else {
+                document.body.innerHTML = "<h2 style='text-align:center;color:white;'>User Not Found</h2>";
+            }
+        } else {
+            // Dashboard/Login View
+            const session = localStorage.getItem('session_user');
+            if(session) loadDashboard(session);
+            else nav('auth');
+        }
     }
 
-    function getMessagesFromDB(username) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction(["messages"], "readonly");
-            const store = transaction.objectStore("messages");
-            const index = store.index("receiver");
-            const request = index.getAll(username); // Get all msgs for this user
-
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
+    function nav(view) {
+        document.querySelectorAll('.main-view').forEach(d => d.classList.add('hidden'));
+        document.getElementById('view-' + view).classList.remove('hidden');
+        document.getElementById('logout-btn').classList.toggle('hidden', view !== 'dash');
     }
 
-    // --- NAVIGATION & UI ---
-
-    function showView(viewId) {
-        ['view-auth', 'view-dashboard', 'view-send'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
+    // --- AUTHENTICATION ---
+    function toggleAuth(isReg) {
+        document.getElementById('login-form').classList.toggle('hidden', isReg);
+        document.getElementById('reg-form').classList.toggle('hidden', !isReg);
     }
 
-    function toggleAuth(type) {
-        document.getElementById('form-login').classList.toggle('hidden', type === 'signup');
-        document.getElementById('form-signup').classList.toggle('hidden', type === 'login');
-    }
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.classList.add('active');
-        setTimeout(() => t.classList.remove('active'), 3000);
-    }
-
-    // --- AUTHENTICATION (LocalStorage) ---
-
-    function signup() {
+    function handleRegister() {
         const u = document.getElementById('reg-user').value.trim();
         const p = document.getElementById('reg-pass').value.trim();
-        if(!u || !p) return showToast("Fill all fields");
+        if(!u || !p) return toast("Please fill all fields");
 
-        let users = JSON.parse(localStorage.getItem(STORE_USERS) || "{}");
-        if(users[u]) return showToast("Username taken");
+        let users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
+        if(users[u]) return toast("Username taken!");
 
         users[u] = p;
-        localStorage.setItem(STORE_USERS, JSON.stringify(users));
-        showToast("Account Created! Please Login.");
-        toggleAuth('login');
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        toast("Account Created! Please Login.");
+        toggleAuth(false);
     }
 
-    function login() {
-        const u = document.getElementById('login-user').value.trim();
-        const p = document.getElementById('login-pass').value.trim();
-        
-        let users = JSON.parse(localStorage.getItem(STORE_USERS) || "{}");
+    function handleLogin() {
+        const u = document.getElementById('log-user').value.trim();
+        const p = document.getElementById('log-pass').value.trim();
+        let users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
+
         if(users[u] === p) {
-            localStorage.setItem('active_session', u);
-            showDashboard(u);
+            localStorage.setItem('session_user', u);
+            loadDashboard(u);
         } else {
-            showToast("Invalid Credentials");
+            toast("Invalid Credentials ❌");
         }
     }
 
     function logout() {
-        localStorage.removeItem('active_session');
-        location.reload();
+        localStorage.removeItem('session_user');
+        window.location.reload();
     }
 
-    // --- DASHBOARD FUNCTIONS ---
+    // --- DASHBOARD ---
+    async function loadDashboard(user) {
+        nav('dash');
+        const link = `${window.location.origin}${window.location.pathname}?to=${user}`;
+        document.getElementById('share-link').innerText = link;
 
-    async function showDashboard(user) {
-        showView('view-dashboard');
-        document.getElementById('app-subtitle').innerText = "Welcome back, " + user;
-        const link = window.location.origin + window.location.pathname + "?to=" + user;
-        document.getElementById('my-link').innerText = link;
-
-        // Load Messages from IndexedDB
         const list = document.getElementById('msg-list');
-        list.innerHTML = "";
-        
+        list.innerHTML = "<p style='text-align:center'>Loading messages...</p>";
+
         try {
-            const msgs = await getMessagesFromDB(user);
-            if(msgs.length === 0) {
-                list.innerHTML = "<div style='text-align:center; color:var(--text-sub)'>No messages yet.</div>";
-                return;
-            }
+            const msgs = await getMessages(user);
+            list.innerHTML = "";
+            if(msgs.length === 0) list.innerHTML = "<p style='text-align:center; color:var(--text-sub);'>No messages yet.</p>";
 
-            // Reverse to show newest first
             msgs.reverse().forEach(msg => {
-                const div = document.createElement('div');
-                div.className = 'msg-bubble';
-
-                let mediaHTML = "";
-                if(msg.fileBlob) {
-                    // Create a URL for the Blob directly
-                    const url = URL.createObjectURL(msg.fileBlob);
-                    if(msg.fileType === 'image') mediaHTML = `<img src="${url}" class="msg-attachment" loading="lazy">`;
-                    if(msg.fileType === 'video') mediaHTML = `<video src="${url}" controls class="msg-attachment"></video>`;
-                    if(msg.fileType === 'audio') mediaHTML = `<audio src="${url}" controls class="msg-attachment"></audio>`;
+                const el = document.createElement('div');
+                el.className = 'msg-card';
+                
+                let mediaHtml = "";
+                if(msg.blob) {
+                    const url = URL.createObjectURL(msg.blob);
+                    if(msg.type === 'image') mediaHtml = `<img src="${url}" class="msg-media" loading="lazy">`;
+                    if(msg.type === 'video') mediaHtml = `<video src="${url}" controls class="msg-media"></video>`;
+                    if(msg.type === 'audio') mediaHtml = `<audio src="${url}" controls style="width:100%; margin-top:10px;"></audio>`;
                 }
 
-                div.innerHTML = `
-                    <div class="msg-content">${msg.text || "<i>Shared File</i>"}</div>
-                    ${mediaHTML}
-                    <div class="msg-meta">${new Date(msg.timestamp).toLocaleString()}</div>
+                el.innerHTML = `
+                    <div class="msg-text">${msg.text || "<i>Shared Media</i>"}</div>
+                    ${mediaHtml}
+                    <div class="msg-footer">
+                        <span class="msg-time">${new Date(msg.date).toLocaleString()}</span>
+                        <div class="msg-actions">
+                            ${msg.blob ? `<span class="action-icon" onclick="downloadMedia(this)" title="Download">⬇️</span>` : ''}
+                            <span class="action-icon" onclick="deleteMsg(${msg.id})" title="Delete" style="color:#ef4444;">🗑️</span>
+                        </div>
+                    </div>
                 `;
-                list.appendChild(div);
+                // Attach blob url to element for download
+                if(msg.blob) el.dataset.blobUrl = URL.createObjectURL(msg.blob);
+                if(msg.blob) el.dataset.fileName = msg.fileName || 'download';
+                
+                list.appendChild(el);
             });
-
         } catch(e) {
             console.error(e);
-            list.innerHTML = "Error loading messages.";
+            list.innerHTML = "Error loading database.";
         }
     }
 
     function copyLink() {
-        navigator.clipboard.writeText(document.getElementById('my-link').innerText);
-        showToast("Link Copied!");
+        navigator.clipboard.writeText(document.getElementById('share-link').innerText);
+        toast("Link Copied! Share it 📲");
     }
 
-    // --- SENDING LOGIC (The Heavy Lifter) ---
+    function downloadMedia(btn) {
+        const card = btn.closest('.msg-card');
+        const a = document.createElement('a');
+        a.href = card.dataset.blobUrl;
+        a.download = card.dataset.fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 
-    function handleFileSelect(input, type) {
+    // --- SENDING LOGIC ---
+    function triggerFile(type) {
+        document.getElementById('inp-' + type).click();
+    }
+
+    function previewFile(input, type) {
         const file = input.files[0];
         if(!file) return;
 
-        currentMedia = {
-            blob: file,
-            type: type,
-            name: file.name
-        };
-        
-        // Show Preview
-        document.getElementById('preview-container').style.display = 'block';
-        document.getElementById('file-info').innerText = `${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`;
-        
-        // Hide all previews first
-        ['prev-img', 'prev-vid', 'prev-aud'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        currentMedia = { blob: file, type: type, name: file.name };
+        showPreview(URL.createObjectURL(file), type, file.size);
+    }
 
-        const url = URL.createObjectURL(file);
+    function showPreview(url, type, size) {
+        document.getElementById('preview-box').style.display = 'block';
+        ['prev-img', 'prev-vid', 'prev-audio'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
         if(type === 'image') {
-            const img = document.getElementById('prev-img');
-            img.src = url;
-            img.classList.remove('hidden');
+            const i = document.getElementById('prev-img');
+            i.src = url; i.classList.remove('hidden');
         } else if(type === 'video') {
-            const vid = document.getElementById('prev-vid');
-            vid.src = url;
-            vid.classList.remove('hidden');
+            const v = document.getElementById('prev-vid');
+            v.src = url; v.classList.remove('hidden');
+        } else {
+            const a = document.getElementById('prev-audio');
+            a.src = url; a.classList.remove('hidden');
+        }
+
+        if(size) {
+            const mb = (size / (1024*1024)).toFixed(2);
+            document.getElementById('file-meta').innerText = `Size: ${mb} MB`;
+        } else {
+            document.getElementById('file-meta').innerText = "Audio Recording";
         }
     }
 
-    async function recordAudio() {
+    function resetMedia() {
+        currentMedia = { blob: null, type: null, name: null };
+        document.getElementById('preview-box').style.display = 'none';
+        document.getElementById('inp-image').value = "";
+        document.getElementById('inp-video').value = "";
+    }
+
+    // Audio Logic
+    async function toggleMic() {
         if(mediaRecorder && mediaRecorder.state === 'recording') {
             mediaRecorder.stop();
-            document.getElementById('btn-mic').style.color = "var(--text-sub)";
-            document.getElementById('btn-mic').style.borderColor = "transparent";
-            return;
-        }
-
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            
-            document.getElementById('btn-mic').style.color = "#ef4444";
-            document.getElementById('btn-mic').style.borderColor = "#ef4444";
-            
-            showToast("Recording Started... Tap icon to stop");
-
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                currentMedia = { blob: blob, type: 'audio', name: 'Voice_Note.webm' };
-                
-                document.getElementById('preview-container').style.display = 'block';
-                document.getElementById('file-info').innerText = "Voice Note Recorded";
-                
-                ['prev-img', 'prev-vid', 'prev-aud'].forEach(id => document.getElementById(id).classList.add('hidden'));
-                const aud = document.getElementById('prev-aud');
-                aud.src = URL.createObjectURL(blob);
-                aud.classList.remove('hidden');
-            };
-
-            mediaRecorder.start();
-        } catch(e) {
-            showToast("Microphone denied");
+            document.getElementById('mic-btn').classList.remove('active');
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                    currentMedia = { blob: blob, type: 'audio', name: 'voice_msg.webm' };
+                    showPreview(URL.createObjectURL(blob), 'audio');
+                };
+                mediaRecorder.start();
+                document.getElementById('mic-btn').classList.add('active');
+                toast("Recording... Tap again to stop.");
+            } catch(e) {
+                toast("Mic Permission Denied 🎤");
+            }
         }
     }
 
-    function clearMedia() {
-        currentMedia = null;
-        document.getElementById('preview-container').style.display = 'none';
-        document.getElementById('file-photo').value = "";
-        document.getElementById('file-video').value = "";
-    }
+    async function sendMessage() {
+        const txt = document.getElementById('msg-text').value.trim();
+        if(!txt && !currentMedia.blob) return toast("Message is empty!");
 
-    async function sendData() {
-        const text = document.getElementById('msg-text').value.trim();
-        if(!text && !currentMedia) return showToast("Message is empty");
-
-        // UI Loading State
-        const btnText = document.getElementById('send-text');
-        const loader = document.getElementById('send-loader');
-        btnText.classList.add('hidden');
-        loader.style.display = 'block';
+        const btn = document.getElementById('send-btn');
+        const bar = document.getElementById('progress-bar');
+        
+        btn.disabled = true;
+        btn.innerText = "Processing Large File...";
+        bar.style.display = 'block';
 
         const payload = {
-            receiver: targetUser,
-            text: text,
-            fileBlob: currentMedia ? currentMedia.blob : null, // Store actual File Object
-            fileType: currentMedia ? currentMedia.type : null,
-            fileName: currentMedia ? currentMedia.name : null,
-            timestamp: Date.now()
+            to: document.getElementById('receiver-name').innerText,
+            text: txt,
+            blob: currentMedia.blob,
+            type: currentMedia.type,
+            fileName: currentMedia.name,
+            date: Date.now()
         };
 
         try {
-            await saveMessageToDB(payload);
-            showToast("Sent Successfully! 🎉");
-            
-            // Reset UI
+            // Transaction
+            const tx = db.transaction(["messages"], "readwrite");
+            const store = tx.objectStore("messages");
+            await store.add(payload);
+
+            toast("Sent Successfully! 🎉");
             document.getElementById('msg-text').value = "";
-            clearMedia();
+            resetMedia();
         } catch(e) {
             console.error(e);
-            showToast("Failed to save. Device storage might be full.");
+            if(e.name === "QuotaExceededError") toast("Receiver Device Full! ⚠️");
+            else toast("Error sending message.");
         } finally {
-            btnText.classList.remove('hidden');
-            loader.style.display = 'none';
+            btn.disabled = false;
+            btn.innerText = "Send Securely 🚀";
+            bar.style.display = 'none';
         }
     }
 
+    // --- DB HELPERS ---
+    function getMessages(user) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(["messages"], "readonly");
+            const store = tx.objectStore("messages");
+            const index = store.index("to");
+            const req = index.getAll(user);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    function deleteMsg(id) {
+        if(!confirm("Delete this message permanently?")) return;
+        const tx = db.transaction(["messages"], "readwrite");
+        tx.objectStore("messages").delete(id);
+        tx.oncomplete = () => {
+            toast("Message Deleted");
+            // Refresh dashboard
+            const user = localStorage.getItem('session_user');
+            loadDashboard(user);
+        };
+    }
+
+    function toast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
 </script>
 </body>
 </html>
