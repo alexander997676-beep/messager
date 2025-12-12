@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostMsg - Ultimate</title>
+    <title>GhostMsg - By Faizan Ahmed</title>
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Font -->
@@ -13,13 +13,12 @@
         /* --- ULTIMATE DARK THEME --- */
         :root {
             --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.75);
             --primary: #6366f1;
             --accent: #8b5cf6;
             --text-main: #f8fafc;
             --text-sec: #94a3b8;
             --danger: #ef4444;
-            --success: #10b981;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -34,7 +33,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 15px;
         }
 
         /* --- APP SHELL --- */
@@ -42,8 +41,8 @@
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             overflow: hidden;
@@ -59,7 +58,6 @@
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: relative;
         }
         .logo-text {
             background: linear-gradient(to right, var(--primary), var(--accent));
@@ -76,14 +74,30 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            position: relative;
         }
 
-        /* --- FORMS --- */
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
+        /* --- FOOTER (MADE BY FAIZAN) --- */
+        .app-footer {
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+            font-size: 0.85rem;
+            color: var(--text-sec);
         }
+        .app-footer b {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .heart-beat {
+            color: var(--danger);
+            animation: beat 1.5s infinite;
+            display: inline-block;
+        }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+        /* --- FORMS --- */
+        .input-group { margin-bottom: 15px; position: relative; }
         .input-field {
             width: 100%;
             background: rgba(15, 23, 42, 0.6);
@@ -95,152 +109,78 @@
             outline: none;
             transition: 0.3s;
         }
-        .input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        }
+        .input-field:focus { border-color: var(--primary); }
         .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-sec);
-            cursor: pointer;
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            color: var(--text-sec); cursor: pointer;
         }
 
         /* --- BUTTONS --- */
         .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            transition: 0.2s;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--text-sec);
-        }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-sec); }
         .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 
-        /* --- DASHBOARD ELEMENTS --- */
-        .profile-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        /* --- DASHBOARD --- */
+        .profile-section { text-align: center; margin-bottom: 20px; }
         .avatar-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #333, #555);
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 3px solid var(--primary);
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 3px solid var(--primary); margin: 0 auto 10px;
+            overflow: hidden; background: #333;
         }
         .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-
+        
         .link-card {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px dashed var(--primary);
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            word-break: break-all;
-            margin-bottom: 10px;
-            color: var(--text-sec);
+            background: rgba(99, 102, 241, 0.1); border: 1px dashed var(--primary);
+            padding: 15px; border-radius: 12px; font-size: 0.85rem;
+            word-break: break-all; margin-bottom: 10px; color: var(--text-sec);
         }
 
-        /* --- MESSAGES LIST --- */
-        .msg-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; }
+        /* --- MESSAGES --- */
+        .msg-list { display: flex; flex-direction: column; gap: 15px; }
         .msg-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 16px;
-            position: relative;
-            animation: slideUp 0.3s ease;
-            border-left: 4px solid var(--accent);
+            background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 16px;
+            border-left: 4px solid var(--accent); position: relative;
         }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .msg-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-sec);
-            margin-bottom: 8px;
-        }
-        .btn-delete-msg {
-            background: none; border: none; color: var(--danger); cursor: pointer; font-size: 14px;
-        }
-        
-        .media-content {
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+        .msg-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sec); margin-bottom: 8px; }
+        .media-content { width: 100%; border-radius: 8px; margin-top: 10px; }
 
-        /* --- MEDIA BAR (SENDER) --- */
-        .media-bar {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-        }
+        /* --- MEDIA BAR --- */
+        .media-bar { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
         .media-icon {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+            width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.05);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--text-main);
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
         }
-        .media-icon:hover, .media-icon.active { background: var(--primary); color: white; transform: translateY(-3px); }
+        .media-icon:hover, .media-icon.active { background: var(--primary); color: white; }
 
-        /* --- LOADING OVERLAY --- */
+        .hidden { display: none !important; }
         .loader-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.9);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 100;
+            background: rgba(15, 23, 42, 0.9); z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
+            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid var(--primary); border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .hidden { display: none !important; }
         
-        /* Toast */
         .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(50px);
             background: var(--text-main); color: var(--bg-color);
-            padding: 12px 24px; border-radius: 50px; font-weight: 600;
-            opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 999; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            padding: 10px 20px; border-radius: 30px; font-weight: 600; opacity: 0;
+            transition: 0.4s; z-index: 999; pointer-events: none;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -255,10 +195,10 @@
             <div class="logo-text"><i class="fas fa-ghost"></i> GhostMsg</div>
         </div>
 
-        <!-- CONTENT -->
+        <!-- CONTENT AREA (Scrollable) -->
         <div class="content">
 
-            <!-- === 1. LOGIN === -->
+            <!-- 1. LOGIN -->
             <div id="view-login">
                 <h2 style="text-align:center; margin-bottom:5px;">Welcome Back</h2>
                 <p style="text-align:center; color:var(--text-sec); margin-bottom:30px;">Login to view your secrets</p>
@@ -276,10 +216,9 @@
                 <button class="btn btn-outline" onclick="app.nav('signup')">Create Account</button>
             </div>
 
-            <!-- === 2. SIGNUP === -->
+            <!-- 2. SIGNUP -->
             <div id="view-signup" class="hidden">
                 <h2 style="text-align:center;">Join Anonymous</h2>
-                
                 <div class="profile-section" onclick="document.getElementById('reg-pic').click()" style="cursor:pointer">
                     <div class="avatar-circle">
                         <img id="avatar-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
@@ -300,7 +239,7 @@
                 <button class="btn btn-outline" onclick="app.nav('login')">Back to Login</button>
             </div>
 
-            <!-- === 3. DASHBOARD === -->
+            <!-- 3. DASHBOARD -->
             <div id="view-dashboard" class="hidden">
                 <div class="profile-section">
                     <div class="avatar-circle"><img id="dash-avatar" src=""></div>
@@ -308,39 +247,35 @@
                 </div>
 
                 <div class="link-card" id="share-link">Generating...</div>
-                
                 <div style="display:flex; gap:10px;">
                     <button class="btn btn-primary" onclick="app.copyLink()"><i class="fas fa-copy"></i> Copy</button>
-                    <button class="btn btn-primary" style="background:#25D366;" onclick="app.shareWhatsapp()"><i class="fab fa-whatsapp"></i> Share</button>
+                    <button class="btn btn-primary" style="background:#25D366;" onclick="app.shareWhatsapp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
                 </div>
 
                 <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center;">
                     <h4 style="margin:0;">Inbox</h4>
                     <span style="font-size:12px; color:var(--danger); cursor:pointer;" onclick="app.clearAllMessages()">Clear All</span>
                 </div>
-                
                 <div id="msg-container" class="msg-list" style="margin-top:15px;"></div>
-                
-                <button class="btn btn-danger" onclick="app.logout()" style="margin-top:30px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button class="btn btn-danger" onclick="app.logout()" style="margin-top:30px;">Logout</button>
             </div>
 
-            <!-- === 4. PUBLIC SEND === -->
+            <!-- 4. PUBLIC SENDER -->
             <div id="view-public" class="hidden">
                 <div class="profile-section">
                     <div class="avatar-circle"><img id="pub-avatar" src=""></div>
-                    <p style="color:var(--text-sec);">Send secret message to</p>
+                    <p style="color:var(--text-sec); font-size:12px;">Send secret message to</p>
                     <h3 id="pub-user" style="margin:0;">...</h3>
                 </div>
 
-                <textarea id="msg-text" class="input-field" rows="3" placeholder="Type something..."></textarea>
+                <textarea id="msg-text" class="input-field" rows="3" placeholder="Type secret message..."></textarea>
 
                 <div class="media-bar">
-                    <div class="media-icon" onclick="app.triggerFile('image')" title="Photo"><i class="fas fa-camera"></i></div>
-                    <div class="media-icon" onclick="app.triggerFile('video')" title="Video"><i class="fas fa-video"></i></div>
-                    <div class="media-icon" id="btn-mic" onclick="app.toggleRec()" title="Voice"><i class="fas fa-microphone"></i></div>
+                    <div class="media-icon" onclick="app.triggerFile('image')"><i class="fas fa-camera"></i></div>
+                    <div class="media-icon" onclick="app.triggerFile('video')"><i class="fas fa-video"></i></div>
+                    <div class="media-icon" id="btn-mic" onclick="app.toggleRec()"><i class="fas fa-microphone"></i></div>
                 </div>
 
-                <!-- Hidden Inputs/Previews -->
                 <input type="file" id="file-image" hidden accept="image/*" onchange="app.handleFile('image')">
                 <input type="file" id="file-video" hidden accept="video/*" onchange="app.handleFile('video')">
                 
@@ -357,7 +292,12 @@
 
         </div>
 
-        <!-- Loader -->
+        <!-- FOOTER (BY FAIZAN) -->
+        <div class="app-footer">
+            Made by <b>Faizan Ahmed</b> <i class="fas fa-heart heart-beat"></i>
+        </div>
+
+        <!-- LOADER -->
         <div id="loader" class="loader-overlay hidden">
             <div class="spinner"></div>
             <p style="margin-top:15px; font-weight:bold;">Processing...</p>
@@ -365,33 +305,26 @@
 
     </div>
 
-    <!-- Toast -->
+    <!-- TOAST -->
     <div id="toast" class="toast">Message</div>
 
     <script>
         const app = {
-            dbUsers: 'ghost_users_v4',
-            dbMsgs: 'ghost_msgs_v4',
-            state: {
-                mediaRecorder: null,
-                chunks: [],
-                tempMedia: null
-            },
+            dbUsers: 'ghost_users_v5',
+            dbMsgs: 'ghost_msgs_v5',
+            state: { mediaRecorder: null, chunks: [], tempMedia: null },
 
             init: () => {
                 const params = new URLSearchParams(window.location.search);
                 const toUser = params.get('to');
-                
-                if (toUser) {
-                    app.loadPublic(toUser);
-                } else {
+                if (toUser) app.loadPublic(toUser);
+                else {
                     const session = localStorage.getItem('ghost_session');
                     if (session) app.loadDashboard(session);
                     else app.nav('login');
                 }
             },
 
-            // --- NAVIGATION ---
             nav: (view) => {
                 document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
                 document.getElementById(`view-${view}`).classList.remove('hidden');
@@ -402,10 +335,7 @@
                 input.type = input.type === 'password' ? 'text' : 'password';
             },
 
-            loading: (show) => {
-                const el = document.getElementById('loader');
-                show ? el.classList.remove('hidden') : el.classList.add('hidden');
-            },
+            loading: (show) => document.getElementById('loader').classList.toggle('hidden', !show),
 
             toast: (msg) => {
                 const el = document.getElementById('toast');
@@ -414,32 +344,20 @@
                 setTimeout(() => el.classList.remove('show'), 3000);
             },
 
-            // --- AUTH ---
             register: (e) => {
                 e.preventDefault();
                 const user = document.getElementById('reg-user').value.trim();
                 const pass = document.getElementById('reg-pass').value.trim();
                 const avatar = document.getElementById('avatar-preview').src;
-
                 let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-                if (db[user]) return app.toast('Username Taken!');
 
+                if (db[user]) return app.toast('Username Taken!');
                 db[user] = { pass, avatar };
                 localStorage.setItem(app.dbUsers, JSON.stringify(db));
-                
-                app.toast('Welcome! Please Login.');
+                app.toast('Account Created!');
                 app.nav('login');
-                // Auto-fill for browser save
                 document.getElementById('log-user').value = user;
                 document.getElementById('log-pass').value = pass;
-            },
-
-            previewImage: (input) => {
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => document.getElementById('avatar-preview').src = e.target.result;
-                    reader.readAsDataURL(input.files[0]);
-                }
             },
 
             login: (e) => {
@@ -461,16 +379,13 @@
                 location.reload();
             },
 
-            // --- DASHBOARD ---
             loadDashboard: (user) => {
                 app.nav('dashboard');
                 let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
                 document.getElementById('dash-user').innerText = user;
                 document.getElementById('dash-avatar').src = db[user].avatar;
-
                 const link = window.location.href.split('?')[0] + "?to=" + user;
                 document.getElementById('share-link').innerText = link;
-                
                 app.renderMessages(user);
             },
 
@@ -484,13 +399,12 @@
                 window.open(`https://wa.me/?text=Send%20me%20a%20secret%20message!%20${encodeURIComponent(link)}`, '_blank');
             },
 
-            timeAgo: (dateStr) => {
-                const date = new Date(dateStr);
-                const seconds = Math.floor((new Date() - date) / 1000);
+            timeAgo: (date) => {
+                const seconds = Math.floor((new Date() - new Date(date)) / 1000);
                 if (seconds < 60) return "Just now";
-                const minutes = Math.floor(seconds / 60);
-                if (minutes < 60) return minutes + "m ago";
-                const hours = Math.floor(minutes / 60);
+                const mins = Math.floor(seconds / 60);
+                if (mins < 60) return mins + "m ago";
+                const hours = Math.floor(mins / 60);
                 if (hours < 24) return hours + "h ago";
                 return Math.floor(hours / 24) + "d ago";
             },
@@ -507,9 +421,7 @@
                 }
 
                 userMsgs.reverse().forEach((msg, index) => {
-                    // Original index needs to be calculated because we reversed the array
                     const originalIndex = userMsgs.length - 1 - index;
-                    
                     let mediaHtml = '';
                     if(msg.type === 'image') mediaHtml = `<img src="${msg.data}" class="media-content" onclick="app.viewFull(this.src)">`;
                     if(msg.type === 'video') mediaHtml = `<video src="${msg.data}" controls class="media-content"></video>`;
@@ -520,9 +432,9 @@
                     div.innerHTML = `
                         <div class="msg-header">
                             <span>${app.timeAgo(msg.date)}</span>
-                            <button class="btn-delete-msg" onclick="app.deleteMsg('${user}', ${originalIndex})"><i class="fas fa-trash"></i></button>
+                            <span style="color:var(--danger); cursor:pointer;" onclick="app.deleteMsg('${user}', ${originalIndex})"><i class="fas fa-trash"></i></span>
                         </div>
-                        <div style="font-size:15px; line-height:1.5;">${msg.text || '<i>Media Only</i>'}</div>
+                        <div style="font-size:14px;">${msg.text || '<i>Media Only</i>'}</div>
                         ${mediaHtml}
                     `;
                     container.appendChild(div);
@@ -530,17 +442,17 @@
             },
 
             deleteMsg: (user, index) => {
-                if(!confirm("Delete this secret?")) return;
+                if(!confirm("Delete this?")) return;
                 let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
                 msgs[user].splice(index, 1);
                 localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
                 app.renderMessages(user);
-                app.toast("Message Deleted");
+                app.toast("Deleted");
             },
 
             clearAllMessages: () => {
                 const user = localStorage.getItem('ghost_session');
-                if(!confirm("Delete ALL messages? This cannot be undone.")) return;
+                if(!confirm("Delete ALL?")) return;
                 let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
                 msgs[user] = [];
                 localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
@@ -548,33 +460,35 @@
                 app.toast("Inbox Cleared");
             },
 
-            // --- PUBLIC SENDER ---
             loadPublic: (user) => {
                 let db = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-                if (!db[user]) {
-                    document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found</h1>";
-                    return;
-                }
+                if (!db[user]) return document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found</h1>";
                 app.nav('public');
                 document.getElementById('pub-user').innerText = user;
                 document.getElementById('pub-avatar').src = db[user].avatar;
             },
 
+            previewImage: (input) => {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => document.getElementById('avatar-preview').src = e.target.result;
+                    reader.readAsDataURL(input.files[0]);
+                }
+            },
+            
             triggerFile: (type) => document.getElementById(`file-${type}`).click(),
 
             handleFile: (type) => {
                 const file = document.getElementById(`file-${type}`).files[0];
                 if (!file) return;
                 if (file.size > 3 * 1024 * 1024) return app.toast('File too big (>3MB)');
-
                 app.loading(true);
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     app.state.tempMedia = { type, data: e.target.result };
                     document.getElementById('preview-box').classList.remove('hidden');
-                    const previewEl = document.getElementById(type === 'image' ? 'prev-img' : 'prev-vid');
-                    previewEl.src = e.target.result;
-                    previewEl.classList.remove('hidden');
+                    document.getElementById(type === 'image' ? 'prev-img' : 'prev-vid').src = e.target.result;
+                    document.getElementById(type === 'image' ? 'prev-img' : 'prev-vid').classList.remove('hidden');
                     app.loading(false);
                 };
                 reader.readAsDataURL(file);
@@ -582,22 +496,17 @@
 
             toggleRec: async () => {
                 const btn = document.getElementById('btn-mic');
-                
                 if (app.state.mediaRecorder && app.state.mediaRecorder.state === 'recording') {
                     app.state.mediaRecorder.stop();
-                    btn.style.color = 'var(--text-main)';
                     btn.classList.remove('active');
                 } else {
                     try {
                         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                         app.state.mediaRecorder = new MediaRecorder(stream);
                         app.state.chunks = [];
-                        
                         app.state.mediaRecorder.start();
-                        btn.style.color = 'var(--danger)';
                         btn.classList.add('active');
                         app.toast('Recording...');
-
                         app.state.mediaRecorder.ondataavailable = e => app.state.chunks.push(e.data);
                         app.state.mediaRecorder.onstop = () => {
                             const blob = new Blob(app.state.chunks, { type: 'audio/webm' });
@@ -611,9 +520,7 @@
                                 aud.classList.remove('hidden');
                             };
                         };
-                    } catch (e) {
-                        app.toast('Mic Permission Denied');
-                    }
+                    } catch (e) { app.toast('Mic Denied'); }
                 }
             },
 
@@ -629,35 +536,22 @@
                 const text = document.getElementById('msg-text').value.trim();
                 const media = app.state.tempMedia;
                 const user = document.getElementById('pub-user').innerText;
-
                 if (!text && !media) return app.toast('Empty Message!');
-
                 app.loading(true);
-
-                // Simulate network delay for realism
                 setTimeout(() => {
                     try {
                         let msgs = JSON.parse(localStorage.getItem(app.dbMsgs) || "{}");
                         if (!msgs[user]) msgs[user] = [];
-
                         msgs[user].push({
-                            text,
-                            type: media ? media.type : null,
-                            data: media ? media.data : null,
+                            text, type: media ? media.type : null, data: media ? media.data : null,
                             date: new Date().toISOString()
                         });
-
                         localStorage.setItem(app.dbMsgs, JSON.stringify(msgs));
                         app.toast('Secret Sent! 🚀');
-                        
-                        // Reset
                         document.getElementById('msg-text').value = "";
                         app.resetMedia();
-                        app.loading(false);
-                    } catch (e) {
-                        app.loading(false);
-                        app.toast('Storage Full! Send text only.');
-                    }
+                    } catch (e) { app.toast('Storage Full!'); }
+                    app.loading(false);
                 }, 1000);
             },
             
@@ -667,9 +561,7 @@
             }
         };
 
-        // Start App
         window.onload = app.init;
-
     </script>
 </body>
 </html>
