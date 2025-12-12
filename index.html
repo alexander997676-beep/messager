@@ -174,7 +174,7 @@
                 <textarea id="msg-text" class="msg-input" rows="1" placeholder="Type a message..."></textarea>
             </div>
             
-            <button class="btn" onclick="app.sendMessage()" style="margin-top:15px;">Send 🚀</button>
+            <button class="btn" type="button" onclick="app.sendMessage()" style="margin-top:15px;">Send 🚀</button>
             
             <!-- ATTACHMENT MENU -->
             <div id="attach-menu" class="attach-menu hidden">
@@ -274,8 +274,9 @@
         init: async () => {
             const params = new URLSearchParams(window.location.search);
             const to = params.get('to');
-            if(to) app.loadPublic(to);
-            else {
+            if(to) {
+                app.loadPublic(to);
+            } else {
                 const u = localStorage.getItem('f_user');
                 const e = localStorage.getItem('f_email');
                 if(u && e) { app.state.user = u; app.state.email = e; app.nav('inbox'); }
