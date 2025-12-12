@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- PWA / Full Screen Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <title>FaizanMsg Supreme</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -10,7 +17,7 @@
     <style>
         /* --- SUPREME THEME ENGINE --- */
         :root {
-            --hue: 260; /* Default Purple */
+            --hue: 260;
             --bg-deep: #000000;
             --primary: hsl(var(--hue), 90%, 65%);
             --primary-glow: hsla(var(--hue), 90%, 65%, 0.4);
@@ -26,13 +33,8 @@
         body { font-family: var(--font); background: var(--bg-deep); color: var(--text); margin: 0; height: 100vh; overflow: hidden; }
 
         /* --- DYNAMIC BACKGROUND --- */
-        .orb-bg {
-            position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000;
-        }
-        .orb {
-            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6;
-            animation: float 10s infinite ease-in-out alternate;
-        }
+        .orb-bg { position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 10s infinite ease-in-out alternate; }
         .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--primary); }
         .orb-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #22d3ee, transparent); animation-delay: -5s; }
         @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 30px); } }
@@ -54,62 +56,45 @@
         .loader { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; margin-top: 20px; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- SCROLL AREA --- */
-        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 120px; scroll-behavior: smooth; }
+        /* --- SCROLL AREA (Fix for Logout Button) --- */
+        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 150px; scroll-behavior: smooth; }
         .scroll-view::-webkit-scrollbar { width: 0; }
 
         /* --- COMPONENTS --- */
-        .card {
-            background: var(--surface); border: 1px solid var(--border);
-            padding: 20px; border-radius: 24px; margin-bottom: 15px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3); transition: 0.2s;
-        }
-        .btn {
-            width: 100%; padding: 16px; border-radius: 16px; border: none;
-            font-weight: 700; font-size: 15px; cursor: pointer;
-            background: var(--primary); color: white;
-            box-shadow: 0 8px 20px -5px var(--primary-glow); transition: 0.2s;
-        }
+        .card { background: var(--surface); border: 1px solid var(--border); padding: 20px; border-radius: 24px; margin-bottom: 15px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3); transition: 0.2s; }
+        .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; background: var(--primary); color: white; box-shadow: 0 8px 20px -5px var(--primary-glow); transition: 0.2s; }
         .btn:active { transform: scale(0.97); }
-        .input-field {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-family: var(--font);
-        }
+        .input-field { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-family: var(--font); }
         .input-field:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
         /* --- AVATAR --- */
         .avatar-group { text-align: center; margin-bottom: 20px; position: relative; }
         .avatar {
             width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary); background: #222;
+            border: 3px solid var(--primary); background: #222; cursor: pointer;
         }
         .avatar-edit {
-            position: absolute; bottom: 5px; right: 50%; transform: translateX(40px);
-            background: white; color: black; width: 30px; height: 30px; border-radius: 50%;
-            display: grid; place-items: center; font-size: 12px; cursor: pointer;
+            position: absolute; bottom: 5px; right: 50%; transform: translateX(45px);
+            background: white; color: black; width: 35px; height: 35px; border-radius: 50%;
+            display: grid; place-items: center; font-size: 16px; cursor: pointer; border: 2px solid #000;
         }
+
+        /* --- FULL SCREEN IMAGE VIEWER --- */
+        .image-viewer {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000;
+            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .image-viewer.show { opacity: 1; pointer-events: all; }
+        .image-viewer img { max-width: 95%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 50px rgba(255,255,255,0.1); }
+        .close-viewer { position: absolute; top: 30px; right: 30px; color: white; font-size: 30px; cursor: pointer; }
 
         /* --- CHAT INPUT (Bottom) --- */
-        .chat-dock {
-            display: flex; align-items: flex-end; gap: 10px; background: var(--surface-top);
-            padding: 12px; border-radius: 24px; border: 1px solid var(--border);
-            margin-top: 10px;
-        }
-        .action-btn {
-            width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1);
-            color: var(--text); display: grid; place-items: center; font-size: 18px; cursor: pointer; flex-shrink: 0;
-        }
-        .msg-input {
-            flex: 1; background: transparent; border: none; color: white;
-            font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px;
-        }
+        .chat-dock { display: flex; align-items: flex-end; gap: 10px; background: var(--surface-top); padding: 12px; border-radius: 24px; border: 1px solid var(--border); margin-top: 10px; }
+        .action-btn { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1); color: var(--text); display: grid; place-items: center; font-size: 18px; cursor: pointer; flex-shrink: 0; }
+        .msg-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px; }
 
-        /* --- FILE CHIP (WhatsApp Style) --- */
-        .file-chip {
-            display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08);
-            padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border);
-            margin-bottom: 15px; animation: slideUp 0.3s;
-        }
+        /* --- FILE CHIP --- */
+        .file-chip { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; animation: slideUp 0.3s; }
         .chip-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: #000; display: grid; place-items: center; font-size: 18px; }
         .chip-info { flex: 1; overflow: hidden; }
         .chip-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -121,27 +106,11 @@
         .theme-dot { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
         .theme-dot.active { border-color: white; transform: scale(1.1); }
 
-        /* --- PIN LOCK --- */
-        .pin-screen {
-            position: absolute; inset: 0; background: #000; z-index: 500;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .pin-dots { display: flex; gap: 15px; margin-bottom: 30px; }
-        .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-muted); transition: 0.2s; }
-        .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
-        .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 24px; font-weight: 600; display: grid; place-items: center; cursor: pointer; }
-        .key:active { background: rgba(255,255,255,0.3); }
-
         /* --- QR CODE --- */
         .qr-box { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         
         /* --- ATTACHMENT MENU --- */
-        .attach-menu {
-            position: absolute; bottom: 85px; left: 15px; width: 180px;
-            background: #111; border: 1px solid var(--border); border-radius: 18px;
-            padding: 8px; transform: scale(0); transform-origin: bottom left; transition: 0.2s; opacity: 0; pointer-events: none;
-        }
+        .attach-menu { position: absolute; bottom: 85px; left: 15px; width: 180px; background: #111; border: 1px solid var(--border); border-radius: 18px; padding: 8px; transform: scale(0); transform-origin: bottom left; transition: 0.2s; opacity: 0; pointer-events: none; }
         .attach-menu.open { transform: scale(1); opacity: 1; pointer-events: all; }
         .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; color: white; cursor: pointer; }
         .menu-item:hover { background: rgba(255,255,255,0.1); }
@@ -168,6 +137,12 @@
 </div>
 
 <div class="orb-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+<!-- FULL SCREEN IMAGE VIEWER -->
+<div id="image-viewer" class="image-viewer" onclick="app.closeImageViewer()">
+    <div class="close-viewer">&times;</div>
+    <img id="viewer-img" src="" onclick="event.stopPropagation()">
+</div>
 
 <div class="app-container">
 
@@ -201,28 +176,14 @@
         </div>
     </div>
 
-    <!-- 2. PIN LOCK SCREEN -->
-    <div id="view-pin" class="pin-screen hidden">
-        <h2 style="margin-bottom:10px;">Enter PIN</h2>
-        <p style="color:var(--text-muted); margin-bottom:30px;">Secure Access</p>
-        <div class="pin-dots">
-            <div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div>
-            <div class="pin-dot" id="d3"></div><div class="pin-dot" id="d4"></div>
-        </div>
-        <div class="keypad" id="keypad">
-            <!-- JS generates keys -->
-        </div>
-        <div style="margin-top:30px; color:var(--text-muted);" onclick="app.logout()">Log Out</div>
-    </div>
-
-    <!-- 3. INBOX -->
+    <!-- 2. INBOX -->
     <div id="view-inbox" class="view">
         <div class="scroll-view">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h2>Inbox</h2>
                 <div style="display:flex; gap:10px;">
-                    <i class="fas fa-search" onclick="app.toggleSearch()" style="padding:10px; background:var(--surface); border-radius:50%;"></i>
-                    <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%;"></i>
+                    <i class="fas fa-search" onclick="app.toggleSearch()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"></i>
+                    <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"></i>
                 </div>
             </div>
             
@@ -231,47 +192,48 @@
         </div>
     </div>
 
-    <!-- 4. PROFILE / SETTINGS -->
+    <!-- 3. PROFILE / SETTINGS -->
     <div id="view-profile" class="view">
         <div class="scroll-view">
             <div class="card" style="text-align:center;">
-                <img id="p-img" class="avatar">
+                <!-- AVATAR - Clicking opens viewer, Icon opens edit -->
+                <div style="position:relative; width:100px; margin:0 auto;">
+                    <img id="p-img" class="avatar" onclick="app.viewImage(this.src)">
+                    <label class="avatar-edit" style="right:0; transform:none;"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.updateProfilePic(this)"></label>
+                </div>
+                
                 <h2 id="p-user" style="margin-top:10px;">User</h2>
                 <p id="p-bio" style="color:var(--text-muted); font-size:13px; margin:5px 0;">Bio...</p>
+                
                 <div class="qr-box">
-                    <img id="p-qr" src="" width="120" height="120" style="display:block;">
+                    <img id="p-qr" src="" width="120" height="120" style="display:block;" onclick="app.viewImage(this.src)">
                 </div>
                 <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; font-size:12px; color:var(--primary); overflow:hidden; text-overflow:ellipsis;" id="p-link">Link</div>
                 <button class="btn" onclick="app.copyLink()" style="margin-top:10px; font-size:13px; padding:10px;">Copy Link</button>
             </div>
 
             <div class="card">
-                <h3>App Theme</h3>
+                <h3>App Settings</h3>
                 <div class="theme-grid">
                     <div class="theme-dot" style="background:#8b5cf6" onclick="app.setTheme(260)"></div>
                     <div class="theme-dot" style="background:#3b82f6" onclick="app.setTheme(210)"></div>
                     <div class="theme-dot" style="background:#10b981" onclick="app.setTheme(150)"></div>
                     <div class="theme-dot" style="background:#f97316" onclick="app.setTheme(25)"></div>
                 </div>
-            </div>
-
-            <div class="card">
-                <h3>Security</h3>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                    <span>App Lock (PIN)</span>
-                    <button id="btn-pin" onclick="app.setupPin()" style="background:var(--surface-top); border:1px solid var(--border); color:white; padding:5px 15px; border-radius:20px;">Setup</button>
-                </div>
+                <button class="btn" onclick="app.toggleFullScreen()" style="background:var(--surface-top); color:white; font-size:14px; padding:10px; margin-top:10px;">
+                    <i class="fas fa-expand"></i> Go Fullscreen (Hide URL)
+                </button>
             </div>
 
             <button class="btn" onclick="app.logout()" style="background:rgba(220, 38, 38, 0.2); color:#ff5555; margin-top:20px;">Log Out</button>
         </div>
     </div>
 
-    <!-- 5. PUBLIC SEND -->
+    <!-- 4. PUBLIC SEND -->
     <div id="view-public" class="view">
         <div class="scroll-view">
             <div style="text-align:center; margin-top:20px; margin-bottom:30px;">
-                <img id="pub-img" class="avatar" style="border-color:white;">
+                <img id="pub-img" class="avatar" style="border-color:white;" onclick="app.viewImage(this.src)">
                 <h2 style="font-size:24px; margin-top:10px;">Send Secret</h2>
                 <p style="color:var(--text-muted);">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
                 <div id="pub-bio" style="font-size:12px; font-style:italic; color:rgba(255,255,255,0.6); margin-top:5px;"></div>
@@ -320,7 +282,7 @@
 <div id="toast" class="toast">Alert</div>
 
 <script>
-    const DB_NAME = 'FaizanSupreme'; const DB_VER = 1;
+    const DB_NAME = 'FaizanSupremeFixed'; const DB_VER = 1;
     const DEF_PIC = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
     const db = {
@@ -343,13 +305,12 @@
     };
 
     const app = {
-        state: { u:null, e:null, authFile:null, msgFile:null, msgType:null, pin:null, pinInput:'' },
+        state: { u:null, e:null, authFile:null, msgFile:null, msgType:null },
 
         init: async () => {
             setTimeout(() => document.getElementById('splash').style.opacity = 0, 1500);
             setTimeout(() => document.getElementById('splash').style.display = 'none', 2000);
 
-            // Load Theme
             const hue = localStorage.getItem('theme') || 260;
             app.setTheme(hue);
 
@@ -358,54 +319,34 @@
 
             const u = localStorage.getItem('u');
             const e = localStorage.getItem('e');
-            const pin = localStorage.getItem('pin');
 
             if(u && e) {
-                app.state.u = u; app.state.e = e; app.state.pin = pin;
-                if(pin) app.showPinScreen();
-                else app.nav('inbox', document.querySelector('.dock-item'));
+                app.state.u = u; app.state.e = e;
+                app.nav('inbox', document.querySelector('.dock-item'));
             } else {
                 document.getElementById('view-auth').classList.add('active');
             }
         },
 
+        // --- FULLSCREEN & IMAGE VIEW ---
+        toggleFullScreen: () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(e => app.toast("Fullscreen failed"));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        },
+
+        viewImage: (src) => {
+            document.getElementById('viewer-img').src = src;
+            document.getElementById('image-viewer').classList.add('show');
+        },
+        closeImageViewer: () => document.getElementById('image-viewer').classList.remove('show'),
+
         // --- THEME ---
         setTheme: (h) => {
             document.documentElement.style.setProperty('--hue', h);
             localStorage.setItem('theme', h);
-        },
-
-        // --- PIN LOGIC ---
-        showPinScreen: () => {
-            document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
-            document.getElementById('view-pin').classList.remove('hidden');
-            const k = document.getElementById('keypad'); k.innerHTML = '';
-            [1,2,3,4,5,6,7,8,9,'C',0,'<'].forEach(n => {
-                k.innerHTML += `<div class="key" onclick="app.keyPress('${n}')">${n}</div>`;
-            });
-        },
-        keyPress: (k) => {
-            if(k === 'C') app.state.pinInput = '';
-            else if(k === '<') app.state.pinInput = app.state.pinInput.slice(0, -1);
-            else if(app.state.pinInput.length < 4) app.state.pinInput += k;
-            
-            // Update dots
-            [1,2,3,4].forEach(i => {
-                document.getElementById(`d${i}`).classList.toggle('filled', i <= app.state.pinInput.length);
-            });
-
-            if(app.state.pinInput === app.state.pin) {
-                document.getElementById('view-pin').classList.add('hidden');
-                app.nav('inbox', document.querySelector('.dock-item'));
-            }
-        },
-        setupPin: () => {
-            const p = prompt("Set a 4-digit PIN for App Lock:");
-            if(p && p.length === 4) {
-                localStorage.setItem('pin', p);
-                app.state.pin = p;
-                app.toast('App Lock Enabled 🔒');
-            }
         },
 
         // --- AUTH ---
@@ -446,6 +387,17 @@
             } else app.toast('Invalid Details');
         },
         logout: () => { localStorage.clear(); location.reload(); },
+
+        // --- PROFILE UPDATE ---
+        updateProfilePic: async (input) => {
+            if(input.files[0]) {
+                const u = await db.op('u', 'readonly', 'get', app.state.e);
+                u.pic = input.files[0];
+                await db.op('u', 'readwrite', 'put', u);
+                app.renderProfile();
+                app.toast("Profile Pic Updated");
+            }
+        },
 
         // --- FILE CHIP LOGIC ---
         handleFile: (i, t) => {
@@ -498,7 +450,7 @@
                     const ma = document.getElementById('story-media'); ma.innerHTML='';
                     if(m.media) {
                         const u = URL.createObjectURL(m.media);
-                        if(m.type==='image') ma.innerHTML=`<img src="${u}" style="max-width:100%;border-radius:10px">`;
+                        if(m.type==='image') ma.innerHTML=`<img src="${u}" style="max-width:100%;border-radius:10px" onclick="app.viewImage(this.src)">`;
                         else if(m.type==='video') ma.innerHTML=`<video src="${u}" controls style="max-width:100%;border-radius:10px"></video>`;
                         else ma.innerHTML=`<audio src="${u}" controls style="width:100%"></audio>`;
                     }
