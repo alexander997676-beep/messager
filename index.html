@@ -11,7 +11,7 @@
         /* --- ELITE THEME VARIABLES --- */
         :root {
             --bg-deep: #050505;
-            --surface: rgba(20, 20, 20, 0.6);
+            --surface: rgba(20, 20, 20, 0.8);
             --surface-light: rgba(255, 255, 255, 0.05);
             --primary: #6366f1;
             --primary-grad: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
@@ -130,7 +130,6 @@
             </div>
 
             <div id="auth-forms">
-                <!-- Profile Pic & Bio (Only for Signup) -->
                 <div id="signup-extras" class="hidden">
                     <label class="avatar-box" style="cursor:pointer; width:90px; height:90px;">
                         <img id="auth-pic-prev" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
@@ -142,7 +141,6 @@
                 <input type="email" id="in-email" class="input-field" placeholder="Email Address">
                 <input type="text" id="in-user" class="input-field hidden" placeholder="Username">
                 <input type="password" id="in-pass" class="input-field" placeholder="Password">
-                <!-- Bio Input -->
                 <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Write a short bio..."></textarea>
 
                 <button id="btn-login" class="btn" onclick="app.login()">Login <i class="fas fa-arrow-right"></i></button>
@@ -163,6 +161,13 @@
                 <h2>Inbox</h2>
                 <div onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"><i class="fas fa-sync-alt"></i></div>
             </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding:10px; border-radius:10px; margin-bottom:20px; font-size:12px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-bell"></i> 
+                <span>Enable Notifications to see messages instantly.</span>
+                <button onclick="app.reqNotify()" style="background:var(--primary); border:none; color:white; padding:5px 10px; border-radius:5px; margin-left:auto;">Enable</button>
+            </div>
+
             <div id="msg-list"></div>
         </div>
     </div>
@@ -193,7 +198,6 @@
             
             <button class="btn" onclick="app.sendMsg()" style="margin-top:20px;">Send Message 🚀</button>
 
-            <!-- Attach Menu -->
             <div id="attach-sheet" class="attach-sheet">
                 <label class="sheet-item">
                     <i class="fas fa-image" style="color:#4ade80"></i> Photo
@@ -224,11 +228,7 @@
                 </div>
                 <h2 id="p-user">Username</h2>
                 <p id="p-email" style="color:var(--text-muted); font-size:12px;">Email</p>
-                
-                <!-- BIO DISPLAY -->
                 <p id="p-bio" class="bio-text" style="margin-top:15px; margin-bottom:15px;">No bio set.</p>
-
-                <!-- EDIT BUTTON -->
                 <button class="btn btn-outline" onclick="app.openEditModal()" style="font-size:14px; padding:8px 20px; width:auto; margin:0 auto;"><i class="fas fa-pen"></i> Edit Profile</button>
             </div>
 
@@ -246,25 +246,21 @@
     <div id="edit-modal" class="modal-overlay">
         <div class="modal-box">
             <h2 style="text-align:center; margin-bottom:20px;">Edit Profile</h2>
-            
             <div style="text-align:center; margin-bottom:15px;">
                 <label class="avatar-box" style="width:80px; height:80px; margin:0 auto; cursor:pointer;">
                     <img id="edit-pic-prev" class="avatar-img">
                     <div class="edit-badge"><i class="fas fa-camera"></i></div>
                     <input type="file" hidden accept="image/*" onchange="app.handleEditPic(this)">
                 </label>
-                <p style="font-size:12px; color:#666; margin-top:5px;">Change Photo</p>
             </div>
-
             <p style="font-size:12px; margin-bottom:5px; color:#aaa;">Bio</p>
             <textarea id="edit-bio-input" class="input-field" rows="3"></textarea>
-
             <button class="btn" onclick="app.saveProfile()">Save Changes</button>
             <button class="btn btn-outline" onclick="app.closeEditModal()" style="margin-top:10px;">Cancel</button>
         </div>
     </div>
 
-    <!-- STORY MODE MODAL (For viewing messages) -->
+    <!-- STORY MODE MODAL -->
     <div id="story-modal" class="modal-overlay" style="background:black;">
         <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
             <div style="width:100%; max-width:400px; text-align:center;">
@@ -290,7 +286,7 @@
 
 <script>
     // --- DATABASE ---
-    const DB_NAME = 'FaizanMsgEliteBio';
+    const DB_NAME = 'FaizanMsgEliteNotify';
     const DB_VER = 1;
     const DEFAULT_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
@@ -322,6 +318,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const to = urlParams.get('to');
             
+            // Ask for Notification permission on load
+            if (Notification.permission === 'default') {
+                // Not asking immediately to avoid annoyance, user can click button
+            }
+
             if(to) {
                 app.loadPublic(to);
             } else {
@@ -331,6 +332,23 @@
                     app.state.user = u; app.state.email = e;
                     app.nav('inbox', document.querySelector('.dock-btn'));
                 }
+            }
+        },
+
+        // --- NOTIFICATIONS ---
+        reqNotify: () => {
+            Notification.requestPermission().then(perm => {
+                if(perm === "granted") app.toast("Notifications Enabled! 🔔");
+                else app.toast("Notifications Denied");
+            });
+        },
+
+        showNotification: (msg) => {
+            if(Notification.permission === "granted") {
+                new Notification("FaizanMsg: New Secret!", {
+                    body: msg || "Someone sent you a message.",
+                    icon: "https://cdn-icons-png.flaticon.com/512/2950/2950682.png" // Demo Icon
+                });
             }
         },
 
@@ -390,7 +408,7 @@
             const u = await db.op('users', 'readonly', 'get', app.state.email);
             document.getElementById('edit-bio-input').value = u.bio || "";
             document.getElementById('edit-pic-prev').src = u.pic ? URL.createObjectURL(u.pic) : DEFAULT_AVATAR;
-            app.state.editFile = null; // Reset temp file
+            app.state.editFile = null; 
             document.getElementById('edit-modal').classList.add('show');
         },
 
@@ -406,15 +424,13 @@
         saveProfile: async () => {
             const newBio = document.getElementById('edit-bio-input').value;
             const u = await db.op('users', 'readonly', 'get', app.state.email);
-            
-            // Update fields
             u.bio = newBio;
             if(app.state.editFile) u.pic = app.state.editFile;
 
             await db.op('users', 'readwrite', 'put', u);
             app.toast('Profile Updated!');
             app.closeEditModal();
-            app.renderProfile(); // Refresh view
+            app.renderProfile();
         },
 
         // --- NAVIGATION ---
@@ -490,6 +506,9 @@
                 media: app.state.msgFile, type: app.state.msgType,
                 date: new Date()
             });
+
+            // TRIGGER NOTIFICATION (Simulation)
+            app.showNotification("New Message Received!");
 
             app.toast('Sent Successfully!');
             document.getElementById('msg-input').value = "";
