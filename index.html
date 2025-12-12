@@ -13,28 +13,21 @@
             --bg-deep: #000000;
             --surface: #121212;
             --surface-light: #1e1e1e;
-            
-            /* Default Theme: Neon (Violet) */
             --accent: #8b5cf6;
             --accent-grad: linear-gradient(135deg, #8b5cf6, #ec4899);
             --accent-glow: rgba(139, 92, 246, 0.5);
-            
             --text-main: #ffffff;
             --text-sub: #9ca3af;
-            
-            --radius-xl: 32px;
             --radius-lg: 20px;
-            
             --glass-border: rgba(255, 255, 255, 0.08);
             --font-main: 'Outfit', sans-serif;
         }
 
-        /* Theme Variants */
+        /* Variants */
         [data-theme="sunset"] { --accent: #f97316; --accent-grad: linear-gradient(135deg, #f97316, #eab308); --accent-glow: rgba(249, 115, 22, 0.5); }
         [data-theme="ocean"] { --accent: #06b6d4; --accent-grad: linear-gradient(135deg, #06b6d4, #3b82f6); --accent-glow: rgba(6, 182, 212, 0.5); }
         [data-theme="cyber"] { --accent: #22c55e; --accent-grad: linear-gradient(135deg, #22c55e, #10b981); --accent-glow: rgba(34, 197, 94, 0.5); }
 
-        /* --- GLOBAL RESET --- */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
         body {
             font-family: var(--font-main);
@@ -47,162 +40,122 @@
             justify-content: center;
         }
 
-        /* --- AURORA BACKGROUND --- */
-        .aurora-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: #000; overflow: hidden;
-        }
-        .aurora-blob {
-            position: absolute; width: 50vw; height: 50vw; background: var(--accent);
-            filter: blur(80px); opacity: 0.3; border-radius: 50%;
-            animation: drift 15s infinite alternate ease-in-out;
-            transition: background 0.5s ease;
-        }
-        .blob-1 { top: -10%; left: -10%; animation-delay: 0s; }
+        /* --- AURORA BG --- */
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #000; overflow: hidden; }
+        .aurora-blob { position: absolute; width: 50vw; height: 50vw; background: var(--accent); filter: blur(80px); opacity: 0.3; border-radius: 50%; animation: drift 15s infinite alternate ease-in-out; }
+        .blob-1 { top: -10%; left: -10%; }
         .blob-2 { bottom: -10%; right: -10%; background: #fff; opacity: 0.1; animation-delay: -5s; }
-        .blob-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; animation-delay: -10s; }
         @keyframes drift { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20px, 40px) scale(1.1); } }
 
-        /* --- APP SHELL --- */
-        .app-container {
-            width: 100%; max-width: 480px; height: 100%;
-            background: rgba(0,0,0,0.01);
-            display: flex; flex-direction: column; position: relative;
-        }
+        .app-container { width: 100%; max-width: 480px; height: 100%; background: rgba(0,0,0,0.01); display: flex; flex-direction: column; position: relative; }
 
-        /* --- SCROLL CONTENT --- */
-        .scroll-view {
-            flex: 1; overflow-y: auto; overflow-x: hidden;
-            padding: 24px; padding-bottom: 120px;
-            scroll-behavior: smooth;
-        }
+        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 140px; scroll-behavior: smooth; }
         .scroll-view::-webkit-scrollbar { display: none; }
 
-        /* --- TYPOGRAPHY & COMPONENTS --- */
         h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.5px; }
         .text-gradient { background: var(--accent-grad); -webkit-background-clip: text; color: transparent; }
         .text-muted { color: var(--text-sub); font-size: 14px; }
 
-        .card {
-            background: var(--surface); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: var(--radius-lg); margin-bottom: 16px;
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
-            transition: transform 0.2s; position: relative; overflow: hidden;
-        }
-        .card:active { transform: scale(0.98); }
-
-        .btn {
-            width: 100%; padding: 18px; border: none; border-radius: var(--radius-lg);
-            background: var(--text-main); color: #000; font-weight: 700; font-size: 16px;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-primary { background: var(--accent-grad); color: white; box-shadow: 0 8px 20px -5px var(--accent-glow); }
+        .card { background: var(--surface); border: 1px solid var(--glass-border); padding: 20px; border-radius: var(--radius-lg); margin-bottom: 16px; position: relative; }
+        
+        .btn { width: 100%; padding: 18px; border: none; border-radius: var(--radius-lg); background: var(--text-main); color: #000; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-primary { background: var(--accent-grad); color: white; }
         .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-main); }
-        .btn:active { transform: scale(0.95); }
-
-        .input-field {
-            width: 100%; background: var(--surface-light); border: 1px solid transparent;
-            padding: 18px; border-radius: var(--radius-lg); color: white; font-size: 16px;
-            font-family: inherit; margin-bottom: 15px; transition: 0.3s;
-        }
+        
+        .input-field { width: 100%; background: var(--surface-light); border: 1px solid transparent; padding: 18px; border-radius: var(--radius-lg); color: white; font-size: 16px; margin-bottom: 15px; }
         .input-field:focus { border-color: var(--accent); background: var(--surface); }
 
-        /* --- DOCK NAV --- */
+        /* --- UPDATED DOCK NAV (MOVED UP) --- */
         .dock-nav {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(20px);
+            position: absolute; 
+            bottom: 70px; /* Changed from 30px to 70px as requested */
+            left: 50%; transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.9); backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             padding: 12px 25px; border-radius: 100px;
             display: flex; gap: 30px; align-items: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.6); z-index: 50;
-            transition: 0.3s;
         }
-        .dock-item {
-            font-size: 20px; color: var(--text-sub); transition: 0.3s; cursor: pointer;
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        .dock-item { font-size: 20px; color: var(--text-sub); cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+        .dock-item.active { color: white; background: var(--accent-grad); transform: translateY(-10px); }
+
+        /* --- UPLOAD AVATAR STYLES --- */
+        .upload-circle {
+            width: 100px; height: 100px; border-radius: 50%; 
+            background: var(--surface-light); border: 2px dashed var(--text-sub);
+            margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; overflow: hidden; position: relative;
         }
-        .dock-item.active { color: white; background: var(--accent-grad); box-shadow: 0 5px 15px var(--accent-glow); transform: translateY(-10px); }
-        
-        /* --- VIEWS --- */
+        .upload-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .upload-circle i { font-size: 24px; color: var(--text-sub); }
+        #r-file { display: none; }
+
+        /* --- PROFILE IMAGE --- */
+        .profile-pic {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--accent); padding: 3px; background: var(--surface);
+            margin: 0 auto 15px; display: block;
+        }
+
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- STORY MODE OVERLAY --- */
-        .story-overlay {
-            position: fixed; inset: 0; background: #000; z-index: 100;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: 0.4s; transform: scale(0.95);
-        }
-        .story-overlay.open { opacity: 1; pointer-events: all; transform: scale(1); }
-        .story-card {
-            width: 85%; aspect-ratio: 9/16; max-height: 70vh;
-            background: linear-gradient(180deg, var(--surface) 0%, #000 100%);
-            border: 1px solid var(--glass-border); border-radius: 32px;
-            padding: 40px; display: flex; flex-direction: column; justify-content: center; text-align: center;
-            box-shadow: 0 0 100px -20px var(--accent-glow); position: relative;
-        }
-        .story-badge {
-            background: var(--accent-grad); padding: 8px 16px; border-radius: 100px;
-            font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
-        }
-
-        /* --- THEME --- */
-        .theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
-        .theme-dot { height: 40px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; }
-        .theme-dot.active { border-color: white; opacity: 1; transform: scale(1.1); }
-
-        .logo { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
         .hidden { display: none !important; }
-        .toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100%);
-            background: white; color: black; padding: 12px 24px; border-radius: 100px; font-weight: 600;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200; transition: 0.4s; opacity: 0;
-        }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100%); background: white; color: black; padding: 12px 24px; border-radius: 100px; font-weight: 600; z-index: 200; transition: 0.4s; opacity: 0; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* STORY MODAL */
+        .story-overlay { position: fixed; inset: 0; background: #000; z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; }
+        .story-overlay.open { opacity: 1; pointer-events: all; }
+        .story-card { width: 85%; aspect-ratio: 9/16; background: linear-gradient(180deg, var(--surface) 0%, #000 100%); border: 1px solid var(--glass-border); border-radius: 32px; padding: 40px; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .story-badge { background: var(--accent-grad); padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 800; position: absolute; top: 30px; left: 50%; transform: translateX(-50%); }
     </style>
 </head>
 <body>
 
-<!-- DYNAMIC BACKGROUND -->
 <div class="aurora-bg">
     <div class="aurora-blob blob-1"></div>
     <div class="aurora-blob blob-2"></div>
-    <div class="aurora-blob blob-3"></div>
 </div>
 
 <div class="app-container">
 
     <!-- 1. AUTH SCREEN -->
     <div id="view-auth" class="view-section active">
-        <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center; padding-bottom: 24px;">
-            <div class="logo"><i class="fas fa-ghost text-gradient"></i> FaizanMsg Elite</div>
+        <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
+            <h1 style="font-size: 32px; margin-bottom: 10px; text-align:center;">FaizanMsg <span class="text-gradient">Elite</span></h1>
             
-            <h1 style="font-size: 42px; line-height: 1.1; margin-bottom: 10px;">
-                Unleash <br> <span class="text-gradient">Honesty.</span>
-            </h1>
-            <p class="text-muted" style="margin-bottom: 40px;">Login with Email. Chat with Username.</p>
-
             <div id="auth-forms">
-                <!-- LOGIN FORM (Email + Password) -->
+                <!-- LOGIN FORM -->
                 <form id="form-login" onsubmit="app.login(event)">
+                    <p style="text-align:center; color:#888; margin-bottom:30px;">Login to continue</p>
                     <input type="email" id="l-email" class="input-field" placeholder="Email Address" required>
                     <input type="password" id="l-pass" class="input-field" placeholder="Password" required>
                     <button type="submit" class="btn btn-primary">Login <i class="fas fa-arrow-right"></i></button>
                     <div style="text-align:center; margin-top:20px;">
-                        <span class="text-muted">New here?</span> <a href="#" onclick="app.toggleAuth('signup')" style="color:white; text-decoration:none; font-weight:bold;">Create Account</a>
+                        <a href="#" onclick="app.toggleAuth('signup')" style="color:white; font-size:14px;">Create New Account</a>
                     </div>
                 </form>
 
-                <!-- SIGNUP FORM (Email + Username + Password) -->
+                <!-- SIGNUP FORM (With Photo) -->
                 <form id="form-signup" class="hidden" onsubmit="app.register(event)">
+                    <p style="text-align:center; color:#888; margin-bottom:20px;">Setup Profile</p>
+                    
+                    <!-- UPLOAD PHOTO AREA -->
+                    <label class="upload-circle" for="r-file">
+                        <img id="r-preview" class="hidden" src="" alt="Preview">
+                        <i id="r-icon" class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="r-file" accept="image/*" onchange="app.previewImage(this)">
+                    
                     <input type="email" id="r-email" class="input-field" placeholder="Email Address" required>
-                    <input type="text" id="r-user" class="input-field" placeholder="Choose Username" required autocomplete="off">
-                    <input type="password" id="r-pass" class="input-field" placeholder="Create Password" required>
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <input type="text" id="r-user" class="input-field" placeholder="Username" required autocomplete="off">
+                    <input type="password" id="r-pass" class="input-field" placeholder="Password" required>
+                    
+                    <button type="submit" class="btn btn-primary">Create Account</button>
                     <div style="text-align:center; margin-top:20px;">
-                        <span class="text-muted">Have an account?</span> <a href="#" onclick="app.toggleAuth('login')" style="color:white; text-decoration:none; font-weight:bold;">Login</a>
+                        <a href="#" onclick="app.toggleAuth('login')" style="color:white; font-size:14px;">Back to Login</a>
                     </div>
                 </form>
             </div>
@@ -214,10 +167,7 @@
     <!-- INBOX TAB -->
     <div id="view-inbox" class="view-section">
         <div class="scroll-view">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                <h2>Inbox</h2>
-                <div class="text-muted"><i class="fas fa-sync-alt" onclick="app.renderInbox()"></i></div>
-            </div>
+            <h2 style="margin-bottom:20px;">Inbox <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="float:right; font-size:16px; cursor:pointer; opacity:0.6;"></i></h2>
             <div id="msg-container"></div>
         </div>
     </div>
@@ -226,28 +176,17 @@
     <div id="view-profile" class="view-section">
         <div class="scroll-view">
             <div class="card" style="text-align:center; padding: 40px 20px;">
-                <div style="width:100px; height:100px; background:var(--surface-light); border-radius:50%; margin:0 auto 20px; display:grid; place-items:center; font-size:40px; color:var(--text-main); border:2px solid var(--accent);">
-                    <i class="fas fa-user-astronaut"></i>
-                </div>
+                <!-- DYNAMIC IMAGE HERE -->
+                <img id="p-img" src="" class="profile-pic" alt="Profile">
+                
                 <h2 id="p-user">@username</h2>
-                <div class="text-muted" id="p-email" style="margin-top:5px; font-size:12px;">user@email.com</div>
+                <div class="text-muted" id="p-email" style="margin-top:5px; font-size:12px;">email</div>
             </div>
 
             <div class="card">
                 <h3>My Link</h3>
-                <p class="text-muted" style="font-size:12px; margin: 10px 0;">Share this link to receive messages.</p>
-                <div style="background:var(--surface-light); padding:15px; border-radius:12px; font-family:monospace; color:var(--accent); overflow:hidden; white-space:nowrap; text-overflow:ellipsis;" id="p-link">...</div>
-                <button class="btn btn-primary" onclick="app.copyLink()" style="margin-top:15px; padding:12px;">Copy Link</button>
-            </div>
-
-            <div class="card">
-                <h3>App Theme</h3>
-                <div class="theme-grid">
-                    <div class="theme-dot active" style="background:#8b5cf6;" onclick="app.setTheme('neon', this)"></div>
-                    <div class="theme-dot" style="background:#f97316;" onclick="app.setTheme('sunset', this)"></div>
-                    <div class="theme-dot" style="background:#06b6d4;" onclick="app.setTheme('ocean', this)"></div>
-                    <div class="theme-dot" style="background:#22c55e;" onclick="app.setTheme('cyber', this)"></div>
-                </div>
+                <div style="background:var(--surface-light); padding:15px; border-radius:12px; margin:10px 0; font-family:monospace; color:var(--accent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="p-link">...</div>
+                <button class="btn btn-primary" onclick="app.copyLink()">Copy Link</button>
             </div>
 
             <button class="btn btn-ghost" onclick="app.logout()" style="color:#ef4444;">Log Out</button>
@@ -258,21 +197,19 @@
     <div id="view-public" class="view-section">
         <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
             <div style="text-align:center; margin-bottom:30px;">
-                <div style="font-size:60px; margin-bottom:10px;">👻</div>
-                <h2 style="font-size:28px;">Send a Secret</h2>
-                <p class="text-muted">To <span id="pub-target-name" style="color:var(--text-main); font-weight:bold;">User</span></p>
+                <!-- Target Image -->
+                <img id="pub-img" src="" class="profile-pic" style="width:80px; height:80px;" alt="User">
+                <h2 style="font-size:24px;">Send Secret</h2>
+                <p class="text-muted">To <span id="pub-target-name" style="color:white;">User</span></p>
             </div>
 
-            <textarea id="pub-msg-text" class="input-field" rows="6" placeholder="Type your anonymous message here..." style="resize:none; font-size:18px;"></textarea>
-            
-            <button class="btn btn-primary" onclick="app.sendPublicMessage()">Send Secretly 🚀</button>
-            <div style="text-align:center; margin-top:30px;">
-                <a href="?" style="color:var(--text-sub); text-decoration:none; font-size:12px;">Get your own FaizanMsg Elite</a>
-            </div>
+            <textarea id="pub-msg-text" class="input-field" rows="5" placeholder="Type here..." style="resize:none;"></textarea>
+            <button class="btn btn-primary" onclick="app.sendPublicMessage()">Send 🚀</button>
+            <div style="text-align:center; margin-top:20px;"><a href="?" style="color:#666; font-size:12px; text-decoration:none;">Create Account</a></div>
         </div>
     </div>
 
-    <!-- NAVIGATION DOCK -->
+    <!-- NAVIGATION DOCK (MOVED UP) -->
     <div id="nav-dock" class="dock-nav hidden">
         <div class="dock-item active" onclick="app.nav('inbox', this)"><i class="fas fa-envelope"></i></div>
         <div class="dock-item" onclick="app.nav('profile', this)"><i class="fas fa-user"></i></div>
@@ -280,17 +217,16 @@
 
 </div>
 
-<!-- STORY MODE MODAL -->
+<!-- STORY MODAL -->
 <div id="story-modal" class="story-overlay">
     <div class="story-card" id="story-capture-area">
-        <div class="story-badge">FaizanMsg Elite</div>
-        <div style="font-size: 80px; margin-bottom: 20px; opacity:0.8;">👻</div>
-        <h2 id="story-text" style="font-size: 24px; line-height: 1.4; margin-bottom: 20px;">"..."</h2>
-        <div class="text-muted" id="story-time">Just now</div>
+        <div class="story-badge">FaizanMsg</div>
+        <div style="font-size: 60px; margin-bottom: 20px;">👻</div>
+        <h2 id="story-text" style="font-size: 22px;">"Message"</h2>
+        <div class="text-muted" id="story-time">Now</div>
     </div>
-    <div style="margin-top: 30px; display:flex; gap:15px;">
-        <button class="btn btn-ghost" style="background:rgba(255,255,255,0.2); width:auto; padding: 12px 24px; border-radius:100px;" onclick="app.closeStory()">Close</button>
-        <button class="btn btn-primary" style="width:auto; padding: 12px 24px; border-radius:100px;" onclick="app.simScreenshot()">📸 Snapshot</button>
+    <div style="position:absolute; bottom:50px; display:flex; gap:20px;">
+        <button class="btn btn-ghost" onclick="app.closeStory()" style="width:auto; padding:10px 20px; border-radius:50px; background:#222;">Close</button>
     </div>
 </div>
 
@@ -298,113 +234,67 @@
 
 <script>
     const app = {
-        state: {
-            user: null, // this will hold the username
-            email: null,
-            theme: 'neon'
-        },
-        db: {
-            // Key = Email, Value = {username, password, email}
-            users: 'faizan_users_secure', 
-            // Key = Username, Value = [messages]
-            msgs: 'faizan_msgs_secure'
-        },
+        state: { user: null, email: null },
+        db: { users: 'faizan_elite_users', msgs: 'faizan_elite_msgs' },
+        defaultPic: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', // Fallback image
 
         init: () => {
-            // Load Theme
-            const savedTheme = localStorage.getItem('faizan_theme') || 'neon';
-            app.applyTheme(savedTheme);
-
-            // Check URL for Public Link
             const params = new URLSearchParams(window.location.search);
             const to = params.get('to');
+            if(to) app.loadPublic(to);
+            else {
+                const u = localStorage.getItem('f_user');
+                const e = localStorage.getItem('f_email');
+                if(u && e) app.loginSuccess(u, e);
+            }
+        },
 
-            if(to) {
-                app.loadPublic(to);
-            } else {
-                // Check session
-                const sessUser = localStorage.getItem('faizan_sess_user');
-                const sessEmail = localStorage.getItem('faizan_sess_email');
-                
-                if(sessUser && sessEmail) {
-                    app.loginSuccess(sessUser, sessEmail);
-                } else {
-                    app.show('auth');
+        // --- IMAGE HANDLING ---
+        previewImage: (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('r-preview').src = e.target.result;
+                    document.getElementById('r-preview').classList.remove('hidden');
+                    document.getElementById('r-icon').classList.add('hidden');
                 }
+                reader.readAsDataURL(input.files[0]);
             }
         },
 
-        // --- NAVIGATION & UI ---
-        show: (viewId) => {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
-            
-            const dock = document.getElementById('nav-dock');
-            if(viewId === 'inbox' || viewId === 'profile') dock.classList.remove('hidden');
-            else dock.classList.add('hidden');
-        },
-
-        nav: (viewId, el) => {
-            app.show(viewId);
-            document.querySelectorAll('.dock-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-            if(viewId === 'inbox') app.renderInbox();
-            if(viewId === 'profile') app.renderProfile();
-        },
-
-        toggleAuth: (mode) => {
-            if(mode === 'signup') {
-                document.getElementById('form-login').classList.add('hidden');
-                document.getElementById('form-signup').classList.remove('hidden');
-            } else {
-                document.getElementById('form-signup').classList.add('hidden');
-                document.getElementById('form-login').classList.remove('hidden');
-            }
-        },
-
-        toast: (msg) => {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
-        },
-
-        // --- THEME ENGINE ---
-        setTheme: (themeName, el) => {
-            localStorage.setItem('faizan_theme', themeName);
-            app.applyTheme(themeName);
-            document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-            if(el) el.classList.add('active');
-        },
-
-        applyTheme: (name) => {
-            document.documentElement.setAttribute('data-theme', name);
+        imageToBase64: (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
         },
 
         // --- AUTH ---
-        register: (e) => {
+        register: async (e) => {
             e.preventDefault();
             const email = document.getElementById('r-email').value.trim().toLowerCase();
             const user = document.getElementById('r-user').value.trim().toLowerCase();
             const pass = document.getElementById('r-pass').value;
+            const fileInput = document.getElementById('r-file');
 
             let users = JSON.parse(localStorage.getItem(app.db.users) || "{}");
+            if(users[email]) return app.toast('Email taken');
 
-            // Check if Email exists
-            if(users[email]) return app.toast('Email already registered!');
-
-            // Check if Username exists (need to loop since key is email)
-            for (let key in users) {
-                if(users[key].username === user) {
-                    return app.toast('Username already taken!');
+            // Handle Image
+            let pic = app.defaultPic;
+            if(fileInput.files[0]) {
+                // Warning: LocalStorage has 5MB limit. Large photos will crash app.
+                if(fileInput.files[0].size > 500000) {
+                    return app.toast('Photo too large (Max 500kb)');
                 }
+                pic = await app.imageToBase64(fileInput.files[0]);
             }
 
-            // Save new user
-            users[email] = { username: user, password: pass, email: email };
+            users[email] = { username: user, password: pass, email: email, pic: pic };
             localStorage.setItem(app.db.users, JSON.stringify(users));
-            
-            app.toast('Account Created! Please Login.');
+            app.toast('Created!');
             app.toggleAuth('login');
         },
 
@@ -414,138 +304,107 @@
             const pass = document.getElementById('l-pass').value;
             let users = JSON.parse(localStorage.getItem(app.db.users) || "{}");
 
-            // Look up by Email
             if(users[email] && users[email].password === pass) {
-                // Success - Save Username & Email to session
-                localStorage.setItem('faizan_sess_user', users[email].username);
-                localStorage.setItem('faizan_sess_email', email);
+                localStorage.setItem('f_user', users[email].username);
+                localStorage.setItem('f_email', email);
                 app.loginSuccess(users[email].username, email);
-            } else {
-                app.toast('Invalid Email or Password');
-            }
+            } else app.toast('Invalid details');
         },
 
         loginSuccess: (u, e) => {
-            app.state.user = u;
-            app.state.email = e;
-            app.nav('inbox', document.querySelector('.dock-item:first-child'));
+            app.state = { user: u, email: e };
+            app.nav('inbox', document.querySelector('.dock-item'));
         },
 
-        logout: () => {
-            localStorage.removeItem('faizan_sess_user');
-            localStorage.removeItem('faizan_sess_email');
-            location.href = window.location.pathname;
+        logout: () => { localStorage.clear(); location.reload(); },
+
+        // --- NAVIGATION ---
+        nav: (v, el) => {
+            document.querySelectorAll('.view-section').forEach(x => x.classList.remove('active'));
+            document.getElementById(`view-${v}`).classList.add('active');
+            document.getElementById('nav-dock').classList.remove('hidden');
+            document.querySelectorAll('.dock-item').forEach(x => x.classList.remove('active'));
+            if(el) el.classList.add('active');
+            if(v === 'inbox') app.renderInbox();
+            if(v === 'profile') app.renderProfile();
+        },
+        toggleAuth: (mode) => {
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-signup').classList.add('hidden');
+            document.getElementById(`form-${mode}`).classList.remove('hidden');
         },
 
-        // --- INBOX LOGIC ---
+        // --- VIEWS ---
+        renderProfile: () => {
+            let users = JSON.parse(localStorage.getItem(app.db.users) || "{}");
+            // Find user data by matching username (inefficient but works for demo)
+            let currentUserData = Object.values(users).find(u => u.username === app.state.user);
+            
+            document.getElementById('p-user').innerText = '@' + app.state.user;
+            document.getElementById('p-email').innerText = app.state.email;
+            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
+            
+            // Set Profile Pic
+            if(currentUserData && currentUserData.pic) {
+                document.getElementById('p-img').src = currentUserData.pic;
+            } else {
+                document.getElementById('p-img').src = app.defaultPic;
+            }
+        },
+
         renderInbox: () => {
             const msgs = JSON.parse(localStorage.getItem(app.db.msgs) || "{}");
-            const myMsgs = msgs[app.state.user] || []; // Messages are stored by Username
-            const container = document.getElementById('msg-container');
-            container.innerHTML = '';
-
-            if(myMsgs.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align:center; margin-top:50px; opacity:0.5;">
-                        <i class="fas fa-wind" style="font-size:40px; margin-bottom:10px;"></i>
-                        <p>No secrets yet.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            myMsgs.reverse().forEach((m, idx) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => app.openStory(m);
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <span style="font-size:12px; color:var(--accent); font-weight:bold;">SECRET</span>
-                        <span class="text-muted" style="font-size:12px;">${app.timeAgo(m.date)}</span>
-                    </div>
-                    <div style="font-size:16px; font-weight:500;">${m.text}</div>
-                    <div style="position:absolute; bottom:15px; right:15px; opacity:0.3; font-size:20px;">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                `;
-                container.appendChild(card);
+            const myMsgs = msgs[app.state.user] || [];
+            const box = document.getElementById('msg-container');
+            box.innerHTML = myMsgs.length ? '' : '<div style="text-align:center; opacity:0.5; margin-top:50px;">No messages</div>';
+            
+            myMsgs.reverse().forEach(m => {
+                const d = document.createElement('div');
+                d.className = 'card';
+                d.onclick = () => {
+                    document.getElementById('story-text').innerText = m.text;
+                    document.getElementById('story-modal').classList.add('open');
+                };
+                d.innerHTML = `<small style="color:var(--accent)">SECRET</small><p>${m.text}</p>`;
+                box.appendChild(d);
             });
         },
 
-        // --- PROFILE ---
-        renderProfile: () => {
-            document.getElementById('p-user').innerText = '@' + app.state.user;
-            document.getElementById('p-email').innerText = app.state.email;
-            const link = window.location.origin + window.location.pathname + "?to=" + app.state.user;
-            document.getElementById('p-link').innerText = link;
-        },
-
-        copyLink: () => {
-            const link = document.getElementById('p-link').innerText;
-            navigator.clipboard.writeText(link);
-            app.toast('Link Copied 📋');
-        },
-
-        // --- PUBLIC MESSAGING ---
         loadPublic: (user) => {
-            // Check if user exists in our Email DB (requires checking all users)
+            // Find target user image
             let users = JSON.parse(localStorage.getItem(app.db.users) || "{}");
-            let userExists = false;
-            for(let key in users) {
-                if(users[key].username === user) userExists = true;
-            }
-
-            // Note: Even if user doesn't exist locally (in this demo), we allow sending 
-            // because they might exist in another browser's localStorage if this was a real backend.
-            // But for this demo, we just proceed.
+            let targetData = Object.values(users).find(u => u.username === user);
             
-            app.show('public');
+            document.querySelectorAll('.view-section').forEach(x => x.classList.remove('active'));
+            document.getElementById('view-public').classList.add('active');
             document.getElementById('pub-target-name').innerText = user;
-            document.getElementById('view-public').setAttribute('data-target', user);
+            
+            if(targetData && targetData.pic) {
+                document.getElementById('pub-img').src = targetData.pic;
+            } else {
+                document.getElementById('pub-img').src = app.defaultPic;
+            }
+            
+            document.getElementById('view-public').dataset.target = user;
         },
 
         sendPublicMessage: () => {
-            const txt = document.getElementById('pub-msg-text').value.trim();
-            const target = document.getElementById('view-public').getAttribute('data-target');
-            if(!txt) return app.toast('Message cannot be empty');
-
-            let msgs = JSON.parse(localStorage.getItem(app.db.msgs) || "{}");
-            if(!msgs[target]) msgs[target] = [];
+            const txt = document.getElementById('pub-msg-text').value;
+            const tgt = document.getElementById('view-public').dataset.target;
+            if(!txt) return;
             
-            msgs[target].push({ text: txt, date: new Date().toISOString() });
+            let msgs = JSON.parse(localStorage.getItem(app.db.msgs) || "{}");
+            if(!msgs[tgt]) msgs[tgt] = [];
+            msgs[tgt].push({ text: txt, date: new Date() });
             localStorage.setItem(app.db.msgs, JSON.stringify(msgs));
-
-            app.toast('Sent Successfully 🚀');
-            document.getElementById('pub-msg-text').value = '';
-            setTimeout(() => {
-                location.href = window.location.pathname; 
-            }, 1500);
+            
+            app.toast('Sent!');
+            setTimeout(() => location.href = window.location.pathname, 1500);
         },
 
-        // --- STORY MODE & UTILS ---
-        openStory: (msg) => {
-            document.getElementById('story-text').innerText = `"${msg.text}"`;
-            document.getElementById('story-time').innerText = app.timeAgo(msg.date);
-            document.getElementById('story-modal').classList.add('open');
-        },
+        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied'); },
         closeStory: () => document.getElementById('story-modal').classList.remove('open'),
-        
-        simScreenshot: () => {
-            app.toast('Screen Captured!');
-            const area = document.getElementById('story-capture-area');
-            area.style.transform = "scale(0.9)";
-            setTimeout(() => area.style.transform = "scale(1)", 200);
-        },
-
-        timeAgo: (dateString) => {
-            const sec = Math.floor((new Date() - new Date(dateString)) / 1000);
-            if (sec < 60) return 'Just now';
-            const min = Math.floor(sec / 60);
-            if (min < 60) return min + 'm ago';
-            const hr = Math.floor(min / 60);
-            if (hr < 24) return hr + 'h ago';
-            return Math.floor(hr / 24) + 'd ago';
-        }
+        toast: (m) => { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
     };
 
     window.onload = app.init;
