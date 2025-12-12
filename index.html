@@ -3,218 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Messenger</title>
+    <title>SecretMsg - Anonymous Messages</title>
     <style>
-        /* CSS - Design Section */
+        /* --- ENHANCED CSS DESIGN --- */
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #333;
+            margin: 0;
+            padding: 20px;
         }
 
         .container {
-            background: white;
+            background: var(--white);
+            width: 100%;
+            max-width: 400px;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 350px;
-            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.5s ease;
         }
 
-        h2 { color: #444; margin-bottom: 20px; }
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; }
+        
+        /* Toggle Switch for Login/Signup */
+        .toggle-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #eee;
+            border-radius: 30px;
+            padding: 5px;
+            position: relative;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .active-btn { color: white; }
+        .inactive-btn { color: #555; }
+
+        .slider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 50%; /* Adjusted via JS logic usually, but fixed here for simple toggle */
+            height: calc(100% - 10px);
+            background: var(--primary);
+            border-radius: 25px;
+            transition: 0.3s;
+            z-index: 0;
+        }
+
         input, textarea {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 12px 15px;
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
+            background: #fafafa;
+            transition: 0.3s;
         }
 
-        button {
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: #fff;
+        }
+
+        button.action-btn {
             width: 100%;
             padding: 12px;
-            background: #764ba2;
+            background: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+            font-weight: bold;
         }
 
-        button:hover { background: #5b3a7d; }
+        button.action-btn:hover { background: #3a3f9d; transform: scale(1.02); }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
-        .link-box {
-            background: #f0f0f0;
-            padding: 10px;
+        /* Dashboard Styles */
+        .link-container {
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--primary);
+            text-align: center;
             word-break: break-all;
-            border-radius: 5px;
-            font-size: 12px;
-            margin-bottom: 10px;
-            border: 1px dashed #764ba2;
+            margin: 15px 0;
+            font-size: 13px;
         }
 
-        .message-card {
-            background: #fdfdfd;
-            border-left: 4px solid #764ba2;
-            padding: 10px;
-            margin: 10px 0;
-            text-align: left;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        .msg-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .msg-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--secondary);
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
         }
         
-        .small-text { font-size: 12px; color: #666; margin-top: 10px; cursor: pointer;}
+        .timestamp { font-size: 10px; color: #888; display: block; margin-top: 5px; text-align: right; }
+
+        .logout-btn { background: #ff4757 !important; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         
-        <!-- SECTION 1: SIGN UP / SIGN IN -->
+        <!-- SECTION 1: AUTHENTICATION (Sign In / Sign Up) -->
         <div id="auth-section">
-            <h2 id="auth-title">Sign In</h2>
-            <input type="text" id="username" placeholder="Username (e.g. ali123)">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="handleAuth()">Login / Sign Up</button>
-            <p class="small-text">Koi bhi naam likh kar login karein.</p>
-        </div>
-
-        <!-- SECTION 2: DASHBOARD (Jaha messages aayenge) -->
-        <div id="dashboard-section" class="hidden">
-            <h2>Welcome, <span id="user-display"></span>!</h2>
-            <p>Ye raha aapka secret link:</p>
-            <div class="link-box" id="share-link">Generating...</div>
-            <button onclick="copyLink()">Copy Link</button>
-            <button onclick="logout()" style="background:#ccc; color:#333">Logout</button>
-
-            <h3 style="text-align:left; margin-top:20px;">Messages:</h3>
-            <div id="messages-list">
-                <p class="small-text">Abhi koi message nahi aaya.</p>
+            <h2 id="form-title">Welcome Back</h2>
+            
+            <div class="toggle-box">
+                <div class="slider" id="slider-bg"></div>
+                <button class="toggle-btn active-btn" onclick="switchForm('login')">Sign In</button>
+                <button class="toggle-btn inactive-btn" onclick="switchForm('signup')">Sign Up</button>
             </div>
+
+            <!-- Login Form -->
+            <div id="login-form">
+                <input type="text" id="login-user" placeholder="Enter Username">
+                <input type="password" id="login-pass" placeholder="Enter Password">
+                <button class="action-btn" onclick="login()">Login</button>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="hidden">
+                <input type="text" id="reg-user" placeholder="Create Username">
+                <input type="password" id="reg-pass" placeholder="Create Password">
+                <button class="action-btn" style="background: var(--secondary);" onclick="register()">Create Account</button>
+            </div>
+            
+            <p style="text-align:center; font-size:12px; color:#666; margin-top:15px;">
+                Note: Yeh demo version hai (Data browser me save hoga).
+            </p>
         </div>
 
-        <!-- SECTION 3: PUBLIC MESSAGE (Jo log link kholenge unke liye) -->
+        <!-- SECTION 2: DASHBOARD (Private) -->
+        <div id="dashboard-section" class="hidden">
+            <h2>Your Dashboard</h2>
+            <p style="text-align:center;">Hello, <b id="display-user"></b> 👋</p>
+            
+            <div class="link-container">
+                <span id="my-link">Generating...</span>
+            </div>
+            <button class="action-btn" onclick="copyLink()">Copy Link</button>
+
+            <h3 style="margin-top:25px; border-bottom:1px solid #eee; padding-bottom:10px;">Inbox 📩</h3>
+            <div id="messages-box" class="msg-list">
+                <p style="text-align:center; color:#999;">No messages yet.</p>
+            </div>
+
+            <button class="action-btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- SECTION 3: PUBLIC MESSAGE (Sender View) -->
         <div id="public-section" class="hidden">
-            <h2>Send Message to <span id="receiver-name"></span></h2>
-            <p class="small-text">Aapki pehchan chhupi rahegi.</p>
-            <textarea id="secret-message" rows="4" placeholder="Kuch bhi likhein..."></textarea>
-            <button onclick="sendMessage()">Send Message</button>
-            <p class="small-text" onclick="window.location.href = window.location.pathname">Apna khud ka account banayein</p>
+            <h2>Send Secret Message</h2>
+            <p style="text-align:center; color:#666;">Sending to: <b id="receiver-name">User</b></p>
+            
+            <textarea id="msg-content" rows="5" placeholder="Write your anonymous message here..."></textarea>
+            <button class="action-btn" onclick="sendMessage()">Send Anonymously</button>
+            
+            <p style="text-align:center; font-size:13px; margin-top:20px; cursor:pointer; color:var(--primary);" onclick="window.location.href = window.location.pathname">
+                Create your own account
+            </p>
         </div>
 
     </div>
 
     <script>
-        // --- JAVASCRIPT LOGIC ---
-
-        // 1. Check karein ki kya user link ke through aaya hai? (Check URL params)
+        // --- LOGIC START ---
+        
+        // 1. URL Check (Kya user message bhejne aaya hai?)
         const urlParams = new URLSearchParams(window.location.search);
-        const sendTo = urlParams.get('to'); // URL me ?to=username hoga
+        const sendTo = urlParams.get('to');
 
-        // Elements
         const authSection = document.getElementById('auth-section');
         const dashboardSection = document.getElementById('dashboard-section');
         const publicSection = document.getElementById('public-section');
 
-        // Agar URL me 'to' hai, to Message Box dikhayein
-        if (sendTo) {
-            authSection.classList.add('hidden');
-            publicSection.classList.remove('hidden');
-            document.getElementById('receiver-name').innerText = sendTo;
-        } else {
-            // Check karein agar user pehle se login hai
-            const loggedUser = localStorage.getItem('currentUser');
-            if (loggedUser) {
-                showDashboard(loggedUser);
+        // Initial Load Logic
+        window.onload = function() {
+            if (sendTo) {
+                // Agar link me '?to=username' hai, toh Message bhejne wala page dikhao
+                authSection.classList.add('hidden');
+                publicSection.classList.remove('hidden');
+                document.getElementById('receiver-name').innerText = sendTo;
+            } else {
+                // Check karo agar user pehle se logged in hai
+                const activeUser = localStorage.getItem('activeUser');
+                if (activeUser) {
+                    showDashboard(activeUser);
+                }
+            }
+        };
+
+        // --- AUTHENTICATION LOGIC ---
+
+        function switchForm(type) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const slider = document.getElementById('slider-bg');
+            const btns = document.querySelectorAll('.toggle-btn');
+            const title = document.getElementById('form-title');
+
+            if (type === 'signup') {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                slider.style.left = "50%";
+                btns[0].classList.remove('active-btn'); btns[0].classList.add('inactive-btn');
+                btns[1].classList.add('active-btn'); btns[1].classList.remove('inactive-btn');
+                title.innerText = "Create Account";
+            } else {
+                signupForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                slider.style.left = "5px";
+                btns[1].classList.remove('active-btn'); btns[1].classList.add('inactive-btn');
+                btns[0].classList.add('active-btn'); btns[0].classList.remove('inactive-btn');
+                title.innerText = "Welcome Back";
             }
         }
 
-        // --- FUNCTIONS ---
+        // 1. REGISTER
+        function register() {
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
 
-        // Login / Signup Logic
-        function handleAuth() {
-            const user = document.getElementById('username').value.trim();
-            if (!user) return alert("Username likhna zaroori hai!");
-            
-            // Simple Login (Simulation)
-            localStorage.setItem('currentUser', user);
-            showDashboard(user);
+            if (!user || !pass) return alert("Please fill all fields.");
+
+            // Users database (LocalStorage)
+            let users = JSON.parse(localStorage.getItem('usersDB')) || {};
+
+            if (users[user]) {
+                alert("Username already taken! Try another.");
+            } else {
+                users[user] = pass; // Save password
+                localStorage.setItem('usersDB', JSON.stringify(users));
+                alert("Account created! Please Sign In.");
+                switchForm('login');
+            }
         }
 
-        // Dashboard Dikhana
+        // 2. LOGIN
+        function login() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('usersDB')) || {};
+
+            if (users[user] && users[user] === pass) {
+                // Success
+                localStorage.setItem('activeUser', user);
+                showDashboard(user);
+            } else {
+                alert("Invalid Username or Password!");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('activeUser');
+            location.reload();
+        }
+
+        // --- DASHBOARD LOGIC ---
+
         function showDashboard(user) {
             authSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
-            document.getElementById('user-display').innerText = user;
+            document.getElementById('display-user').innerText = user;
 
-            // Link Create Karna
-            // Note: Asli website par ye apka domain hoga (e.g. mysite.com?to=ali)
-            const currentUrl = window.location.href.split('?')[0];
-            const link = `${currentUrl}?to=${user}`;
-            document.getElementById('share-link').innerText = link;
+            // Generate Link
+            const baseUrl = window.location.href.split('?')[0];
+            const fullLink = `${baseUrl}?to=${user}`;
+            document.getElementById('my-link').innerText = fullLink;
 
             loadMessages(user);
         }
 
-        // Link Copy Karna
         function copyLink() {
-            const linkText = document.getElementById('share-link').innerText;
-            navigator.clipboard.writeText(linkText);
-            alert("Link Copy ho gaya! Ab ise share karein.");
+            const link = document.getElementById('my-link').innerText;
+            navigator.clipboard.writeText(link);
+            alert("Link Copied! Share it with friends.");
         }
-
-        // Logout
-        function logout() {
-            localStorage.removeItem('currentUser');
-            location.reload();
-        }
-
-        // --- PUBLIC: MESSAGE SENDING LOGIC ---
-
-        function sendMessage() {
-            const msg = document.getElementById('secret-message').value;
-            if (!msg) return alert("Message khali hai!");
-
-            // NOTE: Yaha Real Database (Firebase) ka code aana chahiye.
-            // Abhi hum LocalStorage use kar rahe hain demo ke liye.
-            
-            let allMessages = JSON.parse(localStorage.getItem('all_messages') || "{}");
-            if (!allMessages[sendTo]) allMessages[sendTo] = [];
-            
-            allMessages[sendTo].push(msg);
-            
-            localStorage.setItem('all_messages', JSON.stringify(allMessages));
-            
-            alert("Message bhej diya gaya!");
-            document.getElementById('secret-message').value = "";
-        }
-
-        // --- DASHBOARD: MESSAGES LOAD KARNA ---
 
         function loadMessages(user) {
-            const list = document.getElementById('messages-list');
-            let allMessages = JSON.parse(localStorage.getItem('all_messages') || "{}");
-            let userMessages = allMessages[user] || [];
+            let allMsgs = JSON.parse(localStorage.getItem('messagesDB')) || {};
+            let myMsgs = allMsgs[user] || [];
+            const box = document.getElementById('messages-box');
 
-            if (userMessages.length > 0) {
-                list.innerHTML = "";
-                // Naya message upar dikhane ke liye reverse kiya
-                userMessages.reverse().forEach(msg => {
-                    let div = document.createElement('div');
-                    div.className = 'message-card';
-                    div.innerText = msg;
-                    list.appendChild(div);
+            if (myMsgs.length === 0) {
+                box.innerHTML = '<p style="text-align:center; color:#999;">No messages yet.</p>';
+            } else {
+                box.innerHTML = '';
+                // Show newest first
+                myMsgs.reverse().forEach(msgObj => {
+                    const div = document.createElement('div');
+                    div.className = 'msg-card';
+                    div.innerHTML = `
+                        ${msgObj.text}
+                        <span class="timestamp">${msgObj.time}</span>
+                    `;
+                    box.appendChild(div);
                 });
             }
         }
+
+        // --- PUBLIC SENDER LOGIC ---
+
+        function sendMessage() {
+            const text = document.getElementById('msg-content').value;
+            if (!text) return alert("Message cannot be empty!");
+
+            let allMsgs = JSON.parse(localStorage.getItem('messagesDB')) || {};
+            
+            if (!allMsgs[sendTo]) {
+                allMsgs[sendTo] = [];
+            }
+
+            const newMsg = {
+                text: text,
+                time: new Date().toLocaleString()
+            };
+
+            allMsgs[sendTo].push(newMsg);
+            localStorage.setItem('messagesDB', JSON.stringify(allMsgs));
+
+            alert("Message Sent Successfully!");
+            document.getElementById('msg-content').value = "";
+        }
+
     </script>
 </body>
 </html>
