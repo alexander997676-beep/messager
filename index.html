@@ -2,42 +2,464 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - GhostChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GhostMsg Connect - Faizan Ahmed</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #111b21; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #202c33; padding: 30px; border-radius: 10px; width: 300px; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #2a3942; border: none; color: white; border-radius: 5px; box-sizing: border-box;}
-        button { width: 100%; padding: 12px; background: #00a884; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        a { color: #00a884; text-decoration: none; display: block; margin-top: 15px; font-size: 14px; }
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-dark: #09090b;
+            --card-bg: #18181b;
+            --primary: #8b5cf6; /* Violet */
+            --accent: #06b6d4; /* Cyan */
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        /* --- APP SHELL --- */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(24, 24, 27, 0.95);
+            z-index: 10;
+        }
+        .brand-logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* --- SCROLL AREA --- */
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .scroll-content::-webkit-scrollbar { width: 5px; }
+        .scroll-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* --- INPUTS & BUTTONS --- */
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-field {
+            width: 100%;
+            background: #27272a;
+            border: 1px solid var(--border);
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .input-field:focus { border-color: var(--primary); background: #3f3f46; }
+        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        .btn {
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
+            transition: 0.2s; margin-top: 10px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+
+        /* --- CONTACT LIST (WHATSAPP STYLE) --- */
+        .section-title { font-size: 13px; color: var(--text-muted); margin: 25px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .add-contact-box {
+            background: #27272a; padding: 15px; border-radius: 16px;
+            border: 1px dashed var(--accent); margin-bottom: 20px;
+        }
+
+        .contact-list { display: flex; flex-direction: column; gap: 10px; }
+        .contact-card {
+            background: #27272a; padding: 12px; border-radius: 14px;
+            display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+        }
+        .contact-card:hover { background: #3f3f46; border-color: var(--border); }
+        
+        .contact-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, #333, #555);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 18px; color: white;
+        }
+        .contact-info { flex: 1; }
+        .contact-name { font-weight: 600; font-size: 15px; display: block; }
+        .contact-sub { font-size: 12px; color: var(--text-muted); }
+        .contact-action { color: var(--accent); font-size: 14px; }
+
+        /* --- MESSAGES --- */
+        .msg-card {
+            background: #27272a; padding: 15px; border-radius: 14px;
+            margin-bottom: 12px; border-left: 3px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- UTILS --- */
+        .hidden { display: none !important; }
+        .footer {
+            padding: 12px; text-align: center; background: #111;
+            border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted);
+        }
+        .badge { background: var(--danger); color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; vertical-align: middle; }
+
+        /* Toast */
+        .toast {
+            position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: white; color: black; padding: 10px 20px; border-radius: 30px;
+            font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <a href="signup.html">Create New Account</a>
+
+<div class="app-container">
+    
+    <div class="header">
+        <div class="brand-logo"><i class="fas fa-ghost"></i> GhostMsg</div>
     </div>
 
-    <script>
-        // Check if already logged in
-        if(localStorage.getItem('gc_session')) window.location.href = 'dashboard.html';
+    <div class="scroll-content">
 
-        function login() {
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
-            const users = JSON.parse(localStorage.getItem('gc_users') || "{}");
+        <!-- 1. LOGIN -->
+        <div id="view-login">
+            <h2 style="text-align:center;">Login</h2>
+            <form onsubmit="app.login(event)">
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="log-user" class="input-field" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="log-pass" class="input-field" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enter App</button>
+            </form>
+            <button class="btn btn-ghost" onclick="app.nav('signup')">Create Account</button>
+        </div>
 
-            if (users[u] && users[u] === p) {
-                localStorage.setItem('gc_session', u);
-                window.location.href = 'dashboard.html'; // Redirect to Dashboard
+        <!-- 2. SIGNUP -->
+        <div id="view-signup" class="hidden">
+            <h2 style="text-align:center;">Register</h2>
+            <form onsubmit="app.register(event)">
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="reg-user" class="input-field" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="reg-pass" class="input-field" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+            <button class="btn btn-ghost" onclick="app.nav('login')">Back to Login</button>
+        </div>
+
+        <!-- 3. DASHBOARD -->
+        <div id="view-dashboard" class="hidden">
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="width:70px; height:70px; background:var(--primary); border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:30px; color:white;">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3 id="dash-user" style="margin:0;">User</h3>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:5px; word-break:break-all;" id="my-link">...</div>
+                <button onclick="app.copyLink()" style="background:transparent; border:none; color:var(--accent); cursor:pointer; font-size:12px;">(Tap to Copy Link)</button>
+            </div>
+
+            <!-- CONTACTS SECTION (NEW) -->
+            <div class="section-title">Add Contact</div>
+            <div class="add-contact-box">
+                <input type="text" id="contact-name" class="input-field" placeholder="Friend's Name (e.g. Ali)" style="margin-bottom:10px;">
+                <input type="text" id="contact-link" class="input-field" placeholder="Paste their Link here...">
+                <button class="btn btn-primary" onclick="app.addContact()" style="margin-top:10px; background:var(--accent);"><i class="fas fa-user-plus"></i> Save Contact</button>
+            </div>
+
+            <div class="section-title">My Contacts</div>
+            <div id="contacts-list" class="contact-list">
+                <!-- Contacts will appear here -->
+                <div style="text-align:center; color:#555; font-size:13px;">No contacts saved yet.</div>
+            </div>
+
+            <div class="section-title">My Inbox <span id="msg-count" class="badge">0</span></div>
+            <div id="msg-list" class="contact-list"></div>
+
+            <button class="btn btn-ghost" onclick="app.logout()" style="margin-top:30px; border-color:var(--danger); color:var(--danger);">Logout</button>
+        </div>
+
+        <!-- 4. PUBLIC SENDER -->
+        <div id="view-public" class="hidden">
+            <div style="text-align:center; margin-bottom:20px;">
+                <div class="contact-avatar" style="width:60px; height:60px; margin:0 auto; font-size:24px; background:var(--accent);">
+                    <i class="fas fa-mask"></i>
+                </div>
+                <p style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Sending message to</p>
+                <h3 id="pub-user" style="margin:0;">Target</h3>
+            </div>
+
+            <textarea id="msg-text" class="input-field" rows="4" placeholder="Type your secret message..." style="padding:15px;"></textarea>
+            
+            <button class="btn btn-primary" onclick="app.send()">Send Secretly 🚀</button>
+            
+            <button class="btn btn-ghost" onclick="app.backToDash()" style="margin-top:15px;">Back to Dashboard</button>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Made by <b>Faizan Ahmed</b> <i class="fas fa-heart" style="color:var(--danger)"></i>
+    </div>
+
+    <div id="toast" class="toast">Action</div>
+
+</div>
+
+<script>
+    const app = {
+        dbU: 'connect_users',
+        dbM: 'connect_msgs',
+        dbC: 'connect_contacts', // New Database for Contacts
+
+        init: () => {
+            const params = new URLSearchParams(window.location.search);
+            const to = params.get('to');
+            
+            if(to) {
+                app.loadPublic(to);
             } else {
-                alert("Invalid Username or Password");
+                const sess = localStorage.getItem('connect_sess');
+                if(sess) app.loadDash(sess);
+                else app.nav('login');
             }
+        },
+
+        nav: (v) => {
+            document.querySelectorAll('[id^="view-"]').forEach(e => e.classList.add('hidden'));
+            document.getElementById(`view-${v}`).classList.remove('hidden');
+        },
+
+        toast: (m) => {
+            const t = document.getElementById('toast');
+            t.innerText = m; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        },
+
+        // --- AUTH ---
+        register: (e) => {
+            e.preventDefault();
+            const u = document.getElementById('reg-user').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
+            
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+            if(db[u]) return app.toast('User Exists!');
+            
+            db[u] = p;
+            localStorage.setItem(app.dbU, JSON.stringify(db));
+            app.toast('Created! Login now.');
+            app.nav('login');
+        },
+
+        login: (e) => {
+            e.preventDefault();
+            const u = document.getElementById('log-user').value.trim();
+            const p = document.getElementById('log-pass').value.trim();
+            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
+
+            if(db[u] === p) {
+                localStorage.setItem('connect_sess', u);
+                app.loadDash(u);
+            } else app.toast('Wrong Password');
+        },
+
+        logout: () => { localStorage.removeItem('connect_sess'); location.reload(); },
+
+        // --- DASHBOARD & CONTACTS ---
+        loadDash: (u) => {
+            app.nav('dashboard');
+            document.getElementById('dash-user').innerText = u;
+            const lnk = window.location.href.split('?')[0] + "?to=" + u;
+            document.getElementById('my-link').innerText = lnk;
+            
+            app.renderContacts(u);
+            app.renderMsgs(u);
+        },
+
+        addContact: () => {
+            const name = document.getElementById('contact-name').value.trim();
+            const link = document.getElementById('contact-link').value.trim();
+            const currentUser = localStorage.getItem('connect_sess');
+
+            if(!name || !link) return app.toast('Fill Name & Link');
+
+            // Link se username nikalna
+            let targetUser = "";
+            try {
+                // Agar link me '?to=' hai to uske baad wala hissa uthao
+                if(link.includes('?to=')) {
+                    targetUser = link.split('?to=')[1].split('&')[0]; // simple parsing
+                } else {
+                    return app.toast('Invalid Link format');
+                }
+            } catch(e) { return app.toast('Invalid Link'); }
+
+            let contacts = JSON.parse(localStorage.getItem(app.dbC) || "{}");
+            if(!contacts[currentUser]) contacts[currentUser] = [];
+
+            // Save contact
+            contacts[currentUser].push({ name: name, username: targetUser });
+            localStorage.setItem(app.dbC, JSON.stringify(contacts));
+
+            app.toast('Contact Saved! ✅');
+            document.getElementById('contact-name').value = "";
+            document.getElementById('contact-link').value = "";
+            app.renderContacts(currentUser);
+        },
+
+        renderContacts: (u) => {
+            let contacts = JSON.parse(localStorage.getItem(app.dbC) || "{}");
+            let list = contacts[u] || [];
+            const container = document.getElementById('contacts-list');
+            container.innerHTML = "";
+
+            if(list.length === 0) {
+                container.innerHTML = "<div style='text-align:center; color:#555; font-size:13px; padding:10px;'>Paste a link above to save friends here.</div>";
+                return;
+            }
+
+            list.forEach((c, i) => {
+                const div = document.createElement('div');
+                div.className = 'contact-card';
+                div.onclick = () => app.openChat(c.username); // Click pe chat khulegi
+                div.innerHTML = `
+                    <div class="contact-avatar">${c.name.charAt(0).toUpperCase()}</div>
+                    <div class="contact-info">
+                        <span class="contact-name">${c.name}</span>
+                        <span class="contact-sub">ID: ${c.username}</span>
+                    </div>
+                    <div class="contact-action"><i class="fas fa-paper-plane"></i></div>
+                    <div onclick="event.stopPropagation(); app.delContact('${u}', ${i})" style="color:#444; margin-left:10px;"><i class="fas fa-trash"></i></div>
+                `;
+                container.appendChild(div);
+            });
+        },
+
+        delContact: (u, idx) => {
+            if(!confirm('Remove contact?')) return;
+            let contacts = JSON.parse(localStorage.getItem(app.dbC));
+            contacts[u].splice(idx, 1);
+            localStorage.setItem(app.dbC, JSON.stringify(contacts));
+            app.renderContacts(u);
+        },
+
+        openChat: (targetUser) => {
+            // Manually open public view without reloading page
+            app.nav('public');
+            document.getElementById('pub-user').innerText = targetUser;
+            // Store target in a temporary attribute
+            document.getElementById('view-public').setAttribute('data-target', targetUser);
+        },
+        
+        backToDash: () => {
+             const sess = localStorage.getItem('connect_sess');
+             if(sess) app.loadDash(sess);
+             else location.href = window.location.pathname; // Reload if no session
+        },
+
+        // --- MESSAGING ---
+        loadPublic: (u) => {
+            app.nav('public');
+            document.getElementById('pub-user').innerText = u;
+            document.getElementById('view-public').setAttribute('data-target', u);
+            // Hide back button if public user (not logged in)
+            if(!localStorage.getItem('connect_sess')) {
+                // Optional: hide dashboard button
+            }
+        },
+
+        send: () => {
+            const txt = document.getElementById('msg-text').value.trim();
+            const target = document.getElementById('view-public').getAttribute('data-target');
+
+            if(!txt) return app.toast('Empty Message');
+
+            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
+            if(!msgs[target]) msgs[target] = [];
+            
+            msgs[target].push({ txt: txt, date: new Date() });
+            localStorage.setItem(app.dbM, JSON.stringify(msgs));
+            
+            app.toast('Sent Successfully! 🚀');
+            document.getElementById('msg-text').value = "";
+        },
+
+        renderMsgs: (u) => {
+            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
+            let list = msgs[u] || [];
+            const container = document.getElementById('msg-list');
+            container.innerHTML = "";
+            document.getElementById('msg-count').innerText = list.length;
+
+            if(list.length === 0) container.innerHTML = "<div style='text-align:center; color:#555;'>Inbox Empty</div>";
+
+            list.reverse().forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'msg-card';
+                div.innerHTML = `
+                    <div style="font-size:12px; color:#777; margin-bottom:5px;">Secret Message</div>
+                    <div style="color:white; font-size:15px;">${m.txt}</div>
+                `;
+                container.appendChild(div);
+            });
+        },
+
+        copyLink: () => {
+            navigator.clipboard.writeText(document.getElementById('my-link').innerText);
+            app.toast('Link Copied');
         }
-    </script>
+    };
+
+    window.onload = app.init;
+</script>
 </body>
 </html>
