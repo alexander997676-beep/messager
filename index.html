@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostMsg Ultra - Faizan Ahmed</title>
+    <title>GhostMsg Connect - Faizan Ahmed</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ULTRA THEME VARIABLES --- */
+        /* --- THEME VARIABLES --- */
         :root {
-            --bg-dark: #050505;
-            --card-glass: rgba(20, 20, 20, 0.85);
-            --primary: #7000ff;
-            --primary-glow: #7000ff88;
-            --accent: #00f3ff;
+            --bg-dark: #09090b;
+            --card-bg: #18181b;
+            --primary: #8b5cf6; /* Violet */
+            --accent: #06b6d4; /* Cyan */
             --text-main: #ffffff;
-            --text-muted: #888888;
-            --danger: #ff3b30;
-            --success: #34c759;
-            --radius: 24px;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --danger: #ef4444;
+            --success: #22c55e;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -27,28 +26,23 @@
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%);
             color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 15px;
+            padding: 10px;
         }
 
-        /* --- MAIN APP CONTAINER --- */
+        /* --- APP SHELL --- */
         .app-container {
             width: 100%;
-            max-width: 460px;
-            background: var(--card-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius);
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            max-width: 450px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
             height: 90vh;
             display: flex;
             flex-direction: column;
@@ -60,144 +54,99 @@
         .header {
             padding: 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: relative;
+            border-bottom: 1px solid var(--border);
+            background: rgba(24, 24, 27, 0.95);
+            z-index: 10;
         }
         .brand-logo {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
+            letter-spacing: 1px;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text;
-            background-clip: text;
             color: transparent;
-            text-shadow: 0 0 20px var(--primary-glow);
         }
 
-        /* --- SCROLLABLE CONTENT --- */
+        /* --- SCROLL AREA --- */
         .scroll-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            scrollbar-width: none; /* Firefox */
         }
-        .scroll-content::-webkit-scrollbar { display: none; }
+        .scroll-content::-webkit-scrollbar { width: 5px; }
+        .scroll-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        /* --- FOOTER (FIXED) --- */
-        .footer {
-            padding: 15px;
-            text-align: center;
-            background: rgba(0,0,0,0.4);
-            font-size: 13px;
-            color: var(--text-muted);
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .footer span { color: var(--accent); font-weight: 600; text-shadow: 0 0 10px rgba(0,243,255,0.3); }
-
-        /* --- FORMS & INPUTS --- */
-        .input-box { margin-bottom: 15px; position: relative; }
+        /* --- INPUTS & BUTTONS --- */
+        .input-group { position: relative; margin-bottom: 15px; }
         .input-field {
             width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 16px 16px 16px 45px;
-            border-radius: 16px;
+            background: #27272a;
+            border: 1px solid var(--border);
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
             color: white;
-            font-size: 15px;
-            font-family: inherit;
+            font-size: 14px;
             transition: 0.3s;
         }
-        .input-field:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); box-shadow: 0 0 15px var(--primary-glow); }
+        .input-field:focus { border-color: var(--primary); background: #3f3f46; }
         .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
-        /* --- BUTTONS --- */
         .btn {
-            width: 100%; padding: 16px; border: none; border-radius: 16px;
-            font-weight: 600; font-size: 16px; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            transition: 0.3s; margin-top: 10px;
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
+            transition: 0.2s; margin-top: 10px;
         }
-        .btn-grad {
-            background: linear-gradient(135deg, var(--primary), #5200cc);
-            color: white;
-            box-shadow: 0 5px 20px rgba(112, 0, 255, 0.4);
-        }
-        .btn-grad:active { transform: scale(0.98); }
-        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+
+        /* --- CONTACT LIST (WHATSAPP STYLE) --- */
+        .section-title { font-size: 13px; color: var(--text-muted); margin: 25px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* --- PROFILE --- */
-        .profile-header { text-align: center; margin-bottom: 25px; }
-        .avatar-container {
-            width: 90px; height: 90px; margin: 0 auto 10px;
-            border-radius: 50%; padding: 3px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            position: relative;
-        }
-        .avatar-img {
-            width: 100%; height: 100%; border-radius: 50%;
-            object-fit: cover; border: 3px solid #111;
-            background: #222;
-        }
-        .user-status {
-            font-size: 14px; color: var(--text-muted); 
-            background: rgba(255,255,255,0.05); padding: 5px 15px;
-            border-radius: 20px; display: inline-block; margin-top: 5px;
+        .add-contact-box {
+            background: #27272a; padding: 15px; border-radius: 16px;
+            border: 1px dashed var(--accent); margin-bottom: 20px;
         }
 
-        /* --- LINK BOX --- */
-        .link-wrapper {
-            background: rgba(112, 0, 255, 0.1);
-            border: 1px dashed var(--primary);
-            padding: 15px; border-radius: 16px;
-            text-align: center; margin-bottom: 15px;
+        .contact-list { display: flex; flex-direction: column; gap: 10px; }
+        .contact-card {
+            background: #27272a; padding: 12px; border-radius: 14px;
+            display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: 0.2s; border: 1px solid transparent;
         }
-        .link-text { font-size: 13px; color: var(--text-main); word-break: break-all; opacity: 0.8; }
-
-        /* --- MESSAGES UI (PRIVACY BLUR) --- */
-        .msg-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 18px; padding: 15px;
-            margin-bottom: 15px; position: relative;
-            border-left: 3px solid var(--accent);
-            animation: slideUp 0.4s ease;
-        }
-        @keyframes slideUp { from {transform: translateY(20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
-
-        .msg-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        .contact-card:hover { background: #3f3f46; border-color: var(--border); }
         
-        /* MEDIA BLUR LOGIC */
-        .media-container {
-            position: relative; overflow: hidden; border-radius: 12px; margin-top: 10px;
-            background: #000; min-height: 150px; display: flex; align-items: center; justify-content: center;
-        }
-        .media-content { width: 100%; display: block; filter: blur(15px); transition: 0.4s; cursor: pointer; opacity: 0.6; }
-        .media-content.revealed { filter: blur(0); opacity: 1; }
-        
-        .tap-reveal {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: white; font-size: 12px; font-weight: bold; text-transform: uppercase;
-            letter-spacing: 1px; pointer-events: none; text-shadow: 0 2px 5px black;
-            z-index: 2; transition: 0.3s;
-        }
-        .media-content.revealed + .tap-reveal { opacity: 0; }
-
-        /* --- MEDIA BAR (SENDER) --- */
-        .action-bar { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
-        .action-btn {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(255,255,255,0.05); color: var(--text-main);
+        .contact-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, #333, #555);
             display: flex; align-items: center; justify-content: center;
-            font-size: 18px; cursor: pointer; transition: 0.3s;
+            font-weight: bold; font-size: 18px; color: white;
         }
-        .action-btn:hover, .action-btn.active { background: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 15px var(--primary-glow); }
+        .contact-info { flex: 1; }
+        .contact-name { font-weight: 600; font-size: 15px; display: block; }
+        .contact-sub { font-size: 12px; color: var(--text-muted); }
+        .contact-action { color: var(--accent); font-size: 14px; }
+
+        /* --- MESSAGES --- */
+        .msg-card {
+            background: #27272a; padding: 15px; border-radius: 14px;
+            margin-bottom: 12px; border-left: 3px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- UTILS --- */
         .hidden { display: none !important; }
-        .badge { background: var(--danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px; }
-        
+        .footer {
+            padding: 12px; text-align: center; background: #111;
+            border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted);
+        }
+        .badge { background: var(--danger); color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; vertical-align: middle; }
+
         /* Toast */
         .toast {
             position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(20px);
-            background: white; color: black; padding: 12px 25px; border-radius: 50px;
+            background: white; color: black; padding: 10px 20px; border-radius: 30px;
             font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -208,155 +157,118 @@
 
 <div class="app-container">
     
-    <!-- HEADER -->
     <div class="header">
         <div class="brand-logo"><i class="fas fa-ghost"></i> GhostMsg</div>
-        <div style="position: absolute; right: 20px; top: 25px; cursor: pointer;" id="settings-btn" class="hidden" onclick="app.toggleSettings()">
-            <i class="fas fa-cog" style="color:white;"></i>
-        </div>
     </div>
 
-    <!-- SCROLL AREA -->
     <div class="scroll-content">
 
         <!-- 1. LOGIN -->
         <div id="view-login">
-            <h2 style="text-align:center;">Welcome Back</h2>
-            <p style="text-align:center; color:var(--text-muted); margin-bottom:30px;">Enter the shadows.</p>
-            
+            <h2 style="text-align:center;">Login</h2>
             <form onsubmit="app.login(event)">
-                <div class="input-box">
+                <div class="input-group">
                     <i class="fas fa-user input-icon"></i>
-                    <input type="text" id="log-user" class="input-field" placeholder="Username" autocomplete="username" required>
+                    <input type="text" id="log-user" class="input-field" placeholder="Username" required>
                 </div>
-                <div class="input-box">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="log-pass" class="input-field" placeholder="Password" autocomplete="current-password" required>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="log-pass" class="input-field" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-grad">Login</button>
+                <button type="submit" class="btn btn-primary">Enter App</button>
             </form>
             <button class="btn btn-ghost" onclick="app.nav('signup')">Create Account</button>
         </div>
 
-        <!-- 2. SIGNUP (With Bio) -->
+        <!-- 2. SIGNUP -->
         <div id="view-signup" class="hidden">
-            <h2 style="text-align:center;">Create ID</h2>
-            
-            <div class="profile-header">
-                <div class="avatar-container" onclick="document.getElementById('reg-pic').click()">
-                    <img id="reg-preview" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-                    <div style="position:absolute; bottom:0; right:0; background:var(--accent); color:black; width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px;"><i class="fas fa-camera"></i></div>
-                </div>
-                <span style="font-size:12px; color:var(--text-muted);">Tap to upload</span>
-            </div>
-            <input type="file" id="reg-pic" hidden accept="image/*" onchange="app.previewImage(this, 'reg-preview')">
-
+            <h2 style="text-align:center;">Register</h2>
             <form onsubmit="app.register(event)">
-                <div class="input-box">
+                <div class="input-group">
                     <i class="fas fa-user input-icon"></i>
                     <input type="text" id="reg-user" class="input-field" placeholder="Username" required>
                 </div>
-                <div class="input-box">
-                    <i class="fas fa-pen input-icon"></i>
-                    <input type="text" id="reg-bio" class="input-field" placeholder="Status / Bio (e.g. Ask me!)" maxlength="30">
-                </div>
-                <div class="input-box">
-                    <i class="fas fa-lock input-icon"></i>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
                     <input type="password" id="reg-pass" class="input-field" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-grad">Create Profile</button>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
             </form>
             <button class="btn btn-ghost" onclick="app.nav('login')">Back to Login</button>
         </div>
 
         <!-- 3. DASHBOARD -->
         <div id="view-dashboard" class="hidden">
-            <div class="profile-header">
-                <div class="avatar-container"><img id="dash-avatar" class="avatar-img" src=""></div>
-                <h3 id="dash-user" style="margin:5px 0;">User</h3>
-                <div id="dash-bio" class="user-status">...</div>
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="width:70px; height:70px; background:var(--primary); border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:30px; color:white;">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3 id="dash-user" style="margin:0;">User</h3>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:5px; word-break:break-all;" id="my-link">...</div>
+                <button onclick="app.copyLink()" style="background:transparent; border:none; color:var(--accent); cursor:pointer; font-size:12px;">(Tap to Copy Link)</button>
             </div>
 
-            <!-- Settings Panel (Hidden by default) -->
-            <div id="panel-settings" class="hidden" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:16px; margin-bottom:20px;">
-                <h4 style="margin-top:0;">Edit Profile</h4>
-                <input type="text" id="edit-bio" class="input-field" placeholder="New Bio" style="margin-bottom:10px;">
-                <button class="btn btn-grad" style="font-size:14px; padding:10px;" onclick="app.updateProfile()">Save Changes</button>
+            <!-- CONTACTS SECTION (NEW) -->
+            <div class="section-title">Add Contact</div>
+            <div class="add-contact-box">
+                <input type="text" id="contact-name" class="input-field" placeholder="Friend's Name (e.g. Ali)" style="margin-bottom:10px;">
+                <input type="text" id="contact-link" class="input-field" placeholder="Paste their Link here...">
+                <button class="btn btn-primary" onclick="app.addContact()" style="margin-top:10px; background:var(--accent);"><i class="fas fa-user-plus"></i> Save Contact</button>
             </div>
 
-            <div class="link-wrapper">
-                <div id="share-link" class="link-text">Loading link...</div>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-grad" onclick="app.copyLink()"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-grad" style="background: linear-gradient(135deg, #25D366, #128C7E);" onclick="app.shareWhatsapp()"><i class="fab fa-whatsapp"></i> Share</button>
+            <div class="section-title">My Contacts</div>
+            <div id="contacts-list" class="contact-list">
+                <!-- Contacts will appear here -->
+                <div style="text-align:center; color:#555; font-size:13px;">No contacts saved yet.</div>
             </div>
 
-            <div style="margin-top:25px; display:flex; justify-content:space-between; align-items:center;">
-                <h4 style="margin:0;">Inbox <span id="msg-count" class="badge">0</span></h4>
-                <div style="font-size:12px; color:var(--danger); cursor:pointer;" onclick="app.clearAll()">Clear All</div>
-            </div>
-            
-            <div id="msg-list" style="margin-top:15px;"></div>
-            
-            <button class="btn btn-ghost" style="color:var(--danger); border-color:rgba(255,0,0,0.2); margin-top:30px;" onclick="app.logout()">Logout</button>
+            <div class="section-title">My Inbox <span id="msg-count" class="badge">0</span></div>
+            <div id="msg-list" class="contact-list"></div>
+
+            <button class="btn btn-ghost" onclick="app.logout()" style="margin-top:30px; border-color:var(--danger); color:var(--danger);">Logout</button>
         </div>
 
         <!-- 4. PUBLIC SENDER -->
         <div id="view-public" class="hidden">
-            <div class="profile-header">
-                <div class="avatar-container"><img id="pub-avatar" class="avatar-img" src=""></div>
-                <p style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Send anonymous message to</p>
-                <h3 id="pub-user" style="margin:0;">...</h3>
-                <div id="pub-bio" class="user-status">...</div>
+            <div style="text-align:center; margin-bottom:20px;">
+                <div class="contact-avatar" style="width:60px; height:60px; margin:0 auto; font-size:24px; background:var(--accent);">
+                    <i class="fas fa-mask"></i>
+                </div>
+                <p style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Sending message to</p>
+                <h3 id="pub-user" style="margin:0;">Target</h3>
             </div>
 
-            <textarea id="msg-text" class="input-field" rows="3" placeholder="Type something secret..." style="padding:15px;"></textarea>
-
-            <div class="action-bar">
-                <div class="action-btn" onclick="app.triggerFile('image')"><i class="fas fa-camera"></i></div>
-                <div class="action-btn" onclick="app.triggerFile('video')"><i class="fas fa-video"></i></div>
-                <div class="action-btn" id="btn-mic" onclick="app.toggleRec()"><i class="fas fa-microphone"></i></div>
-            </div>
-
-            <input type="file" id="file-image" hidden accept="image/*" onchange="app.handleFile('image')">
-            <input type="file" id="file-video" hidden accept="video/*" onchange="app.handleFile('video')">
+            <textarea id="msg-text" class="input-field" rows="4" placeholder="Type your secret message..." style="padding:15px;"></textarea>
             
-            <!-- Preview -->
-            <div id="preview-box" class="hidden" style="position:relative; margin-bottom:15px;">
-                <div style="position:absolute; right:10px; top:10px; z-index:10; background:rgba(0,0,0,0.7); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="app.resetMedia()">❌</div>
-                <img id="prev-img" class="media-content revealed hidden" style="border-radius:12px;">
-                <video id="prev-vid" class="media-content revealed hidden" controls style="border-radius:12px;"></video>
-                <div id="audio-visual" class="hidden" style="background:#222; padding:15px; border-radius:12px; text-align:center; color:var(--accent);">Audio Recorded 🎤</div>
-            </div>
-
-            <button class="btn btn-grad" onclick="app.send()">Send Secretly 🚀</button>
-            <button class="btn btn-ghost" onclick="location.href=location.pathname" style="margin-top:20px;">Create your own link</button>
+            <button class="btn btn-primary" onclick="app.send()">Send Secretly 🚀</button>
+            
+            <button class="btn btn-ghost" onclick="app.backToDash()" style="margin-top:15px;">Back to Dashboard</button>
         </div>
 
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
-        Made by <span>Faizan Ahmed</span> <i class="fas fa-bolt" style="color:#ffeb3b"></i>
+        Made by <b>Faizan Ahmed</b> <i class="fas fa-heart" style="color:var(--danger)"></i>
     </div>
 
-    <!-- TOAST -->
-    <div id="toast" class="toast">Notification</div>
+    <div id="toast" class="toast">Action</div>
 
 </div>
 
 <script>
     const app = {
-        dbU: 'ghost_users_v6',
-        dbM: 'ghost_msgs_v6',
-        state: { rec: null, chunks: [], media: null, currentUser: null },
+        dbU: 'connect_users',
+        dbM: 'connect_msgs',
+        dbC: 'connect_contacts', // New Database for Contacts
 
         init: () => {
-            const u = new URLSearchParams(window.location.search).get('to');
-            if(u) app.loadPublic(u);
-            else {
-                const sess = localStorage.getItem('ghost_sess');
+            const params = new URLSearchParams(window.location.search);
+            const to = params.get('to');
+            
+            if(to) {
+                app.loadPublic(to);
+            } else {
+                const sess = localStorage.getItem('connect_sess');
                 if(sess) app.loadDash(sess);
                 else app.nav('login');
             }
@@ -365,35 +277,24 @@
         nav: (v) => {
             document.querySelectorAll('[id^="view-"]').forEach(e => e.classList.add('hidden'));
             document.getElementById(`view-${v}`).classList.remove('hidden');
-            document.getElementById('settings-btn').classList.add('hidden');
         },
 
         toast: (m) => {
             const t = document.getElementById('toast');
             t.innerText = m; t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
+            setTimeout(() => t.classList.remove('show'), 2000);
         },
 
         // --- AUTH ---
-        previewImage: (inp, imgId) => {
-            if(inp.files[0]) {
-                const r = new FileReader();
-                r.onload = (e) => document.getElementById(imgId).src = e.target.result;
-                r.readAsDataURL(inp.files[0]);
-            }
-        },
-
         register: (e) => {
             e.preventDefault();
             const u = document.getElementById('reg-user').value.trim();
             const p = document.getElementById('reg-pass').value.trim();
-            const b = document.getElementById('reg-bio').value.trim() || "Ready for secrets";
-            const img = document.getElementById('reg-preview').src;
             
             let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
-            if(db[u]) return app.toast('Username Taken!');
-
-            db[u] = { pass: p, bio: b, av: img };
+            if(db[u]) return app.toast('User Exists!');
+            
+            db[u] = p;
             localStorage.setItem(app.dbU, JSON.stringify(db));
             app.toast('Created! Login now.');
             app.nav('login');
@@ -405,208 +306,156 @@
             const p = document.getElementById('log-pass').value.trim();
             let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
 
-            if(db[u] && db[u].pass === p) {
-                localStorage.setItem('ghost_sess', u);
+            if(db[u] === p) {
+                localStorage.setItem('connect_sess', u);
                 app.loadDash(u);
-            } else app.toast('Invalid Info');
+            } else app.toast('Wrong Password');
         },
 
-        logout: () => { localStorage.removeItem('ghost_sess'); location.reload(); },
+        logout: () => { localStorage.removeItem('connect_sess'); location.reload(); },
 
-        // --- DASHBOARD ---
+        // --- DASHBOARD & CONTACTS ---
         loadDash: (u) => {
-            app.state.currentUser = u;
             app.nav('dashboard');
-            document.getElementById('settings-btn').classList.remove('hidden');
-            
-            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
             document.getElementById('dash-user').innerText = u;
-            document.getElementById('dash-avatar').src = db[u].av;
-            document.getElementById('dash-bio').innerText = db[u].bio;
-            
             const lnk = window.location.href.split('?')[0] + "?to=" + u;
-            document.getElementById('share-link').innerText = lnk;
+            document.getElementById('my-link').innerText = lnk;
             
+            app.renderContacts(u);
             app.renderMsgs(u);
         },
 
-        toggleSettings: () => {
-            const p = document.getElementById('panel-settings');
-            p.classList.toggle('hidden');
+        addContact: () => {
+            const name = document.getElementById('contact-name').value.trim();
+            const link = document.getElementById('contact-link').value.trim();
+            const currentUser = localStorage.getItem('connect_sess');
+
+            if(!name || !link) return app.toast('Fill Name & Link');
+
+            // Link se username nikalna
+            let targetUser = "";
+            try {
+                // Agar link me '?to=' hai to uske baad wala hissa uthao
+                if(link.includes('?to=')) {
+                    targetUser = link.split('?to=')[1].split('&')[0]; // simple parsing
+                } else {
+                    return app.toast('Invalid Link format');
+                }
+            } catch(e) { return app.toast('Invalid Link'); }
+
+            let contacts = JSON.parse(localStorage.getItem(app.dbC) || "{}");
+            if(!contacts[currentUser]) contacts[currentUser] = [];
+
+            // Save contact
+            contacts[currentUser].push({ name: name, username: targetUser });
+            localStorage.setItem(app.dbC, JSON.stringify(contacts));
+
+            app.toast('Contact Saved! ✅');
+            document.getElementById('contact-name').value = "";
+            document.getElementById('contact-link').value = "";
+            app.renderContacts(currentUser);
         },
 
-        updateProfile: () => {
-            const u = app.state.currentUser;
-            const newBio = document.getElementById('edit-bio').value.trim();
-            if(!newBio) return app.toast('Bio empty!');
-            
-            let db = JSON.parse(localStorage.getItem(app.dbU));
-            db[u].bio = newBio;
-            localStorage.setItem(app.dbU, JSON.stringify(db));
-            
-            document.getElementById('dash-bio').innerText = newBio;
-            app.toggleSettings();
-            app.toast('Profile Updated!');
-        },
+        renderContacts: (u) => {
+            let contacts = JSON.parse(localStorage.getItem(app.dbC) || "{}");
+            let list = contacts[u] || [];
+            const container = document.getElementById('contacts-list');
+            container.innerHTML = "";
 
-        renderMsgs: (u) => {
-            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
-            let list = msgs[u] || [];
-            const cont = document.getElementById('msg-list');
-            cont.innerHTML = "";
-            document.getElementById('msg-count').innerText = list.length;
+            if(list.length === 0) {
+                container.innerHTML = "<div style='text-align:center; color:#555; font-size:13px; padding:10px;'>Paste a link above to save friends here.</div>";
+                return;
+            }
 
-            if(list.length === 0) cont.innerHTML = "<div style='text-align:center; color:#555; margin-top:20px;'>No messages yet. Share your link!</div>";
-
-            list.reverse().forEach((m, i) => {
-                const idx = list.length - 1 - i;
-                let med = "";
-                
-                // Privacy Blur Logic
-                if(m.type === 'image') med = `
-                    <div class="media-container" onclick="this.querySelector('.media-content').classList.add('revealed')">
-                        <img src="${m.data}" class="media-content">
-                        <div class="tap-reveal"><i class="fas fa-eye"></i> Tap to Reveal</div>
-                    </div>`;
-                else if(m.type === 'video') med = `
-                    <div class="media-container" onclick="this.querySelector('.media-content').classList.add('revealed'); this.querySelector('video').play()">
-                        <video src="${m.data}" class="media-content" controls></video>
-                        <div class="tap-reveal"><i class="fas fa-play"></i> Tap to Play</div>
-                    </div>`;
-                else if(m.type === 'audio') med = `<audio src="${m.data}" controls style="width:100%; margin-top:10px;"></audio>`;
-
+            list.forEach((c, i) => {
                 const div = document.createElement('div');
-                div.className = 'msg-card';
+                div.className = 'contact-card';
+                div.onclick = () => app.openChat(c.username); // Click pe chat khulegi
                 div.innerHTML = `
-                    <div class="msg-meta">
-                        <span>${app.timeAgo(m.date)}</span>
-                        <span onclick="app.delMsg('${u}', ${idx})" style="color:var(--danger); cursor:pointer;"><i class="fas fa-trash"></i></span>
+                    <div class="contact-avatar">${c.name.charAt(0).toUpperCase()}</div>
+                    <div class="contact-info">
+                        <span class="contact-name">${c.name}</span>
+                        <span class="contact-sub">ID: ${c.username}</span>
                     </div>
-                    <div style="font-size:15px; color:white;">${m.txt || '<i>Media Message</i>'}</div>
-                    ${med}
-                    <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05); text-align:right;">
-                         <a href="https://wa.me/?text=Replying to your secret: ${encodeURIComponent(m.txt || 'media')}" target="_blank" style="color:var(--success); text-decoration:none; font-size:12px; font-weight:bold;"><i class="fas fa-reply"></i> Reply on WhatsApp</a>
-                    </div>
+                    <div class="contact-action"><i class="fas fa-paper-plane"></i></div>
+                    <div onclick="event.stopPropagation(); app.delContact('${u}', ${i})" style="color:#444; margin-left:10px;"><i class="fas fa-trash"></i></div>
                 `;
-                cont.appendChild(div);
+                container.appendChild(div);
             });
         },
 
-        // --- PUBLIC ---
+        delContact: (u, idx) => {
+            if(!confirm('Remove contact?')) return;
+            let contacts = JSON.parse(localStorage.getItem(app.dbC));
+            contacts[u].splice(idx, 1);
+            localStorage.setItem(app.dbC, JSON.stringify(contacts));
+            app.renderContacts(u);
+        },
+
+        openChat: (targetUser) => {
+            // Manually open public view without reloading page
+            app.nav('public');
+            document.getElementById('pub-user').innerText = targetUser;
+            // Store target in a temporary attribute
+            document.getElementById('view-public').setAttribute('data-target', targetUser);
+        },
+        
+        backToDash: () => {
+             const sess = localStorage.getItem('connect_sess');
+             if(sess) app.loadDash(sess);
+             else location.href = window.location.pathname; // Reload if no session
+        },
+
+        // --- MESSAGING ---
         loadPublic: (u) => {
-            let db = JSON.parse(localStorage.getItem(app.dbU) || "{}");
-            if(!db[u]) return document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found</h1>";
-            
             app.nav('public');
             document.getElementById('pub-user').innerText = u;
-            document.getElementById('pub-avatar').src = db[u].av;
-            document.getElementById('pub-bio').innerText = db[u].bio;
-        },
-
-        triggerFile: (t) => document.getElementById(`file-${t}`).click(),
-
-        handleFile: (t) => {
-            const f = document.getElementById(`file-${t}`).files[0];
-            if(f.size > 3*1024*1024) return app.toast('File > 3MB ❌');
-            
-            const r = new FileReader();
-            r.onload = (e) => {
-                app.state.media = { t, d: e.target.result };
-                document.getElementById('preview-box').classList.remove('hidden');
-                const el = document.getElementById(t === 'image' ? 'prev-img' : 'prev-vid');
-                el.src = e.target.result; el.classList.remove('hidden');
-            };
-            r.readAsDataURL(f);
-        },
-
-        toggleRec: async () => {
-            const btn = document.getElementById('btn-mic');
-            if(app.state.rec && app.state.rec.state === 'recording') {
-                app.state.rec.stop();
-                btn.classList.remove('active');
-            } else {
-                try {
-                    const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    app.state.rec = new MediaRecorder(s);
-                    app.state.chunks = [];
-                    app.state.rec.start();
-                    btn.classList.add('active');
-                    app.toast('Recording...');
-                    
-                    app.state.rec.ondataavailable = e => app.state.chunks.push(e.data);
-                    app.state.rec.onstop = () => {
-                        const b = new Blob(app.state.chunks, { type: 'audio/webm' });
-                        const r = new FileReader();
-                        r.onload = (e) => {
-                            app.state.media = { t: 'audio', d: e.target.result };
-                            document.getElementById('preview-box').classList.remove('hidden');
-                            document.getElementById('audio-visual').classList.remove('hidden');
-                        };
-                        r.readAsDataURL(b);
-                    };
-                } catch(e) { app.toast('Mic Denied'); }
+            document.getElementById('view-public').setAttribute('data-target', u);
+            // Hide back button if public user (not logged in)
+            if(!localStorage.getItem('connect_sess')) {
+                // Optional: hide dashboard button
             }
         },
 
         send: () => {
             const txt = document.getElementById('msg-text').value.trim();
-            const med = app.state.media;
-            const u = document.getElementById('pub-user').innerText;
+            const target = document.getElementById('view-public').getAttribute('data-target');
 
-            if(!txt && !med) return app.toast('Empty Message!');
+            if(!txt) return app.toast('Empty Message');
 
             let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
-            if(!msgs[u]) msgs[u] = [];
+            if(!msgs[target]) msgs[target] = [];
             
-            try {
-                msgs[u].push({ txt, type: med?.t, data: med?.d, date: new Date() });
-                localStorage.setItem(app.dbM, JSON.stringify(msgs));
-                app.toast('Sent Successfully 🚀');
-                setTimeout(() => location.reload(), 1000);
-            } catch(e) { app.toast('Storage Full (Video too big)'); }
+            msgs[target].push({ txt: txt, date: new Date() });
+            localStorage.setItem(app.dbM, JSON.stringify(msgs));
+            
+            app.toast('Sent Successfully! 🚀');
+            document.getElementById('msg-text').value = "";
         },
 
-        resetMedia: () => {
-            app.state.media = null;
-            document.getElementById('preview-box').classList.add('hidden');
-            document.querySelectorAll('.media-content').forEach(e => e.classList.add('hidden'));
-            document.getElementById('audio-visual').classList.add('hidden');
+        renderMsgs: (u) => {
+            let msgs = JSON.parse(localStorage.getItem(app.dbM) || "{}");
+            let list = msgs[u] || [];
+            const container = document.getElementById('msg-list');
+            container.innerHTML = "";
+            document.getElementById('msg-count').innerText = list.length;
+
+            if(list.length === 0) container.innerHTML = "<div style='text-align:center; color:#555;'>Inbox Empty</div>";
+
+            list.reverse().forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'msg-card';
+                div.innerHTML = `
+                    <div style="font-size:12px; color:#777; margin-bottom:5px;">Secret Message</div>
+                    <div style="color:white; font-size:15px;">${m.txt}</div>
+                `;
+                container.appendChild(div);
+            });
         },
 
         copyLink: () => {
-            navigator.clipboard.writeText(document.getElementById('share-link').innerText);
-            app.toast('Link Copied!');
-        },
-        
-        shareWhatsapp: () => {
-            const l = document.getElementById('share-link').innerText;
-            window.open(`https://wa.me/?text=Send%20me%20anonymous%20messages!%20${encodeURIComponent(l)}`);
-        },
-
-        delMsg: (u, i) => {
-            if(confirm('Delete?')) {
-                let m = JSON.parse(localStorage.getItem(app.dbM));
-                m[u].splice(i, 1);
-                localStorage.setItem(app.dbM, JSON.stringify(m));
-                app.renderMsgs(u);
-            }
-        },
-        
-        clearAll: () => {
-            if(confirm('Delete ALL messages?')) {
-                const u = app.state.currentUser;
-                let m = JSON.parse(localStorage.getItem(app.dbM));
-                m[u] = [];
-                localStorage.setItem(app.dbM, JSON.stringify(m));
-                app.renderMsgs(u);
-            }
-        },
-
-        timeAgo: (d) => {
-            const s = Math.floor((new Date() - new Date(d)) / 1000);
-            if(s<60) return "Just now";
-            if(s<3600) return Math.floor(s/60) + "m ago";
-            return Math.floor(s/3600) + "h ago";
+            navigator.clipboard.writeText(document.getElementById('my-link').innerText);
+            app.toast('Link Copied');
         }
     };
 
