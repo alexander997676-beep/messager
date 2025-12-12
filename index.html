@@ -42,7 +42,7 @@
             border: 3px solid var(--accent); margin: 0 auto 15px; display: block; background: #333;
         }
 
-        /* --- NEW CHAT BAR STYLE (PLUS BUTTON) --- */
+        /* --- NEW CHAT BAR STYLE --- */
         .chat-input-container {
             display: flex; align-items: flex-end; gap: 10px; background: var(--surface);
             padding: 10px; border-radius: 20px; border: 1px solid var(--glass);
@@ -59,7 +59,7 @@
             font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px;
         }
 
-        /* --- ATTACHMENT MENU (POPUP) --- */
+        /* --- ATTACHMENT MENU --- */
         .attach-menu {
             position: absolute; bottom: 85px; left: 20px;
             background: #1a1a1a; border: 1px solid var(--glass);
@@ -76,9 +76,9 @@
         }
         .menu-item:hover { background: rgba(255,255,255,0.1); }
         .menu-icon { width: 30px; text-align: center; font-size: 18px; }
-        .icon-photo { color: #22c55e; } /* Green */
-        .icon-video { color: #3b82f6; } /* Blue */
-        .icon-audio { color: #f97316; } /* Orange */
+        .icon-photo { color: #22c55e; } 
+        .icon-video { color: #3b82f6; } 
+        .icon-audio { color: #f97316; } 
 
         input[type="file"] { display: none; }
 
@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    <!-- 3. PUBLIC SEND (UPDATED UI) -->
+    <!-- 3. PUBLIC SEND -->
     <div id="view-public" class="view-section">
         <div class="scroll-view">
             <div style="text-align:center; margin-bottom:30px;">
@@ -161,27 +161,22 @@
                 <p style="color:#666;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
             </div>
 
-            <!-- PREVIEW AREA (Shows selected file) -->
+            <!-- PREVIEW AREA -->
             <div id="preview-area" class="hidden">
                 <div class="file-tag" id="file-name">File Selected</div>
                 <div id="preview-content"></div>
                 <button onclick="app.clearFile()" style="background:none; border:none; color:red; margin-top:5px; cursor:pointer; font-size:12px;">Remove <i class="fas fa-times"></i></button>
             </div>
 
-            <!-- NEW CHAT BAR -->
+            <!-- CHAT BAR -->
             <div class="chat-input-container">
-                <!-- Plus Button -->
-                <div class="plus-btn" onclick="app.toggleAttach()">
-                    <i class="fas fa-plus"></i>
-                </div>
-                
-                <!-- Text Input -->
+                <div class="plus-btn" onclick="app.toggleAttach()"><i class="fas fa-plus"></i></div>
                 <textarea id="msg-text" class="msg-input" rows="1" placeholder="Type a message..."></textarea>
             </div>
             
             <button class="btn" onclick="app.sendMessage()" style="margin-top:15px;">Send 🚀</button>
             
-            <!-- ATTACHMENT POPUP MENU -->
+            <!-- ATTACHMENT MENU -->
             <div id="attach-menu" class="attach-menu hidden">
                 <label class="menu-item">
                     <i class="fas fa-image menu-icon icon-photo"></i> Photo
@@ -300,7 +295,6 @@
             app.state.file = file;
             app.state.fileType = type;
 
-            // Close menu
             document.getElementById('attach-menu').classList.add('hidden');
             
             const area = document.getElementById('preview-area');
@@ -360,8 +354,14 @@
             const pass = document.getElementById('auth-pass').value;
             if(!email || !user || !pass) return app.toast("Fill all fields");
             
-            const exists = await db.get('users', email);
-            if(exists) return app.toast('Email taken');
+            // CHECK 1: EMAIL EXISTS?
+            const emailExists = await db.get('users', email);
+            if(emailExists) return app.toast('Email already taken');
+
+            // CHECK 2: USERNAME EXISTS?
+            const allUsers = await db.getAll('users');
+            const userTaken = allUsers.find(u => u.username === user);
+            if(userTaken) return app.toast('Username Taken');
 
             await db.put('users', { email, username: user, password: pass, pic: app.state.authFile });
             app.toast('Created! Please Login.');
@@ -415,7 +415,6 @@
             const targetUser = allUsers.find(u => u.username === to);
             document.getElementById('pub-img').src = (targetUser && targetUser.pic) ? URL.createObjectURL(targetUser.pic) : DEFAULT_PIC;
             
-            // Close menu if clicked outside (simple fix)
             document.body.onclick = (e) => {
                 if(!e.target.closest('.plus-btn') && !e.target.closest('.attach-menu')) {
                     document.getElementById('attach-menu').classList.add('hidden');
