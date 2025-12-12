@@ -3,594 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Hyper</title>
-    <meta name="theme-color" content="#4f46e5">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>FaizanMsg Ultra</title>
+    <meta name="theme-color" content="#0f172a">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-glow: rgba(79, 70, 229, 0.4);
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --text-main: #111827;
-            --text-sub: #6b7280;
-            --border: #e5e7eb;
-            --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
-            --radius: 20px;
+            --primary: #6366f1;
+            --accent: #ec4899;
+            --bg-dark: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --radius: 24px;
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-body: #0f172a;
-                --bg-card: #1e293b;
-                --text-main: #f9fafb;
-                --text-sub: #94a3b8;
-                --border: #334155;
-                --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            }
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-body);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden; /* Prevent body scroll, handle in app */
+            height: 100vh;
         }
 
-        /* --- MAIN APP CONTAINER --- */
+        /* --- ANIMATED BACKGROUND --- */
+        .ambient-light {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 150vw; height: 150vw;
+            background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(236,72,153,0.15) 30%, rgba(15,23,42,0) 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: pulse 10s infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+
+        /* --- APP CONTAINER --- */
         .app-shell {
             width: 100%;
-            max-width: 500px;
-            height: 100vh;
-            background: var(--bg-card);
-            position: relative;
+            height: 100%;
+            max-width: 480px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            box-shadow: var(--shadow);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
         @media (min-width: 500px) {
-            .app-shell { height: 90vh; border-radius: var(--radius); border: 1px solid var(--border); }
+            .app-shell { height: 90vh; border-radius: var(--radius); border: 1px solid var(--glass-border); }
         }
 
         /* --- HEADER --- */
         .header {
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(var(--bg-card), 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 10;
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 50;
         }
-        .brand { font-weight: 800; font-size: 20px; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-main); padding: 5px; }
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .icon-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .icon-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
 
-        /* --- SCROLLABLE CONTENT --- */
-        .main-view {
-            flex: 1;
-            overflow-y: auto;
+        /* --- VIEWS --- */
+        .view { flex: 1; overflow-y: auto; padding: 20px; display: none; opacity: 0; transition: opacity 0.3s; scroll-behavior: smooth; }
+        .view.active { display: block; opacity: 1; }
+        .view::-webkit-scrollbar { width: 0px; }
+
+        /* --- UI ELEMENTS --- */
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 20px;
-            scroll-behavior: smooth;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        /* --- FORMS --- */
-        .input-box {
-            background: var(--bg-body);
-            border: 2px solid transparent;
-            padding: 16px;
+        .input-glass {
             width: 100%;
-            border-radius: 14px;
-            color: var(--text-main);
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 18px;
+            border-radius: 16px;
+            color: white;
             font-family: inherit;
             margin-bottom: 15px;
-            transition: 0.3s;
             outline: none;
+            transition: 0.3s;
         }
-        .input-box:focus { border-color: var(--primary); background: var(--bg-card); }
+        .input-glass:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
 
-        .btn {
+        .btn-main {
             width: 100%;
-            padding: 16px;
-            border-radius: 14px;
+            padding: 18px;
+            border-radius: 16px;
             border: none;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 4px 12px var(--primary-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .btn:active { transform: scale(0.98); }
-        .btn-sec { background: transparent; color: var(--text-sub); box-shadow: none; border: 1px solid var(--border); margin-top: 10px; }
-        .btn-danger { background: #ef4444; color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-sec { background: transparent; border: 1px solid var(--glass-border); color: var(--text-sub); margin-top: 10px; box-shadow: none; }
 
-        /* --- MEDIA UPLOAD GRID --- */
-        .upload-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .upload-item {
-            background: var(--bg-body);
-            border-radius: 14px;
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px dashed var(--border);
-            color: var(--text-sub);
-            transition: 0.3s;
-        }
-        .upload-item:hover, .upload-item.active { border-color: var(--primary); color: var(--primary); background: rgba(79, 70, 229, 0.05); }
-        .upload-item span { font-size: 24px; margin-bottom: 5px; }
-        .upload-item p { margin: 0; font-size: 11px; font-weight: 600; }
-
-        /* --- PREVIEW AREA --- */
-        .preview-zone {
-            margin-top: 20px;
-            background: var(--bg-body);
-            padding: 10px;
-            border-radius: 14px;
-            display: none;
-            position: relative;
-        }
-        .preview-media { width: 100%; border-radius: 10px; display: block; }
-        .close-preview {
-            position: absolute; top: -10px; right: -10px;
-            background: #ef4444; color: white;
-            width: 28px; height: 28px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        /* --- DASHBOARD QR & LINK --- */
+        .share-zone { text-align: center; padding: 30px 20px; background: linear-gradient(180deg, rgba(99,102,241,0.1) 0%, rgba(0,0,0,0) 100%); border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 25px; }
+        .qr-placeholder { width: 150px; height: 150px; margin: 0 auto 15px; background: white; padding: 10px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .qr-img { width: 100%; height: 100%; object-fit: contain; }
 
         /* --- MESSAGES --- */
-        .msg-card {
-            background: var(--bg-body);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 20px;
-            animation: slideUp 0.3s ease-out;
+        .msg-bubble {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            margin-bottom: 15px;
             position: relative;
+            animation: slideIn 0.3s ease;
         }
-        .msg-text { font-size: 15px; line-height: 1.5; margin-bottom: 10px; white-space: pre-wrap; }
-        .msg-media {
-            width: 100%;
-            border-radius: 12px;
-            background: black;
-            max-height: 400px;
-            object-fit: contain;
-            margin-top: 5px;
-        }
-        .msg-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        .msg-time { font-size: 11px; color: var(--text-sub); }
-        .msg-actions { display: flex; gap: 10px; }
-        .action-icon { cursor: pointer; font-size: 14px; padding: 5px; border-radius: 5px; transition: 0.2s; }
-        .action-icon:hover { background: rgba(0,0,0,0.1); }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- UTILS --- */
-        .hidden { display: none !important; }
-        .loader-bar {
-            width: 100%; height: 4px; background: var(--border);
-            border-radius: 2px; overflow: hidden; margin-top: 10px; display: none;
-        }
-        .loader-fill {
-            height: 100%; background: var(--primary);
-            width: 0%; transition: width 0.2s;
-            animation: loading 1.5s infinite ease-in-out;
-        }
-        @keyframes loading { 0% { width: 0%; transform: translateX(-100%); } 100% { width: 100%; transform: translateX(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Toast */
-        .toast {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9);
-            background: #111; color: #fff; padding: 12px 24px; border-radius: 50px;
-            font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;
-            white-space: nowrap; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        .msg-media-preview {
+            width: 100%; border-radius: 12px; margin-top: 10px;
+            max-height: 250px; object-fit: cover; background: #000;
+            border: 1px solid var(--glass-border); cursor: zoom-in;
         }
-        .toast.show { opacity: 1; transform: translateX(-50%) scale(1); bottom: 40px; }
+
+        /* --- SENDER TOOLS --- */
+        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+        .tool-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            aspect-ratio: 1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-sub); transition: 0.2s;
+        }
+        .tool-btn.active { background: rgba(99, 102, 241, 0.2); border-color: var(--primary); color: white; }
+        .tool-btn i { font-size: 24px; margin-bottom: 5px; font-style: normal; }
+
+        /* --- VISUALIZER --- */
+        .visualizer-container {
+            width: 100%; height: 60px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px; margin-top: 15px;
+            display: none; align-items: center; justify-content: center;
+            overflow: hidden; border: 1px solid var(--primary);
+        }
+        canvas { width: 100%; height: 100%; }
+
+        /* --- LIGHTBOX --- */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.95);
+            display: none; align-items: center; justify-content: center; flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        .lightbox.active { display: flex; animation: fadeIn 0.2s; }
+        .lightbox-content { max-width: 90%; max-height: 80%; border-radius: 10px; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
+        .close-lb { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; padding: 20px; }
+
+        /* --- TOAST --- */
+        .toast {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--text-main); color: var(--bg-dark);
+            padding: 12px 24px; border-radius: 50px; font-weight: 700; font-size: 13px;
+            opacity: 0; pointer-events: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 99; box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .hidden { display: none !important; }
 
     </style>
 </head>
 <body>
 
+<div class="ambient-light"></div>
+
 <div class="app-shell">
     
-    <!-- HEADER -->
+    <!-- TOP BAR -->
     <div class="header">
-        <div class="brand">FaizanMsg <span style="font-size:12px; color:var(--text-sub); font-weight:normal;">Hyper</span></div>
-        <button class="header-btn hidden" id="logout-btn" onclick="logout()" title="Logout">↪️</button>
-    </div>
-
-    <!-- 1. AUTH SCREEN -->
-    <div id="view-auth" class="main-view">
-        <h2 style="text-align:center; margin-bottom:30px;">Login</h2>
-        <div id="login-form">
-            <input type="text" id="log-user" class="input-box" placeholder="Username">
-            <input type="password" id="log-pass" class="input-box" placeholder="Password">
-            <button class="btn" onclick="handleLogin()">Enter Dashboard</button>
-            <button class="btn btn-sec" onclick="toggleAuth(true)">Register New Account</button>
-        </div>
-        <div id="reg-form" class="hidden">
-            <input type="text" id="reg-user" class="input-box" placeholder="Pick Username">
-            <input type="password" id="reg-pass" class="input-box" placeholder="Create Password">
-            <button class="btn" onclick="handleRegister()">Create Account</button>
-            <button class="btn btn-sec" onclick="toggleAuth(false)">Back to Login</button>
+        <div class="logo">FaizanMsg<span style="color:var(--primary)">.Ultra</span></div>
+        <div id="nav-actions" class="hidden" style="display:flex; gap:10px;">
+            <div class="icon-btn" onclick="showQR()" title="QR Code">⚡</div>
+            <div class="icon-btn" onclick="logout()" style="background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4);">✕</div>
         </div>
     </div>
 
-    <!-- 2. DASHBOARD (INBOX) -->
-    <div id="view-dash" class="main-view hidden">
-        <div style="background: linear-gradient(135deg, var(--primary), #ec4899); padding: 20px; border-radius: 16px; color: white; text-align: center; margin-bottom: 25px;">
-            <p style="margin:0; font-size:13px; opacity:0.9;">YOUR SECRET LINK</p>
-            <div id="share-link" style="font-family: monospace; font-size: 14px; margin: 10px 0; font-weight:bold; word-break: break-all;">...</div>
-            <button onclick="copyLink()" style="background:white; color:var(--primary); border:none; padding:8px 16px; border-radius:20px; font-weight:bold; font-size:12px; cursor:pointer;">Copy Link 📋</button>
-        </div>
+    <!-- VIEW: LOGIN -->
+    <div id="view-auth" class="view active">
+        <div style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+            <h1 style="font-size:32px; margin-bottom:10px; background: linear-gradient(to right, #fff, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome Back</h1>
+            <p style="color:var(--text-sub); margin-bottom:40px;">Enter your secure vault credentials.</p>
+            
+            <div id="login-box">
+                <input type="text" id="log-user" class="input-glass" placeholder="Username">
+                <input type="password" id="log-pass" class="input-glass" placeholder="Passcode">
+                <button class="btn-main" onclick="handleLogin()">Unlock Vault 🔓</button>
+                <button class="btn-main btn-sec" onclick="toggleAuth(true)">Create New Identity</button>
+            </div>
 
-        <h3 style="border-bottom:1px solid var(--border); padding-bottom:10px;">Your Messages</h3>
-        <div id="msg-list"></div>
+            <div id="reg-box" class="hidden">
+                <input type="text" id="reg-user" class="input-glass" placeholder="Choose Username">
+                <input type="password" id="reg-pass" class="input-glass" placeholder="Set Passcode">
+                <button class="btn-main" onclick="handleRegister()">Generate Identity ✨</button>
+                <button class="btn-main btn-sec" onclick="toggleAuth(false)">Back to Login</button>
+            </div>
+        </div>
     </div>
 
-    <!-- 3. SENDER VIEW -->
-    <div id="view-send" class="main-view hidden">
+    <!-- VIEW: DASHBOARD (INBOX) -->
+    <div id="view-dash" class="view">
+        <div class="share-zone">
+            <div id="qr-area" class="qr-placeholder hidden">
+                <img id="qr-image" class="qr-img" src="" alt="QR">
+            </div>
+            <p style="font-size:12px; color:var(--text-sub); letter-spacing:1px; font-weight:700;">SECURE LINK ACTIVE</p>
+            <div id="link-text" style="font-family:monospace; color:var(--primary); margin:10px 0; font-size:13px; word-break:break-all;">...</div>
+            <button class="btn-main" style="padding:10px; height:auto; width:auto; display:inline-flex; font-size:12px;" onclick="copyLink()">Copy Link 🔗</button>
+            <button class="btn-main btn-sec" style="padding:10px; height:auto; width:auto; display:inline-flex; font-size:12px;" onclick="toggleQR()">Toggle QR 🔳</button>
+        </div>
+
+        <h3 style="margin-top:0; color:white; border-bottom:1px solid var(--glass-border); padding-bottom:15px;">Encrypted Feed</h3>
+        <div id="msg-list" style="padding-bottom:50px;"></div>
+    </div>
+
+    <!-- VIEW: SENDER -->
+    <div id="view-send" class="view">
         <div style="text-align:center; margin-bottom:20px;">
-            <span style="background:var(--bg-body); padding:5px 15px; border-radius:20px; font-size:12px; color:var(--text-sub);">
-                Sending to: <b id="receiver-name" style="color:var(--text-main)">...</b>
-            </span>
+            <div style="width:60px; height:60px; background:linear-gradient(135deg, var(--primary), var(--accent)); border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold;">🔒</div>
+            <h2 style="margin:0;">Send to <span id="receiver-name" style="color:var(--primary)">...</span></h2>
+            <p style="margin:5px 0 0; font-size:12px; color:var(--text-sub);">End-to-End Encrypted Tunnel</p>
         </div>
 
-        <textarea id="msg-text" class="input-box" rows="4" placeholder="Type a message..."></textarea>
-
-        <div class="upload-grid">
-            <div class="upload-item" onclick="triggerFile('image')">
-                <span>📷</span> <p>Photo</p>
-            </div>
-            <div class="upload-item" onclick="triggerFile('video')">
-                <span>🎥</span> <p>Video</p>
-            </div>
-            <div class="upload-item" id="mic-btn" onclick="toggleMic()">
-                <span>🎤</span> <p>Audio</p>
-            </div>
+        <textarea id="msg-text" class="input-glass" rows="3" placeholder="Write your secret message..."></textarea>
+        
+        <!-- Visualizer Canvas -->
+        <div class="visualizer-container" id="visualizer-box">
+            <canvas id="visualizer"></canvas>
         </div>
 
+        <!-- Preview Area -->
+        <div id="preview-area" class="card hidden" style="text-align:center; position:relative;">
+            <div onclick="resetMedia()" style="position:absolute; top:10px; right:10px; background:red; width:20px; height:20px; border-radius:50%; cursor:pointer;"></div>
+            <img id="prev-img" class="msg-media-preview hidden">
+            <video id="prev-vid" class="msg-media-preview hidden" controls></video>
+            <audio id="prev-audio" style="width:100%; margin-top:10px;" class="hidden" controls></audio>
+            <p id="file-info" style="font-size:11px; color:var(--text-sub); margin-top:5px;"></p>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-btn" onclick="triggerFile('image')"><i>📷</i>Photo</div>
+            <div class="tool-btn" onclick="triggerFile('video')"><i>🎥</i>Video</div>
+            <div class="tool-btn" id="mic-btn" onclick="toggleMic()"><i>🎙️</i>Voice</div>
+        </div>
+
+        <button class="btn-main" style="margin-top:25px;" onclick="sendMessage()" id="send-btn">Transmit Securely 🚀</button>
+        
         <!-- Hidden Inputs -->
-        <input type="file" id="inp-image" accept="image/*" hidden onchange="previewFile(this, 'image')">
-        <input type="file" id="inp-video" accept="video/*" hidden onchange="previewFile(this, 'video')">
-
-        <!-- Preview -->
-        <div id="preview-box" class="preview-zone">
-            <div class="close-preview" onclick="resetMedia()">×</div>
-            <img id="prev-img" class="preview-media hidden">
-            <video id="prev-vid" class="preview-media hidden" controls></video>
-            <audio id="prev-audio" class="preview-media hidden" controls style="margin-top:20px;"></audio>
-            <p id="file-meta" style="font-size:11px; text-align:center; color:var(--text-sub); margin-top:5px;"></p>
-        </div>
-
-        <div class="loader-bar" id="progress-bar"><div class="loader-fill"></div></div>
-
-        <button class="btn" style="margin-top:20px;" onclick="sendMessage()" id="send-btn">Send Securely 🚀</button>
-        <button class="btn btn-sec" onclick="window.location.reload()">Get Your Own Link</button>
+        <input type="file" id="inp-image" accept="image/*" hidden onchange="handleFile(this, 'image')">
+        <input type="file" id="inp-video" accept="video/*" hidden onchange="handleFile(this, 'video')">
     </div>
 
+</div>
+
+<!-- Lightbox Overlay -->
+<div id="lightbox" class="lightbox">
+    <div class="close-lb" onclick="closeLightbox()">×</div>
+    <img id="lb-img" class="lightbox-content hidden">
+    <video id="lb-vid" class="lightbox-content hidden" controls></video>
 </div>
 
 <div id="toast" class="toast">Notification</div>
 
 <script>
-    // --- DATABASE CORE (IndexedDB for Large Files) ---
-    const DB_NAME = "FaizanMsgHyperDB";
-    const DB_VER = 1;
+    /* --- ULTRA CORE SYSTEM --- */
+    const DB_NAME = "FaizanMsgUltra";
+    const STORE_KEY = "messages_v2";
     let db;
-    
-    // Auth (Small data uses LocalStorage)
-    const USERS_KEY = "faizan_users_v2";
+    let audioContext, analyser, dataArray, canvas, canvasCtx, animationId;
+    let mediaRecorder, audioChunks = [];
+    let currentMedia = null;
 
-    // Media State
-    let currentMedia = { blob: null, type: null, name: null };
-    let mediaRecorder;
-    let audioChunks = [];
-
-    // --- INIT ---
+    // Initialize
     window.onload = async () => {
-        try {
-            await initDB();
-            checkRoute();
-        } catch(e) {
-            alert("Database Error: " + e);
-        }
+        await initDB();
+        handleRouting();
     };
 
+    // --- DB (IndexedDB) ---
     function initDB() {
-        return new Promise((resolve, reject) => {
-            const req = indexedDB.open(DB_NAME, DB_VER);
+        return new Promise((resolve) => {
+            const req = indexedDB.open(DB_NAME, 2);
             req.onupgradeneeded = e => {
                 const db = e.target.result;
-                // Store messages with auto-increment ID
-                const store = db.createObjectStore("messages", { keyPath: "id", autoIncrement: true });
-                store.createIndex("to", "to", { unique: false });
+                if (!db.objectStoreNames.contains(STORE_KEY)) {
+                    const store = db.createObjectStore(STORE_KEY, { keyPath: "id", autoIncrement: true });
+                    store.createIndex("to", "to", { unique: false });
+                }
             };
             req.onsuccess = e => { db = e.target.result; resolve(); };
-            req.onerror = e => reject(e);
         });
     }
 
-    function checkRoute() {
-        const params = new URLSearchParams(window.location.search);
-        const toUser = params.get('to');
+    // --- ROUTING ---
+    function handleRouting() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const toUser = urlParams.get('to');
         
         if (toUser) {
-            // Public Send View
-            const users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
-            if(users[toUser]) {
-                nav('send');
-                document.getElementById('receiver-name').innerText = toUser;
-            } else {
-                document.body.innerHTML = "<h2 style='text-align:center;color:white;'>User Not Found</h2>";
-            }
+            // Sender Mode
+            switchView('send');
+            document.getElementById('receiver-name').innerText = toUser;
+            checkUserExists(toUser);
         } else {
-            // Dashboard/Login View
-            const session = localStorage.getItem('session_user');
-            if(session) loadDashboard(session);
-            else nav('auth');
+            // User Mode
+            const session = localStorage.getItem('ultra_session');
+            if (session) loadDashboard(session);
+            else switchView('auth');
         }
     }
 
-    function nav(view) {
-        document.querySelectorAll('.main-view').forEach(d => d.classList.add('hidden'));
-        document.getElementById('view-' + view).classList.remove('hidden');
-        document.getElementById('logout-btn').classList.toggle('hidden', view !== 'dash');
+    function switchView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById('view-' + id).classList.add('active');
+        document.getElementById('nav-actions').classList.toggle('hidden', id !== 'dash');
+    }
+
+    function checkUserExists(u) {
+        const users = JSON.parse(localStorage.getItem('ultra_users') || "{}");
+        if(!users[u]) {
+            document.body.innerHTML = "<h1 style='color:white;text-align:center'>User Not Found 🚫</h1>";
+        }
     }
 
     // --- AUTHENTICATION ---
     function toggleAuth(isReg) {
-        document.getElementById('login-form').classList.toggle('hidden', isReg);
-        document.getElementById('reg-form').classList.toggle('hidden', !isReg);
+        document.getElementById('login-box').classList.toggle('hidden', isReg);
+        document.getElementById('reg-box').classList.toggle('hidden', !isReg);
     }
 
     function handleRegister() {
         const u = document.getElementById('reg-user').value.trim();
         const p = document.getElementById('reg-pass').value.trim();
-        if(!u || !p) return toast("Please fill all fields");
-
-        let users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
-        if(users[u]) return toast("Username taken!");
-
+        if(!u || !p) return toast("Credentials required");
+        
+        let users = JSON.parse(localStorage.getItem('ultra_users') || "{}");
+        if(users[u]) return toast("Identity already taken");
+        
         users[u] = p;
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        toast("Account Created! Please Login.");
+        localStorage.setItem('ultra_users', JSON.stringify(users));
+        toast("Vault Created");
         toggleAuth(false);
     }
 
     function handleLogin() {
         const u = document.getElementById('log-user').value.trim();
         const p = document.getElementById('log-pass').value.trim();
-        let users = JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
-
+        let users = JSON.parse(localStorage.getItem('ultra_users') || "{}");
+        
         if(users[u] === p) {
-            localStorage.setItem('session_user', u);
+            localStorage.setItem('ultra_session', u);
             loadDashboard(u);
         } else {
-            toast("Invalid Credentials ❌");
+            toast("Access Denied 🛑");
         }
     }
 
     function logout() {
-        localStorage.removeItem('session_user');
-        window.location.reload();
+        localStorage.removeItem('ultra_session');
+        window.location.href = window.location.pathname;
     }
 
-    // --- DASHBOARD ---
+    // --- DASHBOARD LOGIC ---
     async function loadDashboard(user) {
-        nav('dash');
+        switchView('dash');
         const link = `${window.location.origin}${window.location.pathname}?to=${user}`;
-        document.getElementById('share-link').innerText = link;
+        document.getElementById('link-text').innerText = link;
+        
+        // Generate QR Code using API
+        document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
 
-        const list = document.getElementById('msg-list');
-        list.innerHTML = "<p style='text-align:center'>Loading messages...</p>";
-
-        try {
-            const msgs = await getMessages(user);
+        // Load Messages
+        const tx = db.transaction(STORE_KEY, "readonly");
+        const store = tx.objectStore(STORE_KEY);
+        const index = store.index("to");
+        const req = index.getAll(user);
+        
+        req.onsuccess = () => {
+            const list = document.getElementById('msg-list');
             list.innerHTML = "";
-            if(msgs.length === 0) list.innerHTML = "<p style='text-align:center; color:var(--text-sub);'>No messages yet.</p>";
+            const msgs = req.result.reverse();
+            
+            if(msgs.length === 0) list.innerHTML = "<div style='text-align:center; color:var(--text-sub); margin-top:50px;'>No signals intercepted yet.</div>";
 
-            msgs.reverse().forEach(msg => {
-                const el = document.createElement('div');
-                el.className = 'msg-card';
+            msgs.forEach(msg => {
+                let content = `<div style="font-size:15px; color:white; margin-bottom:5px;">${msg.text || '<i>Attachment</i>'}</div>`;
                 
-                let mediaHtml = "";
                 if(msg.blob) {
                     const url = URL.createObjectURL(msg.blob);
-                    if(msg.type === 'image') mediaHtml = `<img src="${url}" class="msg-media" loading="lazy">`;
-                    if(msg.type === 'video') mediaHtml = `<video src="${url}" controls class="msg-media"></video>`;
-                    if(msg.type === 'audio') mediaHtml = `<audio src="${url}" controls style="width:100%; margin-top:10px;"></audio>`;
+                    if(msg.type === 'image') content += `<img src="${url}" class="msg-media-preview" onclick="openLightbox('${url}', 'img')">`;
+                    if(msg.type === 'video') content += `<video src="${url}" class="msg-media-preview" onclick="openLightbox('${url}', 'vid')"></video>`;
+                    if(msg.type === 'audio') content += `<audio src="${url}" controls style="width:100%; margin-top:8px;"></audio>`;
                 }
 
-                el.innerHTML = `
-                    <div class="msg-text">${msg.text || "<i>Shared Media</i>"}</div>
-                    ${mediaHtml}
-                    <div class="msg-footer">
-                        <span class="msg-time">${new Date(msg.date).toLocaleString()}</span>
-                        <div class="msg-actions">
-                            ${msg.blob ? `<span class="action-icon" onclick="downloadMedia(this)" title="Download">⬇️</span>` : ''}
-                            <span class="action-icon" onclick="deleteMsg(${msg.id})" title="Delete" style="color:#ef4444;">🗑️</span>
-                        </div>
+                const div = document.createElement('div');
+                div.className = "msg-bubble";
+                div.innerHTML = `
+                    ${content}
+                    <div style="font-size:10px; color:var(--text-sub); margin-top:8px; display:flex; justify-content:space-between;">
+                        <span>${new Date(msg.date).toLocaleTimeString()}</span>
+                        <span style="color:#ef4444; cursor:pointer;" onclick="deleteMsg(${msg.id})">DELETE</span>
                     </div>
                 `;
-                // Attach blob url to element for download
-                if(msg.blob) el.dataset.blobUrl = URL.createObjectURL(msg.blob);
-                if(msg.blob) el.dataset.fileName = msg.fileName || 'download';
-                
-                list.appendChild(el);
+                list.appendChild(div);
             });
-        } catch(e) {
-            console.error(e);
-            list.innerHTML = "Error loading database.";
-        }
+        };
+    }
+
+    function toggleQR() {
+        document.getElementById('qr-area').classList.toggle('hidden');
     }
 
     function copyLink() {
-        navigator.clipboard.writeText(document.getElementById('share-link').innerText);
-        toast("Link Copied! Share it 📲");
+        navigator.clipboard.writeText(document.getElementById('link-text').innerText);
+        toast("Link Copied to Clipboard");
     }
 
-    function downloadMedia(btn) {
-        const card = btn.closest('.msg-card');
-        const a = document.createElement('a');
-        a.href = card.dataset.blobUrl;
-        a.download = card.dataset.fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    function deleteMsg(id) {
+        if(!confirm("Erase data permanently?")) return;
+        const tx = db.transaction(STORE_KEY, "readwrite");
+        tx.objectStore(STORE_KEY).delete(id);
+        tx.oncomplete = () => loadDashboard(localStorage.getItem('ultra_session'));
     }
 
-    // --- SENDING LOGIC ---
-    function triggerFile(type) {
-        document.getElementById('inp-' + type).click();
+    // --- MEDIA & SENDER LOGIC ---
+    function triggerFile(type) { document.getElementById(`inp-${type}`).click(); }
+
+    function handleFile(input, type) {
+        const f = input.files[0];
+        if(!f) return;
+        currentMedia = { blob: f, type: type };
+        
+        const url = URL.createObjectURL(f);
+        document.getElementById('preview-area').classList.remove('hidden');
+        ['prev-img','prev-vid','prev-audio'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+        
+        if(type==='image') { document.getElementById('prev-img').src=url; document.getElementById('prev-img').classList.remove('hidden'); }
+        if(type==='video') { document.getElementById('prev-vid').src=url; document.getElementById('prev-vid').classList.remove('hidden'); }
+        
+        document.getElementById('file-info').innerText = `Ready to send: ${(f.size/1024/1024).toFixed(2)} MB`;
     }
 
-    function previewFile(input, type) {
-        const file = input.files[0];
-        if(!file) return;
-
-        currentMedia = { blob: file, type: type, name: file.name };
-        showPreview(URL.createObjectURL(file), type, file.size);
-    }
-
-    function showPreview(url, type, size) {
-        document.getElementById('preview-box').style.display = 'block';
-        ['prev-img', 'prev-vid', 'prev-audio'].forEach(id => document.getElementById(id).classList.add('hidden'));
-
-        if(type === 'image') {
-            const i = document.getElementById('prev-img');
-            i.src = url; i.classList.remove('hidden');
-        } else if(type === 'video') {
-            const v = document.getElementById('prev-vid');
-            v.src = url; v.classList.remove('hidden');
-        } else {
-            const a = document.getElementById('prev-audio');
-            a.src = url; a.classList.remove('hidden');
-        }
-
-        if(size) {
-            const mb = (size / (1024*1024)).toFixed(2);
-            document.getElementById('file-meta').innerText = `Size: ${mb} MB`;
-        } else {
-            document.getElementById('file-meta').innerText = "Audio Recording";
-        }
-    }
-
-    function resetMedia() {
-        currentMedia = { blob: null, type: null, name: null };
-        document.getElementById('preview-box').style.display = 'none';
-        document.getElementById('inp-image').value = "";
-        document.getElementById('inp-video').value = "";
-    }
-
-    // Audio Logic
+    // --- AUDIO VISUALIZER ENGINE ---
     async function toggleMic() {
+        const btn = document.getElementById('mic-btn');
+        const box = document.getElementById('visualizer-box');
+
         if(mediaRecorder && mediaRecorder.state === 'recording') {
             mediaRecorder.stop();
-            document.getElementById('mic-btn').classList.remove('active');
+            btn.classList.remove('active');
+            box.style.display = 'none';
+            if(animationId) cancelAnimationFrame(animationId);
         } else {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                setupVisualizer(stream);
+                
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
                 mediaRecorder.onstop = () => {
                     const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                    currentMedia = { blob: blob, type: 'audio', name: 'voice_msg.webm' };
-                    showPreview(URL.createObjectURL(blob), 'audio');
+                    currentMedia = { blob: blob, type: 'audio' };
+                    
+                    document.getElementById('preview-area').classList.remove('hidden');
+                    ['prev-img','prev-vid'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+                    const audioEl = document.getElementById('prev-audio');
+                    audioEl.src = URL.createObjectURL(blob);
+                    audioEl.classList.remove('hidden');
+                    document.getElementById('file-info').innerText = "Voice Note Recorded";
+                    
+                    // Stop tracks
+                    stream.getTracks().forEach(t => t.stop());
                 };
+                
                 mediaRecorder.start();
-                document.getElementById('mic-btn').classList.add('active');
-                toast("Recording... Tap again to stop.");
+                btn.classList.add('active');
+                box.style.display = 'flex';
+                toast("Recording... Tap again to stop");
+                
             } catch(e) {
-                toast("Mic Permission Denied 🎤");
+                toast("Microphone access denied");
             }
         }
     }
 
-    async function sendMessage() {
-        const txt = document.getElementById('msg-text').value.trim();
-        if(!txt && !currentMedia.blob) return toast("Message is empty!");
-
-        const btn = document.getElementById('send-btn');
-        const bar = document.getElementById('progress-bar');
+    function setupVisualizer(stream) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+        analyser = audioContext.createAnalyser();
+        source.connect(analyser);
+        analyser.fftSize = 256;
         
-        btn.disabled = true;
-        btn.innerText = "Processing Large File...";
-        bar.style.display = 'block';
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        canvas = document.getElementById('visualizer');
+        canvasCtx = canvas.getContext('2d');
+        
+        drawVisualizer();
+    }
 
-        const payload = {
-            to: document.getElementById('receiver-name').innerText,
-            text: txt,
-            blob: currentMedia.blob,
-            type: currentMedia.type,
-            fileName: currentMedia.name,
-            date: Date.now()
-        };
+    function drawVisualizer() {
+        animationId = requestAnimationFrame(drawVisualizer);
+        analyser.getByteFrequencyData(dataArray);
+        
+        canvasCtx.fillStyle = 'rgba(0,0,0,0.5)';
+        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        const barWidth = (canvas.width / dataArray.length) * 2.5;
+        let barHeight;
+        let x = 0;
 
-        try {
-            // Transaction
-            const tx = db.transaction(["messages"], "readwrite");
-            const store = tx.objectStore("messages");
-            await store.add(payload);
-
-            toast("Sent Successfully! 🎉");
-            document.getElementById('msg-text').value = "";
-            resetMedia();
-        } catch(e) {
-            console.error(e);
-            if(e.name === "QuotaExceededError") toast("Receiver Device Full! ⚠️");
-            else toast("Error sending message.");
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "Send Securely 🚀";
-            bar.style.display = 'none';
+        for(let i = 0; i < dataArray.length; i++) {
+            barHeight = dataArray[i] / 2;
+            canvasCtx.fillStyle = `rgb(${barHeight + 100}, 102, 241)`;
+            canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+            x += barWidth + 1;
         }
     }
 
-    // --- DB HELPERS ---
-    function getMessages(user) {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(["messages"], "readonly");
-            const store = tx.objectStore("messages");
-            const index = store.index("to");
-            const req = index.getAll(user);
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
+    function resetMedia() {
+        currentMedia = null;
+        document.getElementById('preview-area').classList.add('hidden');
+        document.getElementById('inp-image').value = "";
+        document.getElementById('inp-video').value = "";
     }
 
-    function deleteMsg(id) {
-        if(!confirm("Delete this message permanently?")) return;
-        const tx = db.transaction(["messages"], "readwrite");
-        tx.objectStore("messages").delete(id);
-        tx.oncomplete = () => {
-            toast("Message Deleted");
-            // Refresh dashboard
-            const user = localStorage.getItem('session_user');
-            loadDashboard(user);
-        };
+    async function sendMessage() {
+        const txt = document.getElementById('msg-text').value.trim();
+        if(!txt && !currentMedia) return toast("Empty transmission");
+
+        const btn = document.getElementById('send-btn');
+        btn.innerHTML = "Encrypting & Sending...";
+        btn.style.opacity = "0.7";
+
+        try {
+            const tx = db.transaction(STORE_KEY, "readwrite");
+            await tx.objectStore(STORE_KEY).add({
+                to: document.getElementById('receiver-name').innerText,
+                text: txt,
+                blob: currentMedia ? currentMedia.blob : null,
+                type: currentMedia ? currentMedia.type : null,
+                date: Date.now()
+            });
+            
+            toast("Transmitted 📡");
+            document.getElementById('msg-text').value = "";
+            resetMedia();
+        } catch(e) {
+            toast("Transmission Failed: Storage Full");
+        } finally {
+            btn.innerHTML = "Transmit Securely 🚀";
+            btn.style.opacity = "1";
+        }
+    }
+
+    // --- UI HELPERS ---
+    function openLightbox(url, type) {
+        const lb = document.getElementById('lightbox');
+        const img = document.getElementById('lb-img');
+        const vid = document.getElementById('lb-vid');
+        
+        lb.classList.add('active');
+        img.classList.add('hidden');
+        vid.classList.add('hidden');
+        
+        if(type==='img') { img.src = url; img.classList.remove('hidden'); }
+        if(type==='vid') { vid.src = url; vid.classList.remove('hidden'); vid.play(); }
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.getElementById('lb-vid').pause();
     }
 
     function toast(msg) {
