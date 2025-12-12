@@ -3,212 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecretMsg - Anonymous Messages</title>
+    <title>SecretMsg - Voice & Text</title>
     <style>
-        /* --- ENHANCED CSS DESIGN --- */
+        /* --- CSS STYLES --- */
         :root {
-            --primary: #4e54c8;
-            --secondary: #8f94fb;
-            --bg: #f4f7f6;
-            --text: #333;
-            --white: #ffffff;
+            --primary: #6C63FF;
+            --secondary: #f5f5f5;
+            --danger: #ff6b6b;
+            --success: #2ecc71;
+            --text-dark: #333;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            background: #eef2f3;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0;
-            padding: 20px;
+            min-height: 100vh;
         }
 
         .container {
-            background: var(--white);
+            background: white;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-            animation: slideIn 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        h2, h3 { color: var(--text-dark); margin-bottom: 15px; }
 
-        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; }
-        
-        /* Toggle Switch for Login/Signup */
-        .toggle-box {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            background: #eee;
-            border-radius: 30px;
-            padding: 5px;
-            position: relative;
-        }
-
-        .toggle-btn {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            z-index: 1;
-            transition: color 0.3s;
-        }
-
-        .active-btn { color: white; }
-        .inactive-btn { color: #555; }
-
-        .slider {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: 50%; /* Adjusted via JS logic usually, but fixed here for simple toggle */
-            height: calc(100% - 10px);
-            background: var(--primary);
-            border-radius: 25px;
-            transition: 0.3s;
-            z-index: 0;
-        }
-
+        /* Inputs & Buttons */
         input, textarea {
             width: 100%;
-            padding: 12px 15px;
-            margin: 8px 0;
+            padding: 12px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
             background: #fafafa;
-            transition: 0.3s;
         }
 
-        input:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            background: #fff;
-        }
-
-        button.action-btn {
+        button {
             width: 100%;
             padding: 12px;
-            background: var(--primary);
-            color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 600;
             transition: 0.3s;
-            font-weight: bold;
+            margin-top: 10px;
         }
 
-        button.action-btn:hover { background: #3a3f9d; transform: scale(1.02); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #5a52d5; }
+        .btn-secondary { background: #ddd; color: #333; }
+        
+        /* Profile Image Upload */
+        .profile-upload {
+            margin: 10px 0;
+        }
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        /* Auth Toggle */
+        .auth-toggle {
+            display: flex;
+            background: #eee;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            padding: 4px;
+        }
+        .toggle-btn {
+            flex: 1;
+            background: transparent;
+            color: #666;
+            margin: 0;
+            padding: 8px;
+        }
+        .active-toggle {
+            background: white;
+            color: var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-        .hidden { display: none !important; }
-
-        /* Dashboard Styles */
-        .link-container {
-            background: #eef2ff;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed var(--primary);
-            text-align: center;
-            word-break: break-all;
+        /* Voice Recorder */
+        .recorder-box {
             margin: 15px 0;
-            font-size: 13px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
         }
+        .recording-indicator {
+            color: var(--danger);
+            font-weight: bold;
+            display: none;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0.5; } }
 
+        /* Messages List */
         .msg-list {
-            max-height: 300px;
+            text-align: left;
+            max-height: 400px;
             overflow-y: auto;
             margin-top: 20px;
         }
-
         .msg-card {
             background: white;
             padding: 15px;
-            margin-bottom: 10px;
-            border-left: 5px solid var(--secondary);
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            font-size: 14px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
         }
-        
-        .timestamp { font-size: 10px; color: #888; display: block; margin-top: 5px; text-align: right; }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            height: 40px;
+        }
+        .timestamp { font-size: 11px; color: #999; display: block; margin-top: 5px; text-align: right; }
 
-        .logout-btn { background: #ff4757 !important; margin-top: 10px; }
+        .hidden { display: none; }
+        
+        /* Profile Display on Public Page */
+        .public-profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
-        <!-- SECTION 1: AUTHENTICATION (Sign In / Sign Up) -->
+
+        <!-- ================= AUTH SECTION ================= -->
         <div id="auth-section">
-            <h2 id="form-title">Welcome Back</h2>
+            <h2>Secret Messenger</h2>
             
-            <div class="toggle-box">
-                <div class="slider" id="slider-bg"></div>
-                <button class="toggle-btn active-btn" onclick="switchForm('login')">Sign In</button>
-                <button class="toggle-btn inactive-btn" onclick="switchForm('signup')">Sign Up</button>
+            <div class="auth-toggle">
+                <button class="toggle-btn active-toggle" onclick="toggleAuth('login')" id="btn-login-view">Sign In</button>
+                <button class="toggle-btn" onclick="toggleAuth('signup')" id="btn-signup-view">Sign Up</button>
             </div>
 
             <!-- Login Form -->
             <div id="login-form">
-                <input type="text" id="login-user" placeholder="Enter Username">
-                <input type="password" id="login-pass" placeholder="Enter Password">
-                <button class="action-btn" onclick="login()">Login</button>
+                <input type="text" id="login-user" placeholder="Username">
+                <input type="password" id="login-pass" placeholder="Password">
+                <button class="btn-primary" onclick="login()">Login</button>
             </div>
 
-            <!-- Sign Up Form -->
+            <!-- Signup Form -->
             <div id="signup-form" class="hidden">
+                <div class="profile-upload">
+                    <img id="preview-avatar" class="preview-img" alt="Preview">
+                    <label style="font-size:12px; display:block; margin-bottom:5px;">Upload Profile Picture:</label>
+                    <input type="file" id="reg-pic" accept="image/*" onchange="previewImage()">
+                </div>
                 <input type="text" id="reg-user" placeholder="Create Username">
                 <input type="password" id="reg-pass" placeholder="Create Password">
-                <button class="action-btn" style="background: var(--secondary);" onclick="register()">Create Account</button>
+                <button class="btn-primary" onclick="register()">Create Account</button>
             </div>
-            
-            <p style="text-align:center; font-size:12px; color:#666; margin-top:15px;">
-                Note: Yeh demo version hai (Data browser me save hoga).
-            </p>
         </div>
 
-        <!-- SECTION 2: DASHBOARD (Private) -->
+        <!-- ================= DASHBOARD SECTION (Inbox) ================= -->
         <div id="dashboard-section" class="hidden">
-            <h2>Your Dashboard</h2>
-            <p style="text-align:center;">Hello, <b id="display-user"></b> 👋</p>
+            <h3 id="dash-welcome">My Inbox</h3>
             
-            <div class="link-container">
-                <span id="my-link">Generating...</span>
+            <div style="background:#eef; padding:10px; border-radius:8px; font-size:13px; margin-bottom:15px; word-break:break-all;">
+                <span id="share-link">Generating link...</span>
             </div>
-            <button class="action-btn" onclick="copyLink()">Copy Link</button>
-
-            <h3 style="margin-top:25px; border-bottom:1px solid #eee; padding-bottom:10px;">Inbox 📩</h3>
-            <div id="messages-box" class="msg-list">
-                <p style="text-align:center; color:#999;">No messages yet.</p>
+            <button class="btn-primary" onclick="copyLink()">Copy Link</button>
+            
+            <div id="inbox-messages" class="msg-list">
+                <!-- Messages will appear here -->
             </div>
 
-            <button class="action-btn logout-btn" onclick="logout()">Logout</button>
+            <button class="btn-secondary" onclick="logout()" style="background:#ff6b6b; color:white; margin-top:20px;">Logout</button>
         </div>
 
-        <!-- SECTION 3: PUBLIC MESSAGE (Sender View) -->
+        <!-- ================= PUBLIC SECTION (Sender) ================= -->
         <div id="public-section" class="hidden">
-            <h2>Send Secret Message</h2>
-            <p style="text-align:center; color:#666;">Sending to: <b id="receiver-name">User</b></p>
+            <img id="receiver-pic" class="public-profile-pic" src="" alt="User">
+            <h3>Send Message to <span id="receiver-name">...</span></h3>
             
-            <textarea id="msg-content" rows="5" placeholder="Write your anonymous message here..."></textarea>
-            <button class="action-btn" onclick="sendMessage()">Send Anonymously</button>
+            <!-- Text Message -->
+            <textarea id="msg-text" rows="3" placeholder="Type your secret message..."></textarea>
+
+            <!-- Voice Recorder -->
+            <div class="recorder-box">
+                <p class="recording-indicator" id="rec-status">🔴 Recording...</p>
+                <button id="btn-start-rec" class="btn-secondary" onclick="startRecording()">🎤 Start Recording</button>
+                <button id="btn-stop-rec" class="hidden" style="background:var(--danger); color:white;" onclick="stopRecording()">⏹ Stop</button>
+                <audio id="audio-preview" controls class="hidden"></audio>
+            </div>
+
+            <button class="btn-primary" onclick="sendMessage()">Send Message</button>
             
-            <p style="text-align:center; font-size:13px; margin-top:20px; cursor:pointer; color:var(--primary);" onclick="window.location.href = window.location.pathname">
+            <p style="font-size:12px; margin-top:20px; cursor:pointer; color:var(--primary);" onclick="window.location.href = window.location.pathname">
                 Create your own account
             </p>
         </div>
@@ -216,164 +225,266 @@
     </div>
 
     <script>
-        // --- LOGIC START ---
-        
-        // 1. URL Check (Kya user message bhejne aaya hai?)
-        const urlParams = new URLSearchParams(window.location.search);
-        const sendTo = urlParams.get('to');
-
+        // --- VARIABLES ---
         const authSection = document.getElementById('auth-section');
         const dashboardSection = document.getElementById('dashboard-section');
         const publicSection = document.getElementById('public-section');
+        
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioBase64 = null; // Stores the final audio to send
 
-        // Initial Load Logic
+        // Check URL for receiver
+        const urlParams = new URLSearchParams(window.location.search);
+        const sendTo = urlParams.get('to');
+
+        // --- INITIALIZATION ---
         window.onload = function() {
             if (sendTo) {
-                // Agar link me '?to=username' hai, toh Message bhejne wala page dikhao
-                authSection.classList.add('hidden');
-                publicSection.classList.remove('hidden');
-                document.getElementById('receiver-name').innerText = sendTo;
+                // Sender View
+                loadPublicProfile(sendTo);
             } else {
-                // Check karo agar user pehle se logged in hai
-                const activeUser = localStorage.getItem('activeUser');
-                if (activeUser) {
-                    showDashboard(activeUser);
+                // Auth/Dashboard View
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    showDashboard(currentUser);
                 }
             }
         };
 
-        // --- AUTHENTICATION LOGIC ---
+        // --- AUTH FUNCTIONS ---
 
-        function switchForm(type) {
+        function toggleAuth(view) {
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
-            const slider = document.getElementById('slider-bg');
-            const btns = document.querySelectorAll('.toggle-btn');
-            const title = document.getElementById('form-title');
+            const btnLogin = document.getElementById('btn-login-view');
+            const btnSignup = document.getElementById('btn-signup-view');
 
-            if (type === 'signup') {
+            if (view === 'signup') {
                 loginForm.classList.add('hidden');
                 signupForm.classList.remove('hidden');
-                slider.style.left = "50%";
-                btns[0].classList.remove('active-btn'); btns[0].classList.add('inactive-btn');
-                btns[1].classList.add('active-btn'); btns[1].classList.remove('inactive-btn');
-                title.innerText = "Create Account";
+                btnLogin.classList.remove('active-toggle');
+                btnSignup.classList.add('active-toggle');
             } else {
                 signupForm.classList.add('hidden');
                 loginForm.classList.remove('hidden');
-                slider.style.left = "5px";
-                btns[1].classList.remove('active-btn'); btns[1].classList.add('inactive-btn');
-                btns[0].classList.add('active-btn'); btns[0].classList.remove('inactive-btn');
-                title.innerText = "Welcome Back";
+                btnSignup.classList.remove('active-toggle');
+                btnLogin.classList.add('active-toggle');
             }
         }
 
-        // 1. REGISTER
+        // Image Preview logic
+        function previewImage() {
+            const file = document.getElementById('reg-pic').files[0];
+            const preview = document.getElementById('preview-avatar');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'inline-block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         function register() {
             const user = document.getElementById('reg-user').value.trim();
             const pass = document.getElementById('reg-pass').value.trim();
+            const fileInput = document.getElementById('reg-pic');
 
-            if (!user || !pass) return alert("Please fill all fields.");
+            if (!user || !pass) return alert("Username and Password are required!");
 
-            // Users database (LocalStorage)
-            let users = JSON.parse(localStorage.getItem('usersDB')) || {};
+            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
 
-            if (users[user]) {
-                alert("Username already taken! Try another.");
+            if (usersDB[user]) return alert("Username already exists!");
+
+            // Save user with image (if uploaded)
+            const saveUser = (imgBase64) => {
+                usersDB[user] = {
+                    password: pass,
+                    avatar: imgBase64 || "https://cdn-icons-png.flaticon.com/512/149/149071.png" // Default image
+                };
+                localStorage.setItem('usersDB', JSON.stringify(usersDB));
+                alert("Account created! Please login.");
+                toggleAuth('login');
+            };
+
+            if (fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    saveUser(e.target.result);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
             } else {
-                users[user] = pass; // Save password
-                localStorage.setItem('usersDB', JSON.stringify(users));
-                alert("Account created! Please Sign In.");
-                switchForm('login');
+                saveUser(null);
             }
         }
 
-        // 2. LOGIN
         function login() {
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
+            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
 
-            let users = JSON.parse(localStorage.getItem('usersDB')) || {};
-
-            if (users[user] && users[user] === pass) {
-                // Success
-                localStorage.setItem('activeUser', user);
+            if (usersDB[user] && usersDB[user].password === pass) {
+                localStorage.setItem('currentUser', user);
                 showDashboard(user);
             } else {
-                alert("Invalid Username or Password!");
+                alert("Invalid credentials!");
             }
         }
 
         function logout() {
-            localStorage.removeItem('activeUser');
+            localStorage.removeItem('currentUser');
             location.reload();
         }
 
-        // --- DASHBOARD LOGIC ---
+        // --- DASHBOARD FUNCTIONS ---
 
         function showDashboard(user) {
             authSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
-            document.getElementById('display-user').innerText = user;
+            document.getElementById('dash-welcome').innerText = "Hello, " + user;
 
             // Generate Link
-            const baseUrl = window.location.href.split('?')[0];
-            const fullLink = `${baseUrl}?to=${user}`;
-            document.getElementById('my-link').innerText = fullLink;
+            const link = window.location.href.split('?')[0] + "?to=" + user;
+            document.getElementById('share-link').innerText = link;
 
             loadMessages(user);
         }
 
         function copyLink() {
-            const link = document.getElementById('my-link').innerText;
+            const link = document.getElementById('share-link').innerText;
             navigator.clipboard.writeText(link);
-            alert("Link Copied! Share it with friends.");
+            alert("Link copied!");
         }
 
         function loadMessages(user) {
-            let allMsgs = JSON.parse(localStorage.getItem('messagesDB')) || {};
-            let myMsgs = allMsgs[user] || [];
-            const box = document.getElementById('messages-box');
+            const msgBox = document.getElementById('inbox-messages');
+            let messagesDB = JSON.parse(localStorage.getItem('messagesDB') || "{}");
+            let userMsgs = messagesDB[user] || [];
 
-            if (myMsgs.length === 0) {
-                box.innerHTML = '<p style="text-align:center; color:#999;">No messages yet.</p>';
-            } else {
-                box.innerHTML = '';
-                // Show newest first
-                myMsgs.reverse().forEach(msgObj => {
-                    const div = document.createElement('div');
-                    div.className = 'msg-card';
-                    div.innerHTML = `
-                        ${msgObj.text}
-                        <span class="timestamp">${msgObj.time}</span>
-                    `;
-                    box.appendChild(div);
-                });
+            msgBox.innerHTML = "";
+            if (userMsgs.length === 0) {
+                msgBox.innerHTML = "<p style='color:#999;'>No messages yet.</p>";
+                return;
+            }
+
+            // Show latest first
+            userMsgs.reverse().forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'msg-card';
+                
+                let contentHtml = "";
+                
+                // Text part
+                if (msg.text) {
+                    contentHtml += `<p style="margin:0 0 5px 0;">${msg.text}</p>`;
+                }
+                
+                // Audio part
+                if (msg.audio) {
+                    contentHtml += `<audio controls src="${msg.audio}"></audio>`;
+                }
+
+                div.innerHTML = contentHtml + `<span class="timestamp">${msg.time}</span>`;
+                msgBox.appendChild(div);
+            });
+        }
+
+        // --- PUBLIC / SENDER FUNCTIONS ---
+
+        function loadPublicProfile(username) {
+            let usersDB = JSON.parse(localStorage.getItem('usersDB') || "{}");
+            
+            if (!usersDB[username]) {
+                document.body.innerHTML = "<h2 style='text-align:center;'>User not found!</h2>";
+                return;
+            }
+
+            authSection.classList.add('hidden');
+            publicSection.classList.remove('hidden');
+            document.getElementById('receiver-name').innerText = username;
+            document.getElementById('receiver-pic').src = usersDB[username].avatar;
+        }
+
+        // AUDIO RECORDING LOGIC
+        async function startRecording() {
+            audioChunks = [];
+            audioBase64 = null;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.start();
+                document.getElementById('rec-status').style.display = 'block';
+                document.getElementById('btn-start-rec').classList.add('hidden');
+                document.getElementById('btn-stop-rec').classList.remove('hidden');
+                document.getElementById('audio-preview').classList.add('hidden');
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    // Show preview
+                    const audioEl = document.getElementById('audio-preview');
+                    audioEl.src = audioUrl;
+                    audioEl.classList.remove('hidden');
+
+                    // Convert to Base64 for storage
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = () => {
+                        audioBase64 = reader.result;
+                    };
+                };
+
+            } catch (err) {
+                alert("Microphone permission denied! Cannot record audio.");
+                console.error(err);
             }
         }
 
-        // --- PUBLIC SENDER LOGIC ---
+        function stopRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+                document.getElementById('rec-status').style.display = 'none';
+                document.getElementById('btn-start-rec').classList.remove('hidden');
+                document.getElementById('btn-stop-rec').classList.add('hidden');
+            }
+        }
 
         function sendMessage() {
-            const text = document.getElementById('msg-content').value;
-            if (!text) return alert("Message cannot be empty!");
-
-            let allMsgs = JSON.parse(localStorage.getItem('messagesDB')) || {};
+            const text = document.getElementById('msg-text').value.trim();
             
-            if (!allMsgs[sendTo]) {
-                allMsgs[sendTo] = [];
+            if (!text && !audioBase64) {
+                return alert("Please type a message or record audio first!");
             }
+
+            let messagesDB = JSON.parse(localStorage.getItem('messagesDB') || "{}");
+            if (!messagesDB[sendTo]) messagesDB[sendTo] = [];
 
             const newMsg = {
                 text: text,
+                audio: audioBase64,
                 time: new Date().toLocaleString()
             };
 
-            allMsgs[sendTo].push(newMsg);
-            localStorage.setItem('messagesDB', JSON.stringify(allMsgs));
-
-            alert("Message Sent Successfully!");
-            document.getElementById('msg-content').value = "";
+            messagesDB[sendTo].push(newMsg);
+            
+            // Try to save (might fail if audio is too long for localStorage)
+            try {
+                localStorage.setItem('messagesDB', JSON.stringify(messagesDB));
+                alert("Message Sent!");
+                document.getElementById('msg-text').value = "";
+                document.getElementById('audio-preview').classList.add('hidden');
+                audioBase64 = null;
+            } catch (e) {
+                alert("Message too large! Try a shorter voice note.");
+            }
         }
 
     </script>
