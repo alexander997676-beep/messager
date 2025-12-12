@@ -3,589 +3,559 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FaizanMsg Elite</title>
+    <title>FaizanMsg Supreme</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ELITE THEME VARIABLES --- */
+        /* --- SUPREME THEME ENGINE --- */
         :root {
-            --bg-deep: #050505;
-            --surface: rgba(20, 20, 20, 0.8);
-            --surface-light: rgba(255, 255, 255, 0.05);
-            --primary: #6366f1;
-            --primary-grad: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            --hue: 260; /* Default Purple */
+            --bg-deep: #000000;
+            --primary: hsl(var(--hue), 90%, 65%);
+            --primary-glow: hsla(var(--hue), 90%, 65%, 0.4);
+            --surface: rgba(20, 20, 20, 0.7);
+            --surface-top: rgba(30, 30, 30, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
             --text: #ffffff;
             --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
-            --font: 'Outfit', sans-serif;
-            --danger: #ef4444;
+            --font: 'Plus Jakarta Sans', sans-serif;
         }
 
         * { box-sizing: border-box; outline: none; user-select: none; -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            font-family: var(--font); background-color: var(--bg-deep); color: var(--text);
-            margin: 0; height: 100vh; display: flex; justify-content: center; overflow: hidden;
+        body { font-family: var(--font); background: var(--bg-deep); color: var(--text); margin: 0; height: 100vh; overflow: hidden; }
+
+        /* --- DYNAMIC BACKGROUND --- */
+        .orb-bg {
+            position: fixed; width: 100vw; height: 100vh; z-index: -1; background: #000;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--primary); }
+        .orb-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #22d3ee, transparent); animation-delay: -5s; }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 30px); } }
+
+        /* --- APP SHELL --- */
+        .app-container {
+            width: 100%; max-width: 450px; height: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; position: relative;
+            background: rgba(0,0,0,0.05); backdrop-filter: blur(30px);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        /* --- BACKGROUND --- */
-        .aurora-bg {
-            position: absolute; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.15), transparent 60%),
-                        radial-gradient(circle at 90% 90%, rgba(236, 72, 153, 0.15), transparent 60%);
-            animation: pulseBg 10s infinite alternate;
+        /* --- SPLASH SCREEN --- */
+        #splash {
+            position: absolute; inset: 0; background: #000; z-index: 9999;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            transition: opacity 0.5s;
         }
-        @keyframes pulseBg { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+        .loader { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; margin-top: 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .app-container { width: 100%; max-width: 480px; height: 100%; display: flex; flex-direction: column; position: relative; background: rgba(0,0,0,0.2); backdrop-filter: blur(20px); }
-        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 140px; scroll-behavior: smooth; }
-        .scroll-view::-webkit-scrollbar { width: 0px; }
+        /* --- SCROLL AREA --- */
+        .scroll-view { flex: 1; overflow-y: auto; padding: 24px; padding-bottom: 120px; scroll-behavior: smooth; }
+        .scroll-view::-webkit-scrollbar { width: 0; }
 
-        h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.5px; }
-        .text-grad { background: var(--primary-grad); -webkit-background-clip: text; color: transparent; }
-        
         /* --- COMPONENTS --- */
-        .card { background: var(--surface); border: 1px solid var(--border); padding: 20px; border-radius: 24px; margin-bottom: 16px; position: relative; overflow: hidden; }
-        
-        .input-field {
-            width: 100%; background: var(--surface-light); border: 1px solid var(--border);
-            padding: 15px; border-radius: 15px; color: white; margin-bottom: 12px; font-size: 16px; font-family: var(--font);
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 20px; border-radius: 24px; margin-bottom: 15px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3); transition: 0.2s;
         }
-        .input-field:focus { border-color: #a855f7; background: rgba(255,255,255,0.1); }
-
         .btn {
-            width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 16px; cursor: pointer;
-            background: var(--primary-grad); color: white; transition: 0.3s;
+            width: 100%; padding: 16px; border-radius: 16px; border: none;
+            font-weight: 700; font-size: 15px; cursor: pointer;
+            background: var(--primary); color: white;
+            box-shadow: 0 8px 20px -5px var(--primary-glow); transition: 0.2s;
         }
-        .btn:active { transform: scale(0.95); opacity: 0.9; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn:active { transform: scale(0.97); }
+        .input-field {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 16px; border-radius: 16px; color: white; margin-bottom: 12px; font-family: var(--font);
+        }
+        .input-field:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
         /* --- AVATAR --- */
-        .avatar-box {
-            width: 110px; height: 110px; border-radius: 50%; padding: 4px; background: var(--primary-grad);
-            margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; position: relative;
+        .avatar-group { text-align: center; margin-bottom: 20px; position: relative; }
+        .avatar {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--primary); background: #222;
         }
-        .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #000; background: #222; }
-        .edit-badge {
-            position: absolute; bottom: 0; right: 0; background: white; color: black;
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 3px solid #000;
+        .avatar-edit {
+            position: absolute; bottom: 5px; right: 50%; transform: translateX(40px);
+            background: white; color: black; width: 30px; height: 30px; border-radius: 50%;
+            display: grid; place-items: center; font-size: 12px; cursor: pointer;
         }
 
-        .bio-text { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px; padding: 0 20px; font-style: italic; }
-
-        /* --- CHAT BAR --- */
-        .chat-bar { display: flex; align-items: flex-end; gap: 10px; background: rgba(30,30,30,0.8); backdrop-filter: blur(10px); padding: 10px; border-radius: 24px; border: 1px solid var(--border); }
-        .icon-btn { width: 45px; height: 45px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,0.1); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
-        .chat-input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px; font-family: var(--font); }
-
-        /* --- MENUS & MODALS --- */
-        .attach-sheet {
-            position: absolute; bottom: 90px; left: 20px; width: 200px; background: #1a1a1a; border: 1px solid var(--border);
-            border-radius: 20px; padding: 8px; transform: scale(0.8); opacity: 0; pointer-events: none; transition: 0.2s; z-index: 100;
+        /* --- CHAT INPUT (Bottom) --- */
+        .chat-dock {
+            display: flex; align-items: flex-end; gap: 10px; background: var(--surface-top);
+            padding: 12px; border-radius: 24px; border: 1px solid var(--border);
+            margin-top: 10px;
         }
-        .attach-sheet.open { transform: scale(1); opacity: 1; pointer-events: all; }
-        .sheet-item { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 12px; color: white; }
+        .action-btn {
+            width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            color: var(--text); display: grid; place-items: center; font-size: 18px; cursor: pointer; flex-shrink: 0;
+        }
+        .msg-input {
+            flex: 1; background: transparent; border: none; color: white;
+            font-size: 16px; padding: 12px 5px; resize: none; max-height: 100px;
+        }
+
+        /* --- FILE CHIP (WhatsApp Style) --- */
+        .file-chip {
+            display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.08);
+            padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border);
+            margin-bottom: 15px; animation: slideUp 0.3s;
+        }
+        .chip-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: #000; display: grid; place-items: center; font-size: 18px; }
+        .chip-info { flex: 1; overflow: hidden; }
+        .chip-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chip-size { font-size: 10px; color: var(--text-muted); }
+        .chip-x { color: #ff5555; padding: 5px; cursor: pointer; }
+
+        /* --- THEME SELECTOR --- */
+        .theme-grid { display: flex; gap: 10px; justify-content: center; margin: 15px 0; }
+        .theme-dot { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .theme-dot.active { border-color: white; transform: scale(1.1); }
+
+        /* --- PIN LOCK --- */
+        .pin-screen {
+            position: absolute; inset: 0; background: #000; z-index: 500;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .pin-dots { display: flex; gap: 15px; margin-bottom: 30px; }
+        .pin-dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--text-muted); transition: 0.2s; }
+        .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+        .key { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 24px; font-weight: 600; display: grid; place-items: center; cursor: pointer; }
+        .key:active { background: rgba(255,255,255,0.3); }
+
+        /* --- QR CODE --- */
+        .qr-box { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin: 20px 0; }
         
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 200;
-            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s;
+        /* --- ATTACHMENT MENU --- */
+        .attach-menu {
+            position: absolute; bottom: 85px; left: 15px; width: 180px;
+            background: #111; border: 1px solid var(--border); border-radius: 18px;
+            padding: 8px; transform: scale(0); transform-origin: bottom left; transition: 0.2s; opacity: 0; pointer-events: none;
         }
-        .modal-overlay.show { opacity: 1; pointer-events: all; }
-        .modal-box { width: 90%; max-width: 350px; background: #111; border: 1px solid var(--border); border-radius: 24px; padding: 25px; }
+        .attach-menu.open { transform: scale(1); opacity: 1; pointer-events: all; }
+        .menu-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; color: white; cursor: pointer; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
 
-        /* --- FILE PREVIEW BOX (NEW STYLE) --- */
-        .attachment-box {
-            display: flex; align-items: center; background: rgba(255,255,255,0.08); 
-            border: 1px solid var(--border); border-radius: 16px; padding: 10px;
-            margin: 10px 0; position: relative; animation: fadeUp 0.3s;
-        }
-        .attach-thumb {
-            width: 45px; height: 45px; border-radius: 10px; object-fit: cover; margin-right: 12px; background: #000;
-        }
-        .attach-info { flex: 1; overflow: hidden; }
-        .attach-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .attach-size { font-size: 11px; color: var(--text-muted); }
-        .attach-close {
-            width: 25px; height: 25px; border-radius: 50%; background: rgba(255,255,255,0.1); 
-            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #ff6b6b;
-        }
-
-        /* --- NAVIGATION --- */
-        .dock {
-            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); background: rgba(20, 20, 20, 0.9);
-            padding: 10px; border-radius: 30px; border: 1px solid var(--border); display: flex; gap: 10px; z-index: 50;
-        }
-        .dock-btn { width: 55px; height: 55px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #666; transition: 0.3s; }
-        .dock-btn.active { background: var(--surface-light); color: white; }
-
-        .view { display: none; animation: fadeUp 0.4s; }
+        /* --- UTILS --- */
+        .view { display: none; animation: fadeIn 0.4s; }
         .view.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
         .hidden { display: none !important; }
-        .toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 50px; font-weight: 700; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 300; }
+        .dock { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.9); padding: 10px 15px; border-radius: 40px; display: flex; gap: 15px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; }
+        .dock-item { font-size: 20px; width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; color: #666; transition: 0.3s; }
+        .dock-item.active { background: var(--primary); color: white; transform: translateY(-5px); box-shadow: 0 5px 15px var(--primary-glow); }
+        .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: 700; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
 
-<div class="aurora-bg"></div>
+<div id="splash">
+    <h1 style="font-size: 30px; color:white;">FaizanMsg <span style="color:var(--primary)">Supreme</span></h1>
+    <div class="loader"></div>
+</div>
+
+<div class="orb-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
 <div class="app-container">
 
-    <!-- 1. AUTHENTICATION -->
-    <div id="view-auth" class="view active">
+    <!-- 1. AUTH SCREEN -->
+    <div id="view-auth" class="view">
         <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center;">
             <div style="text-align:center; margin-bottom: 30px;">
-                <h1 style="font-size: 36px;">FaizanMsg <span class="text-grad">Elite</span></h1>
-                <p style="color:var(--text-muted);">Secure & Anonymous</p>
+                <h1>Welcome</h1>
+                <p style="color:var(--text-muted);">Secure Anonymous Messaging</p>
             </div>
 
             <div id="auth-forms">
-                <div id="signup-extras" class="hidden">
-                    <label class="avatar-box" style="cursor:pointer; width:90px; height:90px;">
-                        <img id="auth-pic-prev" class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
-                        <div class="edit-badge"><i class="fas fa-camera"></i></div>
-                        <input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)">
-                    </label>
+                <div id="signup-fields" class="hidden">
+                    <div class="avatar-group">
+                        <img id="auth-pic-prev" class="avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+                        <label class="avatar-edit"><i class="fas fa-camera"></i><input type="file" hidden accept="image/*" onchange="app.handleAuthPic(this)"></label>
+                    </div>
                 </div>
 
                 <input type="email" id="in-email" class="input-field" placeholder="Email Address">
-                <input type="text" id="in-user" class="input-field hidden" placeholder="Username">
+                <input type="text" id="in-user" class="input-field hidden" placeholder="Username (Unique)">
                 <input type="password" id="in-pass" class="input-field" placeholder="Password">
-                <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Write a short bio..."></textarea>
+                <textarea id="in-bio" class="input-field hidden" rows="2" placeholder="Your Bio..."></textarea>
 
-                <button id="btn-login" class="btn" onclick="app.login()">Login <i class="fas fa-arrow-right"></i></button>
-                <button id="btn-signup" class="btn hidden" onclick="app.register()">Create Account</button>
-
-                <p style="text-align:center; margin-top:20px; color:var(--text-muted); font-size:14px;">
-                    <span id="auth-switch-text">New here?</span> 
-                    <a href="#" onclick="app.switchAuth()" style="color:white; font-weight:bold; text-decoration:none;">Switch</a>
-                </p>
+                <button id="btn-main" class="btn" onclick="app.login()">Login</button>
+                <div style="text-align:center; margin-top:20px; font-size:14px; color:var(--text-muted);">
+                    <span id="auth-switch-label">New here?</span> 
+                    <a href="#" onclick="app.switchAuth()" style="color:var(--primary); font-weight:bold; text-decoration:none;">Create Account</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. INBOX -->
+    <!-- 2. PIN LOCK SCREEN -->
+    <div id="view-pin" class="pin-screen hidden">
+        <h2 style="margin-bottom:10px;">Enter PIN</h2>
+        <p style="color:var(--text-muted); margin-bottom:30px;">Secure Access</p>
+        <div class="pin-dots">
+            <div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div>
+            <div class="pin-dot" id="d3"></div><div class="pin-dot" id="d4"></div>
+        </div>
+        <div class="keypad" id="keypad">
+            <!-- JS generates keys -->
+        </div>
+        <div style="margin-top:30px; color:var(--text-muted);" onclick="app.logout()">Log Out</div>
+    </div>
+
+    <!-- 3. INBOX -->
     <div id="view-inbox" class="view">
         <div class="scroll-view">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h2>Inbox</h2>
-                <div onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%; cursor:pointer;"><i class="fas fa-sync-alt"></i></div>
+                <div style="display:flex; gap:10px;">
+                    <i class="fas fa-search" onclick="app.toggleSearch()" style="padding:10px; background:var(--surface); border-radius:50%;"></i>
+                    <i class="fas fa-sync-alt" onclick="app.renderInbox()" style="padding:10px; background:var(--surface); border-radius:50%;"></i>
+                </div>
             </div>
             
-            <div style="background: rgba(255,255,255,0.1); padding:10px; border-radius:10px; margin-bottom:20px; font-size:12px; display:flex; align-items:center; gap:10px;">
-                <i class="fas fa-bell"></i> 
-                <span>Enable Notifications to see messages instantly.</span>
-                <button onclick="app.reqNotify()" style="background:var(--primary); border:none; color:white; padding:5px 10px; border-radius:5px; margin-left:auto;">Enable</button>
-            </div>
-
+            <input type="text" id="search-bar" class="input-field hidden" placeholder="Search messages..." onkeyup="app.searchMsgs()">
             <div id="msg-list"></div>
         </div>
     </div>
 
-    <!-- 3. PUBLIC SEND -->
-    <div id="view-public" class="view">
-        <div class="scroll-view">
-            <div style="text-align:center; margin-bottom:30px; margin-top:20px;">
-                <div class="avatar-box" style="width:100px; height:100px;">
-                    <img id="pub-img" class="avatar-img">
-                </div>
-                <h2 style="font-size:24px;">Send Secret</h2>
-                <p style="color:var(--text-muted); margin-top:5px;">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
-                <p id="pub-bio" class="bio-text" style="margin-top:10px;">...</p>
-            </div>
-
-            <!-- FILE PREVIEW BOX (UPDATED) -->
-            <div id="file-preview-area" class="hidden">
-                <!-- Content will be injected by JS -->
-            </div>
-
-            <div class="chat-bar">
-                <div class="icon-btn" id="attach-btn" onclick="app.toggleMenu()"><i class="fas fa-plus"></i></div>
-                <textarea id="msg-input" class="chat-input" rows="1" placeholder="Type a message..."></textarea>
-            </div>
-            
-            <button class="btn" onclick="app.sendMsg()" style="margin-top:20px;">Send Message 🚀</button>
-
-            <div id="attach-sheet" class="attach-sheet">
-                <label class="sheet-item">
-                    <i class="fas fa-image" style="color:#4ade80"></i> Photo
-                    <input type="file" hidden accept="image/*" onchange="app.handleFile(this, 'image')">
-                </label>
-                <label class="sheet-item">
-                    <i class="fas fa-video" style="color:#60a5fa"></i> Video
-                    <input type="file" hidden accept="video/*" onchange="app.handleFile(this, 'video')">
-                </label>
-                <label class="sheet-item">
-                    <i class="fas fa-microphone" style="color:#fbbf24"></i> Audio
-                    <input type="file" hidden accept="audio/*" onchange="app.handleFile(this, 'audio')">
-                </label>
-            </div>
-
-            <div style="margin-top:50px; text-align:center;">
-                <a href="?" style="color:var(--text-muted); text-decoration:none; font-size:13px;">Create Account</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. PROFILE -->
+    <!-- 4. PROFILE / SETTINGS -->
     <div id="view-profile" class="view">
         <div class="scroll-view">
-            <div class="card" style="text-align:center; padding:30px 20px;">
-                <div class="avatar-box">
-                    <img id="p-img" class="avatar-img">
+            <div class="card" style="text-align:center;">
+                <img id="p-img" class="avatar">
+                <h2 id="p-user" style="margin-top:10px;">User</h2>
+                <p id="p-bio" style="color:var(--text-muted); font-size:13px; margin:5px 0;">Bio...</p>
+                <div class="qr-box">
+                    <img id="p-qr" src="" width="120" height="120" style="display:block;">
                 </div>
-                <h2 id="p-user">Username</h2>
-                <p id="p-email" style="color:var(--text-muted); font-size:12px;">Email</p>
-                <p id="p-bio" class="bio-text" style="margin-top:15px; margin-bottom:15px;">No bio set.</p>
-                <button class="btn btn-outline" onclick="app.openEditModal()" style="font-size:14px; padding:8px 20px; width:auto; margin:0 auto;"><i class="fas fa-pen"></i> Edit Profile</button>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-family:monospace; font-size:12px; color:var(--primary); overflow:hidden; text-overflow:ellipsis;" id="p-link">Link</div>
+                <button class="btn" onclick="app.copyLink()" style="margin-top:10px; font-size:13px; padding:10px;">Copy Link</button>
             </div>
 
             <div class="card">
-                <h3 style="font-size:16px; margin-bottom:10px;">Your Link</h3>
-                <div id="p-link" style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; color:var(--primary); font-family:monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">...</div>
-                <button class="btn" onclick="app.copyLink()" style="margin-top:10px;">Copy Link</button>
+                <h3>App Theme</h3>
+                <div class="theme-grid">
+                    <div class="theme-dot" style="background:#8b5cf6" onclick="app.setTheme(260)"></div>
+                    <div class="theme-dot" style="background:#3b82f6" onclick="app.setTheme(210)"></div>
+                    <div class="theme-dot" style="background:#10b981" onclick="app.setTheme(150)"></div>
+                    <div class="theme-dot" style="background:#f97316" onclick="app.setTheme(25)"></div>
+                </div>
             </div>
 
-            <button class="btn" onclick="app.logout()" style="background:rgba(239, 68, 68, 0.15); color:var(--danger); box-shadow:none;">Log Out</button>
+            <div class="card">
+                <h3>Security</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                    <span>App Lock (PIN)</span>
+                    <button id="btn-pin" onclick="app.setupPin()" style="background:var(--surface-top); border:1px solid var(--border); color:white; padding:5px 15px; border-radius:20px;">Setup</button>
+                </div>
+            </div>
+
+            <button class="btn" onclick="app.logout()" style="background:rgba(220, 38, 38, 0.2); color:#ff5555; margin-top:20px;">Log Out</button>
         </div>
     </div>
 
-    <!-- EDIT PROFILE MODAL -->
-    <div id="edit-modal" class="modal-overlay">
-        <div class="modal-box">
-            <h2 style="text-align:center; margin-bottom:20px;">Edit Profile</h2>
-            <div style="text-align:center; margin-bottom:15px;">
-                <label class="avatar-box" style="width:80px; height:80px; margin:0 auto; cursor:pointer;">
-                    <img id="edit-pic-prev" class="avatar-img">
-                    <div class="edit-badge"><i class="fas fa-camera"></i></div>
-                    <input type="file" hidden accept="image/*" onchange="app.handleEditPic(this)">
-                </label>
+    <!-- 5. PUBLIC SEND -->
+    <div id="view-public" class="view">
+        <div class="scroll-view">
+            <div style="text-align:center; margin-top:20px; margin-bottom:30px;">
+                <img id="pub-img" class="avatar" style="border-color:white;">
+                <h2 style="font-size:24px; margin-top:10px;">Send Secret</h2>
+                <p style="color:var(--text-muted);">To <span id="pub-target" style="color:white; font-weight:bold;">User</span></p>
+                <div id="pub-bio" style="font-size:12px; font-style:italic; color:rgba(255,255,255,0.6); margin-top:5px;"></div>
             </div>
-            <p style="font-size:12px; margin-bottom:5px; color:#aaa;">Bio</p>
-            <textarea id="edit-bio-input" class="input-field" rows="3"></textarea>
-            <button class="btn" onclick="app.saveProfile()">Save Changes</button>
-            <button class="btn btn-outline" onclick="app.closeEditModal()" style="margin-top:10px;">Cancel</button>
+
+            <!-- FILE CHIP PREVIEW -->
+            <div id="file-preview" class="hidden"></div>
+
+            <div class="chat-dock">
+                <div class="action-btn" id="attach-btn" onclick="app.toggleMenu()"><i class="fas fa-plus"></i></div>
+                <textarea id="msg-input" class="msg-input" rows="1" placeholder="Type secret message..."></textarea>
+            </div>
+            <button class="btn" onclick="app.sendMsg()" style="margin-top:15px; background:linear-gradient(to right, var(--primary), #ec4899);">Send 🚀</button>
+
+            <!-- Attach Menu -->
+            <div id="attach-menu" class="attach-menu">
+                <label class="menu-item"><i class="fas fa-image" style="color:#4ade80"></i> Photo <input type="file" hidden accept="image/*" onchange="app.handleFile(this, 'image')"></label>
+                <label class="menu-item"><i class="fas fa-video" style="color:#60a5fa"></i> Video <input type="file" hidden accept="video/*" onchange="app.handleFile(this, 'video')"></label>
+                <label class="menu-item"><i class="fas fa-microphone" style="color:#fbbf24"></i> Audio <input type="file" hidden accept="audio/*" onchange="app.handleFile(this, 'audio')"></label>
+            </div>
+
+            <div style="text-align:center; margin-top:40px; opacity:0.5; font-size:12px;">Powered by FaizanMsg Supreme</div>
         </div>
     </div>
 
-    <!-- STORY MODE MODAL -->
-    <div id="story-modal" class="modal-overlay" style="background:black;">
-        <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
-            <div style="width:100%; max-width:400px; text-align:center;">
-                <div style="background:var(--primary-grad); padding:5px 15px; border-radius:20px; display:inline-block; font-size:12px; font-weight:bold; margin-bottom:20px;">SECRET MESSAGE</div>
-                <div id="story-media-area" style="margin-bottom:20px;"></div>
-                <h2 id="story-text" style="font-size:24px; line-height:1.4;"></h2>
-                <p id="story-time" style="color:#666; margin-top:20px; font-size:12px;"></p>
-                <br>
-                <button class="btn btn-outline" onclick="app.closeStory()" style="width:auto; padding:10px 30px; display:inline-block;">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NAVIGATION DOCK -->
+    <!-- DOCK -->
     <div id="dock" class="dock hidden">
-        <div class="dock-btn active" onclick="app.nav('inbox', this)"><i class="fas fa-inbox"></i></div>
-        <div class="dock-btn" onclick="app.nav('profile', this)"><i class="fas fa-user"></i></div>
+        <div class="dock-item active" onclick="app.nav('inbox', this)"><i class="fas fa-comment-dots"></i></div>
+        <div class="dock-item" onclick="app.nav('profile', this)"><i class="fas fa-user-circle"></i></div>
     </div>
 
 </div>
 
-<div id="toast" class="toast">Notification</div>
+<!-- STORY VIEWER -->
+<div id="story-modal" style="position:fixed; inset:0; background:black; z-index:2000; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:0.3s;">
+    <div style="width:100%; max-width:400px; padding:20px; text-align:center;">
+        <div style="background:var(--primary); padding:5px 15px; border-radius:20px; display:inline-block; font-size:12px; font-weight:800; margin-bottom:20px;">SECRET</div>
+        <div id="story-media"></div>
+        <h2 id="story-text" style="font-size:24px; line-height:1.4; margin:20px 0;"></h2>
+        <div id="story-date" style="color:#666; font-size:12px;"></div>
+        <br>
+        <button class="btn" onclick="document.getElementById('story-modal').style.opacity=0; document.getElementById('story-modal').style.pointerEvents='none';" style="width:auto; padding:10px 40px; background:rgba(255,255,255,0.2);">Close</button>
+    </div>
+</div>
+
+<div id="toast" class="toast">Alert</div>
 
 <script>
-    // --- DATABASE ---
-    const DB_NAME = 'FaizanMsgEliteNotify';
-    const DB_VER = 1;
-    const DEFAULT_AVATAR = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    const DB_NAME = 'FaizanSupreme'; const DB_VER = 1;
+    const DEF_PIC = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
     const db = {
-        open: () => new Promise((res) => {
-            const r = indexedDB.open(DB_NAME, DB_VER);
-            r.onupgradeneeded = e => {
+        open: () => new Promise(r => {
+            const req = indexedDB.open(DB_NAME, DB_VER);
+            req.onupgradeneeded = e => {
                 const d = e.target.result;
-                if(!d.objectStoreNames.contains('users')) d.createObjectStore('users', { keyPath: 'email' });
-                if(!d.objectStoreNames.contains('msgs')) d.createObjectStore('msgs', { keyPath: 'id', autoIncrement:true });
+                if(!d.objectStoreNames.contains('u')) d.createObjectStore('u', {keyPath:'e'});
+                if(!d.objectStoreNames.contains('m')) d.createObjectStore('m', {keyPath:'id', autoIncrement:true});
             };
-            r.onsuccess = () => res(r.result);
+            req.onsuccess = () => r(req.result);
         }),
-        op: async (store, mode, method, data) => {
-            const d = await db.open();
-            return new Promise((res) => {
-                const tx = d.transaction(store, mode);
-                const req = data ? tx.objectStore(store)[method](data) : tx.objectStore(store)[method]();
-                req.onsuccess = () => res(req.result);
+        op: async (s, m, f, d) => {
+            const dbo = await db.open();
+            return new Promise(r => {
+                const req = d ? dbo.transaction(s,m).objectStore(s)[f](d) : dbo.transaction(s,m).objectStore(s)[f]();
+                req.onsuccess = () => r(req.result);
             });
         }
     };
 
-    // --- APP LOGIC ---
     const app = {
-        state: { user:null, email:null, authFile:null, editFile:null, msgFile:null, msgType:null },
+        state: { u:null, e:null, authFile:null, msgFile:null, msgType:null, pin:null, pinInput:'' },
 
         init: async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const to = urlParams.get('to');
-            
-            if (Notification.permission === 'default') { }
+            setTimeout(() => document.getElementById('splash').style.opacity = 0, 1500);
+            setTimeout(() => document.getElementById('splash').style.display = 'none', 2000);
 
-            if(to) {
-                app.loadPublic(to);
+            // Load Theme
+            const hue = localStorage.getItem('theme') || 260;
+            app.setTheme(hue);
+
+            const q = new URLSearchParams(window.location.search);
+            if(q.get('to')) return app.loadPublic(q.get('to'));
+
+            const u = localStorage.getItem('u');
+            const e = localStorage.getItem('e');
+            const pin = localStorage.getItem('pin');
+
+            if(u && e) {
+                app.state.u = u; app.state.e = e; app.state.pin = pin;
+                if(pin) app.showPinScreen();
+                else app.nav('inbox', document.querySelector('.dock-item'));
             } else {
-                const u = localStorage.getItem('u');
-                const e = localStorage.getItem('e');
-                if(u && e) {
-                    app.state.user = u; app.state.email = e;
-                    app.nav('inbox', document.querySelector('.dock-btn'));
-                }
+                document.getElementById('view-auth').classList.add('active');
             }
         },
 
-        reqNotify: () => {
-            Notification.requestPermission().then(perm => {
-                if(perm === "granted") app.toast("Notifications Enabled! 🔔");
-                else app.toast("Notifications Denied");
-            });
+        // --- THEME ---
+        setTheme: (h) => {
+            document.documentElement.style.setProperty('--hue', h);
+            localStorage.setItem('theme', h);
         },
 
-        showNotification: (msg) => {
-            if(Notification.permission === "granted") {
-                new Notification("FaizanMsg: New Secret!", {
-                    body: msg || "Someone sent you a message.",
-                    icon: "https://cdn-icons-png.flaticon.com/512/2950/2950682.png" 
-                });
+        // --- PIN LOGIC ---
+        showPinScreen: () => {
+            document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
+            document.getElementById('view-pin').classList.remove('hidden');
+            const k = document.getElementById('keypad'); k.innerHTML = '';
+            [1,2,3,4,5,6,7,8,9,'C',0,'<'].forEach(n => {
+                k.innerHTML += `<div class="key" onclick="app.keyPress('${n}')">${n}</div>`;
+            });
+        },
+        keyPress: (k) => {
+            if(k === 'C') app.state.pinInput = '';
+            else if(k === '<') app.state.pinInput = app.state.pinInput.slice(0, -1);
+            else if(app.state.pinInput.length < 4) app.state.pinInput += k;
+            
+            // Update dots
+            [1,2,3,4].forEach(i => {
+                document.getElementById(`d${i}`).classList.toggle('filled', i <= app.state.pinInput.length);
+            });
+
+            if(app.state.pinInput === app.state.pin) {
+                document.getElementById('view-pin').classList.add('hidden');
+                app.nav('inbox', document.querySelector('.dock-item'));
+            }
+        },
+        setupPin: () => {
+            const p = prompt("Set a 4-digit PIN for App Lock:");
+            if(p && p.length === 4) {
+                localStorage.setItem('pin', p);
+                app.state.pin = p;
+                app.toast('App Lock Enabled 🔒');
             }
         },
 
         // --- AUTH ---
         switchAuth: () => {
-            const isLogin = document.getElementById('in-user').classList.contains('hidden');
-            const ids = ['in-user', 'in-bio', 'signup-extras', 'btn-signup', 'btn-login'];
-            ids.forEach(id => document.getElementById(id).classList.toggle('hidden'));
-            document.getElementById('auth-switch-text').innerText = isLogin ? "Have Account?" : "New Here?";
+            const log = !document.getElementById('in-user').classList.contains('hidden');
+            ['in-user','in-bio','signup-fields','btn-signup'].forEach(i => document.getElementById(i).classList.toggle('hidden'));
+            document.getElementById('btn-main').innerText = log ? "Login" : "Register";
+            document.getElementById('btn-main').onclick = log ? app.register : app.login;
+            document.getElementById('auth-switch-label').innerText = log ? "Have account?" : "New here?";
         },
-
-        handleAuthPic: (input) => {
-            if(input.files[0]) {
-                app.state.authFile = input.files[0];
-                document.getElementById('auth-pic-prev').src = URL.createObjectURL(input.files[0]);
-            }
-        },
-
+        handleAuthPic: (i) => { if(i.files[0]) { app.state.authFile = i.files[0]; document.getElementById('auth-pic-prev').src = URL.createObjectURL(i.files[0]); } },
+        
         register: async () => {
             const e = document.getElementById('in-email').value.toLowerCase();
             const u = document.getElementById('in-user').value;
             const p = document.getElementById('in-pass').value;
             const b = document.getElementById('in-bio').value;
-
             if(!e || !u || !p) return app.toast('Fill required fields');
+            
+            const ex = await db.op('u', 'readonly', 'get', e);
+            if(ex) return app.toast('Email taken');
+            
+            const all = await db.op('u', 'readonly', 'getAll');
+            if(all.find(x => x.username === u)) return app.toast('Username taken');
 
-            const exists = await db.op('users', 'readonly', 'get', e);
-            if(exists) return app.toast('Email Taken');
-            const all = await db.op('users', 'readonly', 'getAll');
-            if(all.find(x => x.username === u)) return app.toast('Username Taken');
-
-            await db.op('users', 'readwrite', 'put', { 
-                email:e, username:u, password:p, bio:b, pic: app.state.authFile 
-            });
-            app.toast('Created! Login now.');
-            app.switchAuth();
+            await db.op('u', 'readwrite', 'put', {e, username:u, password:p, bio:b, pic:app.state.authFile});
+            app.toast('Account Created!'); app.switchAuth();
         },
-
+        
         login: async () => {
             const e = document.getElementById('in-email').value.toLowerCase();
             const p = document.getElementById('in-pass').value;
-            const user = await db.op('users', 'readonly', 'get', e);
-
-            if(user && user.password === p) {
-                localStorage.setItem('u', user.username);
-                localStorage.setItem('e', e);
-                app.state.user = user.username;
-                app.state.email = e;
-                app.nav('inbox', document.querySelector('.dock-btn'));
-            } else app.toast('Invalid Credentials');
+            const u = await db.op('u', 'readonly', 'get', e);
+            if(u && u.password === p) {
+                localStorage.setItem('u', u.username); localStorage.setItem('e', e);
+                app.state.u = u.username; app.state.e = e;
+                app.nav('inbox', document.querySelector('.dock-item'));
+            } else app.toast('Invalid Details');
         },
-
         logout: () => { localStorage.clear(); location.reload(); },
 
-        // --- EDIT PROFILE ---
-        openEditModal: async () => {
-            const u = await db.op('users', 'readonly', 'get', app.state.email);
-            document.getElementById('edit-bio-input').value = u.bio || "";
-            document.getElementById('edit-pic-prev').src = u.pic ? URL.createObjectURL(u.pic) : DEFAULT_AVATAR;
-            app.state.editFile = null; 
-            document.getElementById('edit-modal').classList.add('show');
-        },
-
-        closeEditModal: () => document.getElementById('edit-modal').classList.remove('show'),
-
-        handleEditPic: (input) => {
-            if(input.files[0]) {
-                app.state.editFile = input.files[0];
-                document.getElementById('edit-pic-prev').src = URL.createObjectURL(input.files[0]);
-            }
-        },
-
-        saveProfile: async () => {
-            const newBio = document.getElementById('edit-bio-input').value;
-            const u = await db.op('users', 'readonly', 'get', app.state.email);
-            u.bio = newBio;
-            if(app.state.editFile) u.pic = app.state.editFile;
-
-            await db.op('users', 'readwrite', 'put', u);
-            app.toast('Profile Updated!');
-            app.closeEditModal();
-            app.renderProfile();
-        },
-
-        // --- NAVIGATION ---
-        nav: (view, btn) => {
-            document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
-            document.getElementById('view-' + view).classList.add('active');
+        // --- FILE CHIP LOGIC ---
+        handleFile: (i, t) => {
+            const f = i.files[0]; if(!f) return;
+            app.state.msgFile = f; app.state.msgType = t;
+            document.getElementById('attach-menu').classList.remove('open');
             
-            if(view === 'inbox' || view === 'profile') {
-                document.getElementById('dock').classList.remove('hidden');
-                document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
-                if(btn) btn.classList.add('active');
-                if(view === 'inbox') app.renderInbox();
-                if(view === 'profile') app.renderProfile();
-            } else {
-                document.getElementById('dock').classList.add('hidden');
-            }
-        },
-
-        // --- PUBLIC SEND ---
-        loadPublic: async (to) => {
-            app.nav('public');
-            document.getElementById('pub-target').innerText = to;
-            const users = await db.op('users', 'readonly', 'getAll');
-            const tgt = users.find(u => u.username === to);
+            const prev = document.getElementById('file-preview');
+            prev.classList.remove('hidden');
             
-            document.getElementById('pub-img').src = (tgt && tgt.pic) ? URL.createObjectURL(tgt.pic) : DEFAULT_AVATAR;
-            document.getElementById('pub-bio').innerText = (tgt && tgt.bio) ? tgt.bio : "No bio available.";
+            let icon = t==='image'?'fa-image':(t==='video'?'fa-video':'fa-music');
+            let thumb = t==='image' ? `<img src="${URL.createObjectURL(f)}" class="chip-thumb">` : `<div class="chip-thumb"><i class="fas ${icon}"></i></div>`;
             
-            document.body.onclick = (e) => {
-                if(!e.target.closest('#attach-btn') && !e.target.closest('#attach-sheet')) {
-                    document.getElementById('attach-sheet').classList.remove('open');
-                }
-            }
-        },
-
-        toggleMenu: () => document.getElementById('attach-sheet').classList.toggle('open'),
-
-        handleFile: (input, type) => {
-            const f = input.files[0];
-            if(!f) return;
-            app.state.msgFile = f;
-            app.state.msgType = type;
-            document.getElementById('attach-sheet').classList.remove('open');
-
-            const area = document.getElementById('file-preview-area');
-            area.classList.remove('hidden');
-            
-            let icon = 'fa-file';
-            if(type === 'image') icon = 'fa-image';
-            if(type === 'video') icon = 'fa-video';
-            if(type === 'audio') icon = 'fa-music';
-
-            // Create File Shape
-            const url = URL.createObjectURL(f);
-            let thumb = '';
-            
-            if(type === 'image') thumb = `<img src="${url}" class="attach-thumb">`;
-            else if(type === 'video') thumb = `<video src="${url}" class="attach-thumb"></video>`;
-            else thumb = `<div class="attach-thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff"><i class="fas ${icon}"></i></div>`;
-
-            area.innerHTML = `
-                <div class="attachment-box">
+            prev.innerHTML = `
+                <div class="file-chip">
                     ${thumb}
-                    <div class="attach-info">
-                        <div class="attach-name">${f.name}</div>
-                        <div class="attach-size">${(f.size/1024/1024).toFixed(2)} MB</div>
-                    </div>
-                    <div class="attach-close" onclick="app.clearFile()"><i class="fas fa-times"></i></div>
-                </div>
-            `;
+                    <div class="chip-info"><div class="chip-name">${f.name}</div><div class="chip-size">${(f.size/1024/1024).toFixed(1)} MB</div></div>
+                    <div class="chip-x" onclick="app.clearFile()"><i class="fas fa-times"></i></div>
+                </div>`;
         },
+        clearFile: () => { app.state.msgFile=null; document.getElementById('file-preview').innerHTML=''; document.getElementById('file-preview').classList.add('hidden'); },
 
-        clearFile: () => {
-            app.state.msgFile = null; app.state.msgType = null;
-            document.getElementById('file-preview-area').classList.add('hidden');
-            document.getElementById('file-preview-area').innerHTML = '';
-        },
-
+        // --- CORE FEATURES ---
         sendMsg: async () => {
             const txt = document.getElementById('msg-input').value;
             const to = document.getElementById('pub-target').innerText;
-
-            if(!txt && !app.state.msgFile) return app.toast('Empty Message');
-
-            await db.op('msgs', 'readwrite', 'put', {
-                to: to, text: txt,
-                media: app.state.msgFile, type: app.state.msgType,
-                date: new Date()
-            });
-
-            app.showNotification("New Message Received!");
-            app.toast('Sent Successfully!');
-            document.getElementById('msg-input').value = "";
-            app.clearFile();
-        },
-
-        // --- INBOX ---
-        renderInbox: async () => {
-            const all = await db.op('msgs', 'readonly', 'getAll');
-            const my = all.filter(m => m.to === app.state.user).reverse();
-            const list = document.getElementById('msg-list');
-            list.innerHTML = my.length ? '' : '<div style="text-align:center; opacity:0.5; margin-top:50px;">No messages</div>';
-
-            my.forEach(m => {
-                const hasMedia = m.media ? '<i class="fas fa-paperclip" style="color:var(--primary)"></i> ' : '';
-                const el = document.createElement('div');
-                el.className = 'card';
-                el.innerHTML = `
-                    <div style="font-size:12px; color:var(--primary); font-weight:bold; margin-bottom:5px;">SECRET</div>
-                    <div style="font-size:16px;">${hasMedia}${m.text || 'Media File'}</div>
-                    <div style="font-size:11px; color:#555; margin-top:8px;">${new Date(m.date).toLocaleTimeString()}</div>
-                `;
-                el.onclick = () => app.openStory(m);
-                list.appendChild(el);
-            });
-        },
-
-        openStory: (m) => {
-            const modal = document.getElementById('story-modal');
-            const area = document.getElementById('story-media-area');
-            document.getElementById('story-text').innerText = m.text || "";
-            document.getElementById('story-time').innerText = new Date(m.date).toLocaleString();
+            if(!txt && !app.state.msgFile) return app.toast('Empty');
             
-            area.innerHTML = '';
-            if(m.media) {
-                const url = URL.createObjectURL(m.media);
-                if(m.type === 'image') area.innerHTML = `<img src="${url}" style="max-width:100%; max-height:300px; border-radius:10px;">`;
-                else if(m.type === 'video') area.innerHTML = `<video src="${url}" controls style="max-width:100%; max-height:300px; border-radius:10px;"></video>`;
-                else area.innerHTML = `<audio src="${url}" controls style="width:100%"></audio>`;
-            }
-            modal.classList.add('show');
+            await db.op('m', 'readwrite', 'put', { to, text:txt, media:app.state.msgFile, type:app.state.msgType, date:new Date() });
+            app.toast('Sent Successfully!');
+            document.getElementById('msg-input').value = ''; app.clearFile();
         },
 
-        closeStory: () => document.getElementById('story-modal').classList.remove('show'),
+        renderInbox: async () => {
+            const all = await db.op('m', 'readonly', 'getAll');
+            const my = all.filter(m => m.to === app.state.u).reverse();
+            const l = document.getElementById('msg-list');
+            l.innerHTML = my.length ? '' : '<div style="text-align:center;opacity:0.5;margin-top:50px">No Secrets</div>';
+            
+            my.forEach(m => {
+                const icon = m.media ? `<i class="fas fa-paperclip" style="color:var(--primary)"></i>` : '';
+                const d = document.createElement('div'); d.className = 'card';
+                d.innerHTML = `<div style="font-size:11px;color:var(--primary);font-weight:800;margin-bottom:5px">SECRET</div>
+                <div style="font-size:15px">${icon} ${m.text || 'Media File'}</div>
+                <div style="font-size:10px;opacity:0.5;margin-top:10px">${new Date(m.date).toLocaleTimeString()}</div>`;
+                d.onclick = () => {
+                    const mod = document.getElementById('story-modal');
+                    document.getElementById('story-text').innerText = m.text || '';
+                    document.getElementById('story-date').innerText = new Date(m.date).toLocaleString();
+                    const ma = document.getElementById('story-media'); ma.innerHTML='';
+                    if(m.media) {
+                        const u = URL.createObjectURL(m.media);
+                        if(m.type==='image') ma.innerHTML=`<img src="${u}" style="max-width:100%;border-radius:10px">`;
+                        else if(m.type==='video') ma.innerHTML=`<video src="${u}" controls style="max-width:100%;border-radius:10px"></video>`;
+                        else ma.innerHTML=`<audio src="${u}" controls style="width:100%"></audio>`;
+                    }
+                    mod.style.opacity=1; mod.style.pointerEvents='all';
+                };
+                l.appendChild(d);
+            });
+        },
 
-        // --- PROFILE VIEW ---
         renderProfile: async () => {
-            const u = await db.op('users', 'readonly', 'get', app.state.email);
-            document.getElementById('p-user').innerText = '@' + app.state.user;
-            document.getElementById('p-email').innerText = app.state.email;
-            document.getElementById('p-bio').innerText = u.bio || "No bio set.";
-            document.getElementById('p-link').innerText = window.location.origin + window.location.pathname + "?to=" + app.state.user;
-            document.getElementById('p-img').src = (u && u.pic) ? URL.createObjectURL(u.pic) : DEFAULT_AVATAR;
+            const u = await db.op('u', 'readonly', 'get', app.state.e);
+            document.getElementById('p-user').innerText = '@'+app.state.u;
+            document.getElementById('p-bio').innerText = u.bio || 'No bio';
+            const link = window.location.origin + window.location.pathname + "?to=" + app.state.u;
+            document.getElementById('p-link').innerText = link;
+            document.getElementById('p-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
+            if(u.pic) document.getElementById('p-img').src = URL.createObjectURL(u.pic);
+            else document.getElementById('p-img').src = DEF_PIC;
         },
 
-        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Link Copied!'); },
-        toast: (m) => { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+        loadPublic: async (to) => {
+            app.nav('public');
+            document.getElementById('pub-target').innerText = to;
+            const users = await db.op('u', 'readonly', 'getAll');
+            const tgt = users.find(x => x.username === to);
+            if(tgt) {
+                document.getElementById('pub-bio').innerText = tgt.bio || '';
+                if(tgt.pic) document.getElementById('pub-img').src = URL.createObjectURL(tgt.pic);
+                else document.getElementById('pub-img').src = DEF_PIC;
+            } else document.getElementById('pub-img').src = DEF_PIC;
+            
+            document.body.onclick = e => { if(!e.target.closest('#attach-btn')) document.getElementById('attach-menu').classList.remove('open'); };
+        },
+
+        // --- UTILS ---
+        nav: (v, b) => {
+            document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+            document.getElementById('view-'+v).classList.add('active');
+            const d = document.getElementById('dock');
+            if(v==='inbox'||v==='profile') {
+                d.classList.remove('hidden');
+                document.querySelectorAll('.dock-item').forEach(i=>i.classList.remove('active'));
+                if(b) b.classList.add('active');
+                if(v==='inbox') app.renderInbox();
+                if(v==='profile') app.renderProfile();
+            } else d.classList.add('hidden');
+        },
+        toggleMenu: () => document.getElementById('attach-menu').classList.toggle('open'),
+        toggleSearch: () => document.getElementById('search-bar').classList.toggle('hidden'),
+        searchMsgs: () => {
+            const q = document.getElementById('search-bar').value.toLowerCase();
+            document.querySelectorAll('#msg-list .card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? 'block' : 'none';
+            });
+        },
+        copyLink: () => { navigator.clipboard.writeText(document.getElementById('p-link').innerText); app.toast('Copied!'); },
+        toast: (m) => { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
     };
 
     window.onload = app.init;
