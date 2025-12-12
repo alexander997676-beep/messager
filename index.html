@@ -42,7 +42,7 @@
             border: 3px solid var(--accent); margin: 0 auto 15px; display: block; background: #333;
         }
 
-        /* --- NEW CHAT BAR STYLE --- */
+        /* --- CHAT BAR STYLE --- */
         .chat-input-container {
             display: flex; align-items: flex-end; gap: 10px; background: var(--surface);
             padding: 10px; border-radius: 20px; border: 1px solid var(--glass);
@@ -423,7 +423,8 @@
         },
 
         sendMessage: async () => {
-            const text = document.getElementById('msg-text').value;
+            const textInput = document.getElementById('msg-text');
+            const text = textInput.value;
             const target = document.getElementById('pub-target').innerText;
             if (!text && !app.state.file) return app.toast('Empty Message');
 
@@ -434,7 +435,10 @@
             });
 
             app.toast('Sent Successfully!');
-            setTimeout(() => location.href = window.location.pathname, 1500);
+            
+            // STAY ON PAGE, CLEAR INPUTS
+            textInput.value = "";
+            app.clearFile();
         },
 
         renderInbox: async () => {
