@@ -3,332 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Full Screen Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-
-    <title>GhostChat Verified</title>
-    
+    <title>GhostChat Final</title>
+    <!-- Icons and Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
+        /* --- PROFESSIONAL DARK THEME --- */
         :root {
-            --bg: #000000;
-            --card: #1c1c1e;
-            --primary: #0a84ff;
-            --text: #ffffff;
-            --danger: #ff453a;
+            --bg: #111b21;
+            --header: #202c33;
+            --card: #202c33;
+            --primary: #00a884;
+            --text-main: #e9edef;
+            --text-sec: #8696a0;
+            --msg-out: #005c4b;
+            --msg-in: #202c33;
+            --danger: #ef4444;
         }
 
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #000; color: var(--text-main); height: 100vh; display: flex; justify-content: center; }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-        }
+        .app { width: 100%; max-width: 480px; background: var(--bg); height: 100%; position: relative; display: flex; flex-direction: column; overflow: hidden; border-left: 1px solid #333; border-right: 1px solid #333; }
 
-        .app-container {
-            width: 100%; max-width: 500px;
-            background: var(--bg);
-            display: flex; flex-direction: column;
-            position: relative;
-            height: 100%;
-        }
-
-        .screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            display: flex; flex-direction: column;
-            transition: 0.3s;
-            z-index: 10;
-        }
+        /* SCREENS */
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; transition: 0.3s; z-index: 10; }
         .hidden { transform: translateX(100%); z-index: 5; }
         .active { transform: translateX(0); z-index: 20; }
 
-        /* AUTH SCREEN */
-        .auth-box {
-            flex: 1; display: flex; flex-direction: column; justify-content: center;
-            padding: 30px; text-align: center;
-        }
-        .input-field {
-            width: 100%; padding: 15px; background: #1c1c1e;
-            border: 1px solid #333; border-radius: 12px;
-            color: white; margin-bottom: 10px; text-align: center; font-size: 16px;
-        }
-        .btn {
-            width: 100%; padding: 15px; background: var(--primary);
-            color: white; border: none; border-radius: 12px;
-            font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px;
-        }
-
-        /* DASHBOARD */
-        .header {
-            padding: 15px; border-bottom: 1px solid #333;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(28,28,30,0.8); backdrop-filter: blur(10px);
-        }
+        /* AUTH FORMS */
+        .auth-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px; }
+        .auth-title { font-size: 28px; color: var(--primary); font-weight: bold; text-align: center; margin-bottom: 5px; }
+        .auth-sub { text-align: center; color: var(--text-sec); margin-bottom: 30px; font-size: 14px; }
         
-        .add-box {
-            padding: 20px; border-bottom: 1px solid #333;
-            display: flex; gap: 10px;
-        }
-
-        .list-area { flex: 1; overflow-y: auto; padding: 10px; }
+        input { width: 100%; padding: 15px; background: #2a3942; border: 1px solid #333; border-radius: 8px; color: white; margin-bottom: 12px; font-size: 16px; }
         
-        .chat-item {
-            padding: 15px; background: var(--card); border-radius: 12px;
-            margin-bottom: 10px; display: flex; align-items: center; gap: 15px;
-            cursor: pointer;
-        }
-        .avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: #333; display: flex; align-items: center; justify-content: center;
-            font-weight: bold;
-        }
+        .btn { width: 100%; padding: 15px; background: var(--primary); color: #111; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-text { background: none; color: var(--primary); margin-top: 15px; font-size: 14px; }
 
-        /* CHAT */
-        .chat-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; }
-        .msg {
-            padding: 10px 15px; border-radius: 20px; margin-bottom: 5px;
-            max-width: 75%; font-size: 15px; word-wrap: break-word;
-        }
-        .msg-out { background: var(--primary); align-self: flex-end; }
-        .msg-in { background: #333; align-self: flex-start; }
+        /* HEADER */
+        .header { padding: 15px; background: var(--header); display: flex; align-items: center; justify-content: space-between; height: 60px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .avatar { width: 35px; height: 35px; background: #6a7f8a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; margin-right: 10px; }
 
-        .input-bar {
-            padding: 10px; display: flex; gap: 10px;
-            border-top: 1px solid #333; background: #000;
-        }
+        /* CONTACTS LIST */
+        .add-box { padding: 15px; background: #182229; display: flex; gap: 10px; border-bottom: 1px solid #333; }
+        .list-area { flex: 1; overflow-y: auto; }
+        .contact-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; cursor: pointer; transition: 0.2s; }
+        .contact-item:hover { background: #202c33; }
 
-        .toast {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-            background: #333; padding: 10px 20px; border-radius: 30px;
-            border: 1px solid #555; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100;
-        }
-        .toast.error { border-color: var(--danger); color: var(--danger); }
-        .toast.show { opacity: 1; top: 40px; }
+        /* CHAT ROOM */
+        .chat-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-color: #0b141a; background-blend-mode: overlay; }
+        
+        .msg { max-width: 75%; padding: 8px 12px; border-radius: 8px; margin-bottom: 5px; font-size: 15px; position: relative; word-wrap: break-word; }
+        .msg-out { background: var(--msg-out); align-self: flex-end; border-top-right-radius: 0; }
+        .msg-in { background: var(--msg-in); align-self: flex-start; border-top-left-radius: 0; }
+        .time { font-size: 10px; color: rgba(255,255,255,0.6); text-align: right; display: block; margin-top: 3px; }
+
+        .input-area { padding: 10px; background: var(--header); display: flex; gap: 10px; align-items: center; }
+        
+        /* TOAST */
+        .toast { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #333; padding: 10px 20px; border-radius: 30px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100; font-size: 13px; border: 1px solid #555; }
+        .toast.show { opacity: 1; top: 50px; }
+        .error { color: #ff6b6b; border-color: #ff6b6b; }
 
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="app">
 
-    <!-- 1. LOGIN / SIGNUP -->
+    <!-- === 1. AUTH SCREEN (Login/Signup) === -->
     <div id="screen-auth" class="screen active">
-        <div class="auth-box">
-            <h1>GhostChat 🔒</h1>
-            <p style="color:#777; margin-bottom:30px;">User Verification System</p>
+        <!-- LOGIN FORM -->
+        <div id="form-login" class="auth-container">
+            <div class="auth-title">GhostChat Login</div>
+            <p class="auth-sub">Enter your credentials to connect.</p>
             
-            <input type="text" id="reg-user" class="input-field" placeholder="Create Username">
-            <button class="btn" onclick="app.register()">Register (New User)</button>
+            <input type="text" id="log-user" placeholder="Username">
+            <input type="password" id="log-pass" placeholder="Password">
             
-            <div style="margin:20px; color:#555;">OR</div>
+            <button class="btn" onclick="app.login()">Sign In</button>
+            <button class="btn btn-text" onclick="app.toggleAuth('signup')">Create new account</button>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div id="form-signup" class="auth-container hidden" style="display:none;">
+            <div class="auth-title">Create Account</div>
+            <p class="auth-sub">Choose a unique username.</p>
             
-            <input type="text" id="log-user" class="input-field" placeholder="Existing Username">
-            <button class="btn" style="background:#333;" onclick="app.login()">Login</button>
+            <input type="text" id="reg-user" placeholder="Choose Username">
+            <input type="password" id="reg-pass" placeholder="Create Password">
+            
+            <button class="btn" onclick="app.signup()">Sign Up</button>
+            <button class="btn btn-text" onclick="app.toggleAuth('login')">Back to Login</button>
         </div>
     </div>
 
-    <!-- 2. DASHBOARD -->
+    <!-- === 2. DASHBOARD (Contacts) === -->
     <div id="screen-dash" class="screen hidden">
         <div class="header">
-            <div id="my-name" style="font-weight:bold;">User</div>
-            <button onclick="app.logout()" style="background:none; border:none; color:var(--danger);">Logout</button>
+            <div style="display:flex; align-items:center;">
+                <div class="avatar" id="my-av">Me</div>
+                <div id="my-name" style="font-weight:bold;">User</div>
+            </div>
+            <button onclick="app.logout()" style="background:none; border:none; color:var(--danger); cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button>
         </div>
 
         <div class="add-box">
-            <input type="text" id="friend-input" class="input-field" style="margin:0; text-align:left;" placeholder="Enter Username to Add">
-            <button class="btn" onclick="app.checkAndAdd()" style="width:auto; margin:0;"><i class="fas fa-plus"></i></button>
+            <input type="text" id="friend-name" placeholder="Enter Friend's Username" style="margin:0;">
+            <button onclick="app.addContact()" style="width:50px; margin:0; border-radius:8px; background:var(--primary); color:white; border:none; cursor:pointer;"><i class="fas fa-plus"></i></button>
         </div>
-        
-        <div style="padding:10px; font-size:12px; color:#555; text-align:center;">
-            Only valid usernames will be added.
-        </div>
+        <div style="padding:10px; font-size:12px; color:#666; text-align:center;">Tip: You can only add registered users.</div>
 
         <div class="list-area" id="contact-list"></div>
     </div>
 
-    <!-- 3. CHAT -->
+    <!-- === 3. CHAT ROOM === -->
     <div id="screen-chat" class="screen hidden">
         <div class="header">
-            <i class="fas fa-arrow-left" onclick="app.nav('dash')"></i>
-            <div id="chat-title">User</div>
-            <div></div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-arrow-left" onclick="app.nav('dash')" style="cursor:pointer; padding:5px;"></i>
+                <div class="avatar" id="chat-av">?</div>
+                <div id="chat-name" style="font-weight:bold;">User</div>
+            </div>
         </div>
+
         <div class="chat-body" id="msg-box"></div>
-        <div class="input-bar">
-            <input type="text" id="msg-in" class="input-field" style="margin:0; text-align:left;" placeholder="Message...">
-            <button class="btn" onclick="app.send()" style="width:50px; margin:0;"><i class="fas fa-arrow-up"></i></button>
+
+        <div class="input-area">
+            <input type="text" id="msg-input" placeholder="Type a message..." style="margin:0;">
+            <button onclick="app.send()" style="width:50px; margin:0; padding:12px; border-radius:50%; background:var(--primary); color:white; border:none; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <div id="toast" class="toast">Alert</div>
-
 </div>
 
 <script>
     const app = {
-        user: null,
-        target: null,
-        refresh: null,
-        // Yahan saare Registered Users save honge
-        dbMaster: 'gc6_master_users', 
-
+        user: null, // Logged in user
+        target: null, // Chatting with
+        refresh: null, // Timer for auto-reload
+        dbUsers: 'gc7_users_db', // Stores: { username: password }
+        
         init: () => {
-            const u = localStorage.getItem('gc6_session');
-            if(u) {
-                app.user = u;
+            const session = localStorage.getItem('gc7_session');
+            if(session) {
+                app.user = session;
                 app.loadDash();
             } else {
                 app.nav('auth');
             }
         },
 
+        // --- NAVIGATION ---
         nav: (s) => {
-            document.querySelectorAll('.screen').forEach(e => {
-                e.classList.remove('active');
-                e.classList.add('hidden');
+            document.querySelectorAll('.screen').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('hidden');
             });
             document.getElementById(`screen-${s}`).classList.remove('hidden');
             document.getElementById(`screen-${s}`).classList.add('active');
+            
             if(s !== 'chat' && app.refresh) clearInterval(app.refresh);
         },
 
-        toast: (msg, isError = false) => {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.className = isError ? 'toast error show' : 'toast show';
-            setTimeout(() => t.className = 'toast', 2000);
+        toggleAuth: (mode) => {
+            document.getElementById('form-login').style.display = mode === 'login' ? 'flex' : 'none';
+            document.getElementById('form-signup').style.display = mode === 'signup' ? 'flex' : 'none';
         },
 
-        // --- AUTHENTICATION (WITH DATABASE) ---
+        toast: (msg, isErr = false) => {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.className = isErr ? 'toast show error' : 'toast show';
+            setTimeout(() => t.className = 'toast', 2500);
+        },
+
+        // --- 1. AUTHENTICATION LOGIC ---
         
-        register: () => {
-            const name = document.getElementById('reg-user').value.trim();
-            if(!name) return app.toast('Enter name', true);
+        signup: () => {
+            const u = document.getElementById('reg-user').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
 
-            // 1. Get Master List
-            let allUsers = JSON.parse(localStorage.getItem(app.dbMaster) || "[]");
+            if(!u || !p) return app.toast('Fill all fields', true);
 
-            // 2. Check if name exists
-            if(allUsers.includes(name)) {
-                return app.toast('Username already exists!', true);
-            }
-
-            // 3. Add to Database
-            allUsers.push(name);
-            localStorage.setItem(app.dbMaster, JSON.stringify(allUsers));
+            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
             
-            // 4. Auto Login
-            localStorage.setItem('gc6_session', name);
-            app.user = name;
-            app.toast('Account Created!');
-            app.loadDash();
+            if(users[u]) {
+                app.toast('Username already taken!', true);
+            } else {
+                users[u] = p; // Store user & password
+                localStorage.setItem(app.dbUsers, JSON.stringify(users));
+                app.toast('Account Created! Login now.');
+                app.toggleAuth('login');
+            }
         },
 
         login: () => {
-            const name = document.getElementById('log-user').value.trim();
-            if(!name) return app.toast('Enter name', true);
+            const u = document.getElementById('log-user').value.trim();
+            const p = document.getElementById('log-pass').value.trim();
+            
+            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
 
-            // 1. Check Database
-            let allUsers = JSON.parse(localStorage.getItem(app.dbMaster) || "[]");
-
-            if(allUsers.includes(name)) {
-                localStorage.setItem('gc6_session', name);
-                app.user = name;
+            if(users[u] && users[u] === p) {
+                localStorage.setItem('gc7_session', u);
+                app.user = u;
+                document.getElementById('log-user').value = "";
+                document.getElementById('log-pass').value = "";
                 app.loadDash();
             } else {
-                app.toast('User not found. Please Register.', true);
+                app.toast('Invalid Username or Password', true);
             }
         },
 
         logout: () => {
-            localStorage.removeItem('gc6_session');
-            location.href = window.location.pathname;
+            localStorage.removeItem('gc7_session');
+            location.reload();
         },
 
-        // --- ADD FRIEND (VERIFICATION LOGIC) ---
+        // --- 2. DASHBOARD & CONTACTS ---
+        
+        loadDash: () => {
+            app.nav('dash');
+            document.getElementById('my-name').innerText = app.user;
+            document.getElementById('my-av').innerText = app.user[0].toUpperCase();
+            app.renderContacts();
+        },
 
-        checkAndAdd: () => {
-            const friendName = document.getElementById('friend-input').value.trim();
+        addContact: () => {
+            const fname = document.getElementById('friend-name').value.trim();
+            if(!fname) return;
+            if(fname === app.user) return app.toast("Can't add yourself", true);
+
+            // VERIFICATION: Check if user exists in DB
+            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
             
-            if(!friendName) return;
-            if(friendName === app.user) return app.toast("Can't add yourself", true);
-
-            // STEP 1: Check Master Database (Is this a real user?)
-            let allUsers = JSON.parse(localStorage.getItem(app.dbMaster) || "[]");
-
-            if(allUsers.includes(friendName)) {
-                // User Asli Hai -> Add karo
-                app.saveContact(friendName);
-                document.getElementById('friend-input').value = "";
-            } else {
-                // User Nakli Hai -> Error dikhao
-                app.toast(`User "${friendName}" does not exist!`, true);
+            if(!users[fname]) {
+                app.toast(`User "${fname}" not found!`, true);
+                return;
             }
-        },
 
-        saveContact: (name) => {
-            let list = JSON.parse(localStorage.getItem(`gc6_contacts_${app.user}`) || "[]");
-            if(!list.includes(name)) {
-                list.push(name);
-                localStorage.setItem(`gc6_contacts_${app.user}`, JSON.stringify(list));
-                app.toast(`${name} added!`);
+            // Save to my contacts
+            let contacts = JSON.parse(localStorage.getItem(`gc7_contacts_${app.user}`) || "[]");
+            if(!contacts.includes(fname)) {
+                contacts.push(fname);
+                localStorage.setItem(`gc7_contacts_${app.user}`, JSON.stringify(contacts));
+                app.toast(`${fname} Added!`);
+                document.getElementById('friend-name').value = "";
             } else {
-                app.toast('Already added');
+                app.toast('Already in contacts');
             }
             app.renderContacts();
         },
 
         renderContacts: () => {
-            const list = JSON.parse(localStorage.getItem(`gc6_contacts_${app.user}`) || "[]");
+            const list = JSON.parse(localStorage.getItem(`gc7_contacts_${app.user}`) || "[]");
             const el = document.getElementById('contact-list');
             el.innerHTML = "";
             
-            if(list.length === 0) el.innerHTML = "<p style='text-align:center; color:#555;'>No friends added.</p>";
+            if(list.length === 0) el.innerHTML = "<div style='text-align:center; padding:20px; color:#555;'>No contacts yet.</div>";
 
             list.forEach(c => {
                 const div = document.createElement('div');
-                div.className = 'chat-item';
+                div.className = 'contact-item';
                 div.onclick = () => app.openChat(c);
-                div.innerHTML = `<div class="avatar">${c[0].toUpperCase()}</div><div>${c}</div>`;
+                div.innerHTML = `
+                    <div class="avatar">${c[0].toUpperCase()}</div>
+                    <div style="font-weight:bold; color:#e9edef;">${c}</div>
+                `;
                 el.appendChild(div);
             });
         },
 
-        loadDash: () => {
-            app.nav('dash');
-            document.getElementById('my-name').innerText = app.user;
-            app.renderContacts();
-        },
+        // --- 3. REAL-TIME CHAT SYSTEM ---
 
-        // --- CHAT ---
-        getChatID: (u1, u2) => `gc6_msg_${[u1, u2].sort().join('_')}`,
+        getChatID: (u1, u2) => `gc7_msg_${[u1, u2].sort().join('_')}`,
 
         openChat: (name) => {
             app.target = name;
             app.nav('chat');
-            document.getElementById('chat-title').innerText = name;
+            document.getElementById('chat-name').innerText = name;
+            document.getElementById('chat-av').innerText = name[0].toUpperCase();
+            
             app.renderMsgs();
+            // Auto refresh for "Real Time" effect
             app.refresh = setInterval(app.renderMsgs, 1000);
         },
 
         send: () => {
-            const txt = document.getElementById('msg-in').value.trim();
+            const txt = document.getElementById('msg-input').value.trim();
             if(!txt) return;
+
             const id = app.getChatID(app.user, app.target);
             let msgs = JSON.parse(localStorage.getItem(id) || "[]");
-            msgs.push({ s: app.user, t: txt });
+            
+            msgs.push({
+                s: app.user, // Sender
+                t: txt,      // Text
+                time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+            });
+
             localStorage.setItem(id, JSON.stringify(msgs));
-            document.getElementById('msg-in').value = "";
+            document.getElementById('msg-input').value = "";
             app.renderMsgs();
         },
 
@@ -336,13 +314,15 @@
             const id = app.getChatID(app.user, app.target);
             const msgs = JSON.parse(localStorage.getItem(id) || "[]");
             const cont = document.getElementById('msg-box');
-            if(cont.childElementCount === msgs.length) return;
-            
+
+            if(cont.childElementCount === msgs.length) return; // Prevent flicker
+
             cont.innerHTML = "";
             msgs.forEach(m => {
+                const isMe = m.s === app.user;
                 const div = document.createElement('div');
-                div.className = `msg ${m.s === app.user ? 'msg-out' : 'msg-in'}`;
-                div.innerText = m.t;
+                div.className = `msg ${isMe ? 'msg-out' : 'msg-in'}`;
+                div.innerHTML = `${m.t}<span class="time">${m.time}</span>`;
                 cont.appendChild(div);
             });
             cont.scrollTop = cont.scrollHeight;
