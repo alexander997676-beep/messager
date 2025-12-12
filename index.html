@@ -2,23 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostChat Secure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Yeh tags URL bar hatane ke liye hain jab Home Screen par add karein -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+
+    <title>GhostChat App Mode</title>
+    
     <!-- Icons & Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- THEME --- */
+        /* --- APP THEME --- */
         :root {
-            --bg-body: #09090b;
-            --bg-card: #18181b;
-            --primary: #6366f1; /* Indigo */
-            --accent: #8b5cf6;  /* Purple */
+            --bg-body: #000000;
+            --bg-card: #1c1c1e;
+            --primary: #3b82f6; /* Blue */
+            --msg-out: #3b82f6;
+            --msg-in: #2c2c2e;
             --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --danger: #ef4444;
-            --border: 1px solid rgba(255,255,255,0.1);
+            --text-muted: #8e8e93;
+            --danger: #ff453a;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -28,241 +36,230 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic viewport height for mobile */
             display: flex;
             justify-content: center;
             overflow: hidden;
         }
 
         .app-container {
-            width: 100%; max-width: 480px;
-            background: var(--bg-card);
+            width: 100%; max-width: 500px;
+            background: var(--bg-body);
             display: flex; flex-direction: column;
             position: relative;
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.1);
-            border-left: var(--border); border-right: var(--border);
+            height: 100%;
         }
 
         /* --- SCREENS --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column;
-            background: var(--bg-card);
-            transition: 0.3s ease-in-out;
+            background: var(--bg-body);
+            transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             z-index: 10;
         }
         .hidden { transform: translateX(100%); z-index: 5; opacity: 0; }
         .active { transform: translateX(0); z-index: 20; opacity: 1; }
 
-        /* --- AUTH FORMS --- */
-        .auth-box {
+        /* --- AUTH SCREEN --- */
+        .auth-content {
             flex: 1; display: flex; flex-direction: column; 
-            justify-content: center; padding: 30px;
-            background: radial-gradient(circle at top, #1e1e24, #18181b);
+            justify-content: center; padding: 40px; text-align: center;
+            background: linear-gradient(180deg, #1c1c1e 0%, #000 100%);
         }
-        .auth-title { font-size: 28px; font-weight: 700; margin-bottom: 5px; color: var(--primary); }
-        .auth-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-
-        .input-group { position: relative; margin-bottom: 15px; }
         .input-field {
-            width: 100%; padding: 16px; background: #27272a;
-            border: var(--border); border-radius: 12px;
-            color: white; font-size: 16px; transition: 0.3s;
+            width: 100%; padding: 18px; background: #2c2c2e;
+            border: 1px solid #3a3a3c; border-radius: 16px;
+            color: white; font-size: 16px; margin-bottom: 15px; text-align: center;
         }
-        .input-field:focus { border-color: var(--primary); background: #3f3f46; }
-        
-        .toggle-password {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            color: var(--text-muted); cursor: pointer;
+        .btn-large {
+            width: 100%; padding: 18px; background: var(--primary);
+            color: white; font-weight: bold; border: none; border-radius: 16px;
+            font-size: 16px; cursor: pointer;
         }
-
-        .btn {
-            width: 100%; padding: 16px; border-radius: 12px;
-            font-weight: 600; cursor: pointer; border: none; font-size: 16px;
-            margin-top: 10px; transition: 0.2s;
-        }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
-        .btn-link { background: transparent; color: var(--text-muted); font-size: 14px; margin-top: 20px; }
-        .btn-link span { color: var(--primary); text-decoration: underline; }
 
         /* --- DASHBOARD --- */
         .header {
-            padding: 15px; background: rgba(24, 24, 27, 0.95);
+            padding: 15px 20px; background: rgba(28, 28, 30, 0.9);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             display: flex; align-items: center; justify-content: space-between;
-            border-bottom: var(--border); height: 65px;
+            height: 60px; z-index: 50; position: absolute; top: 0; width: 100%;
+            border-bottom: 1px solid #333;
         }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 18px;
-        }
-
-        .share-section {
-            padding: 20px; text-align: center; border-bottom: var(--border); background: #131316;
-        }
-        .link-display {
-            background: #000; padding: 10px; border-radius: 8px;
-            color: var(--accent); font-size: 12px; margin: 10px 0;
-            word-break: break-all; border: 1px dashed var(--accent);
-        }
-
-        .contact-input-area { padding: 15px; border-bottom: var(--border); display: flex; gap: 10px; }
         
-        .chat-list { flex: 1; overflow-y: auto; }
+        .content-area {
+            margin-top: 60px; /* Height of header */
+            flex: 1; overflow-y: auto; padding: 20px;
+            padding-bottom: 100px; /* Space for floating bar */
+        }
+
         .chat-item {
-            padding: 15px; display: flex; align-items: center; gap: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            display: flex; align-items: center; padding: 15px;
+            background: var(--bg-card); border-radius: 16px; margin-bottom: 10px;
+            border: 1px solid #333;
         }
-        .chat-item:hover { background: #27272a; }
+        .avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, #444, #666);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 18px; margin-right: 15px;
+        }
 
-        /* --- CHAT ROOM --- */
-        .chat-area {
-            flex: 1; overflow-y: auto; padding: 15px;
-            background: #09090b; display: flex; flex-direction: column;
+        /* --- CHAT ROOM (FLOATING INPUT) --- */
+        .chat-body {
+            flex: 1; overflow-y: auto; padding: 20px;
+            padding-top: 70px; /* Header space */
+            padding-bottom: 100px; /* Extra space for floating input */
+            display: flex; flex-direction: column;
         }
+
         .msg {
-            max-width: 75%; padding: 10px 14px; border-radius: 14px;
-            margin-bottom: 8px; font-size: 14px; position: relative; word-wrap: break-word;
+            max-width: 80%; padding: 12px 16px; border-radius: 18px;
+            margin-bottom: 8px; font-size: 15px; position: relative; word-wrap: break-word;
         }
-        .msg-out { background: var(--primary); align-self: flex-end; border-bottom-right-radius: 2px; }
-        .msg-in { background: #27272a; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg-time { font-size: 10px; opacity: 0.7; display: block; text-align: right; margin-top: 4px; }
+        .msg-out { background: var(--msg-out); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .msg-in { background: var(--msg-in); align-self: flex-start; border-bottom-left-radius: 4px; }
 
-        .input-bar { padding: 10px; background: #18181b; display: flex; gap: 10px; }
+        /* --- FLOATING INPUT BAR --- */
+        .floating-input-container {
+            position: absolute; 
+            bottom: 20px; /* Upar uthaya hai */
+            left: 15px; 
+            right: 15px;
+            display: flex; 
+            gap: 10px;
+            z-index: 100;
+        }
 
-        /* --- UTILS --- */
+        .msg-input {
+            flex: 1; 
+            background: rgba(44, 44, 46, 0.9);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #444; 
+            padding: 15px 20px;
+            border-radius: 30px; /* Pill shape */
+            color: white; font-size: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .msg-input:focus { border-color: var(--primary); }
+
+        .send-btn {
+            width: 55px; height: 55px; border-radius: 50%; 
+            background: var(--primary); color: white; border: none; 
+            font-size: 20px; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Fullscreen Toggle Button Style */
+        .fs-btn {
+            background: #333; width: 35px; height: 35px; border-radius: 50%;
+            border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
         .toast {
-            position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
-            background: white; color: black; padding: 10px 20px; border-radius: 30px;
-            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; font-weight: bold;
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 20px; border-radius: 30px;
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; font-size: 13px; border: 1px solid #555;
         }
-        .toast.show { opacity: 1; bottom: 100px; }
+        .toast.show { opacity: 1; top: 90px; }
 
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-container" id="main-app">
 
-    <!-- === 1. LOGIN SCREEN === -->
-    <div id="screen-login" class="screen active">
-        <div class="auth-box">
-            <div class="auth-title">Welcome Back</div>
-            <div class="auth-sub">Login to continue chatting</div>
-
-            <div class="input-group">
-                <input type="text" id="log-user" class="input-field" placeholder="Username">
-            </div>
-            <div class="input-group">
-                <input type="password" id="log-pass" class="input-field" placeholder="Password">
-                <i class="fas fa-eye toggle-password" onclick="app.togglePass('log-pass')"></i>
-            </div>
-
-            <button class="btn btn-primary" onclick="app.login()">Login</button>
-            <button class="btn btn-link" onclick="app.nav('signup')">Don't have an account? <span>Sign Up</span></button>
+    <!-- 1. LOGIN -->
+    <div id="screen-auth" class="screen active">
+        <div class="auth-content">
+            <h1 style="font-size:40px; margin-bottom:10px;">👋</h1>
+            <h2>GhostChat</h2>
+            <p style="color:#666; margin-bottom:40px;">App Experience Mode</p>
+            <input type="text" id="username" class="input-field" placeholder="Enter Name">
+            <button class="btn-large" onclick="app.login()">Enter App</button>
         </div>
     </div>
 
-    <!-- === 2. SIGNUP SCREEN === -->
-    <div id="screen-signup" class="screen hidden">
-        <div class="auth-box">
-            <div class="auth-title">Create Account</div>
-            <div class="auth-sub">Set up your username & password</div>
-
-            <div class="input-group">
-                <input type="text" id="reg-user" class="input-field" placeholder="Choose Username">
-            </div>
-            <div class="input-group">
-                <input type="password" id="reg-pass" class="input-field" placeholder="Create Password">
-                <i class="fas fa-eye toggle-password" onclick="app.togglePass('reg-pass')"></i>
-            </div>
-
-            <button class="btn btn-primary" onclick="app.register()">Register</button>
-            <button class="btn btn-link" onclick="app.nav('login')">Already have an account? <span>Login</span></button>
-        </div>
-    </div>
-
-    <!-- === 3. DASHBOARD === -->
+    <!-- 2. DASHBOARD -->
     <div id="screen-dash" class="screen hidden">
         <div class="header">
-            <div class="user-info">
-                <div class="avatar" id="my-av">U</div>
-                <div id="display-name" style="font-weight:bold;">User</div>
+            <div style="font-weight:bold; font-size:18px;">Chats</div>
+            <div style="display:flex; gap:10px;">
+                <!-- Full Screen Button -->
+                <button class="fs-btn" onclick="app.toggleFullScreen()"><i class="fas fa-expand"></i></button>
+                <button onclick="app.logout()" style="color:#ff453a; background:none; border:none;">Exit</button>
             </div>
-            <button onclick="app.logout()" style="background:none; border:none; color:var(--danger); cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button>
         </div>
 
-        <div class="share-section">
-            <div style="font-size:13px; color:var(--text-muted);">Share your link to add friends:</div>
-            <div class="link-display" id="my-link">...</div>
-            <button class="btn" style="background:var(--accent); width:auto; padding:8px 20px; font-size:13px;" onclick="app.copyLink()">Copy Link</button>
-        </div>
+        <div class="content-area">
+            <div style="background:#1c1c1e; padding:15px; border-radius:16px; text-align:center; margin-bottom:20px; border:1px solid #333;">
+                <div style="font-size:12px; color:#666;">Your Link:</div>
+                <div id="my-link" style="font-size:13px; color:var(--primary); margin:5px 0; word-break:break-all;">...</div>
+                <button onclick="app.copyLink()" style="background:#333; color:white; border:none; padding:5px 15px; border-radius:10px; font-size:12px; margin-top:5px;">Copy</button>
+            </div>
 
-        <div class="contact-input-area">
-            <input type="text" id="add-link-input" class="input-field" placeholder="Paste Friend's Link" style="padding:10px;">
-            <button onclick="app.addContact()" style="background:var(--primary); border:none; border-radius:8px; padding:0 15px; color:white; cursor:pointer;"><i class="fas fa-plus"></i></button>
-        </div>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <input type="text" id="add-input" placeholder="Paste Link" class="input-field" style="margin:0; text-align:left; padding:12px;">
+                <button onclick="app.addContact()" style="background:var(--primary); border:none; border-radius:16px; padding:0 15px; color:white;"><i class="fas fa-plus"></i></button>
+            </div>
 
-        <div class="chat-list" id="contact-list">
-            <!-- Contacts Here -->
+            <div id="contact-list"></div>
         </div>
     </div>
 
-    <!-- === 4. CHAT ROOM === -->
+    <!-- 3. CHAT ROOM -->
     <div id="screen-chat" class="screen hidden">
         <div class="header">
-            <div class="user-info">
-                <i class="fas fa-arrow-left" onclick="app.nav('dash')" style="cursor:pointer; color:var(--text-muted);"></i>
-                <div class="avatar" id="chat-av">?</div>
-                <div id="chat-name" style="font-weight:bold;">Friend</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-chevron-left" onclick="app.nav('dash')" style="font-size:20px; cursor:pointer;"></i>
+                <div class="avatar" id="chat-av" style="width:35px; height:35px; font-size:14px;">?</div>
+                <div id="chat-name" style="font-weight:bold;">User</div>
             </div>
-            <i class="fas fa-trash" style="color:var(--danger); cursor:pointer;" onclick="app.clearChat()"></i>
+            <button class="fs-btn" onclick="app.toggleFullScreen()"><i class="fas fa-expand"></i></button>
         </div>
 
-        <div class="chat-area" id="msg-box"></div>
+        <div class="chat-body" id="msg-box"></div>
 
-        <div class="input-bar">
-            <input type="text" id="msg-in" class="input-field" placeholder="Message..." style="padding:12px;">
-            <button onclick="app.send()" style="background:var(--primary); border:none; width:45px; border-radius:50%; color:white; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+        <!-- FLOATING INPUT BAR -->
+        <div class="floating-input-container">
+            <input type="text" id="msg-in" class="msg-input" placeholder="Message..." onfocus="app.onFocus()">
+            <button class="send-btn" onclick="app.send()"><i class="fas fa-arrow-up"></i></button>
         </div>
     </div>
 
-    <div id="toast" class="toast">Alert</div>
+    <div id="toast" class="toast">Notification</div>
 </div>
 
 <script>
     const app = {
         user: null,
         target: null,
-        timer: null,
-        dbUsers: 'gc_secure_users', // Stores { username: password }
-        
+        refresh: null,
+
         init: () => {
-            // Check if logged in
-            const session = localStorage.getItem('gc_session');
-            if(session) {
-                app.user = session;
-                // Auto add contact logic
+            const u = localStorage.getItem('gc5_user');
+            if(u) {
+                app.user = u;
                 const params = new URLSearchParams(window.location.search);
                 const add = params.get('add');
-                if(add && add !== app.user) app.saveContact(decodeURIComponent(add));
+                if(add && add !== u) app.saveContact(decodeURIComponent(add));
                 app.loadDash();
             } else {
-                app.nav('login');
+                app.nav('auth');
             }
         },
 
         nav: (s) => {
-            document.querySelectorAll('.screen').forEach(el => {
-                el.classList.remove('active');
-                el.classList.add('hidden');
+            document.querySelectorAll('.screen').forEach(e => {
+                e.classList.remove('active');
+                e.classList.add('hidden');
             });
-            const active = document.getElementById(`screen-${s}`);
-            active.classList.remove('hidden');
-            active.classList.add('active');
-            if(s !== 'chat' && app.timer) clearInterval(app.timer);
+            document.getElementById(`screen-${s}`).classList.remove('hidden');
+            document.getElementById(`screen-${s}`).classList.add('active');
+            
+            if(s !== 'chat' && app.refresh) clearInterval(app.refresh);
         },
 
         toast: (m) => {
@@ -271,133 +268,108 @@
             setTimeout(() => t.classList.remove('show'), 2000);
         },
 
-        togglePass: (id) => {
-            const el = document.getElementById(id);
-            el.type = el.type === 'password' ? 'text' : 'password';
-        },
-
-        // --- AUTHENTICATION SYSTEM ---
-        register: () => {
-            const u = document.getElementById('reg-user').value.trim();
-            const p = document.getElementById('reg-pass').value.trim();
-
-            if(!u || !p) return app.toast('Fill all fields');
-
-            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-            
-            if(users[u]) {
-                app.toast('Username already exists!');
+        // --- FULL SCREEN LOGIC ---
+        toggleFullScreen: () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((e) => {
+                    console.log(e);
+                    app.toast("Tap 'Add to Home Screen' for best view");
+                });
             } else {
-                users[u] = p; // Save password
-                localStorage.setItem(app.dbUsers, JSON.stringify(users));
-                app.toast('Account Created! Please Login.');
-                app.nav('login');
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         },
 
+        onFocus: () => {
+            // Mobile keyboard adjust
+            setTimeout(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 300);
+        },
+
+        // --- AUTH ---
         login: () => {
-            const u = document.getElementById('log-user').value.trim();
-            const p = document.getElementById('log-pass').value.trim();
-
-            let users = JSON.parse(localStorage.getItem(app.dbUsers) || "{}");
-
-            if(users[u] && users[u] === p) {
-                localStorage.setItem('gc_session', u); // Start Session
-                app.user = u;
-                app.loadDash();
-            } else {
-                app.toast('Invalid Username or Password');
-            }
+            const u = document.getElementById('username').value.trim();
+            if(!u) return app.toast('Name Required');
+            localStorage.setItem('gc5_user', u);
+            app.user = u;
+            app.loadDash();
         },
 
         logout: () => {
-            localStorage.removeItem('gc_session');
+            localStorage.removeItem('gc5_user');
             location.href = window.location.pathname;
         },
 
         // --- DASHBOARD ---
         loadDash: () => {
             app.nav('dash');
-            document.getElementById('display-name').innerText = app.user;
-            document.getElementById('my-av').innerText = app.user.charAt(0).toUpperCase();
-
             const link = `${window.location.href.split('?')[0]}?add=${encodeURIComponent(app.user)}`;
             document.getElementById('my-link').innerText = link;
-            
             app.renderContacts();
         },
 
         copyLink: () => {
             navigator.clipboard.writeText(document.getElementById('my-link').innerText);
-            app.toast('Link Copied!');
+            app.toast('Copied!');
         },
 
         addContact: () => {
-            const val = document.getElementById('add-link-input').value.trim();
-            try {
-                if(val.includes('add=')) {
-                    const name = decodeURIComponent(val.split('add=')[1].split('&')[0]);
-                    if(name === app.user) return app.toast("Can't add yourself");
+            const val = document.getElementById('add-input').value.trim();
+            if(val.includes('add=')) {
+                const name = decodeURIComponent(val.split('add=')[1].split('&')[0]);
+                if(name !== app.user) {
                     app.saveContact(name);
-                    document.getElementById('add-link-input').value = "";
-                } else app.toast('Invalid Link');
-            } catch(e) { app.toast('Error'); }
+                    document.getElementById('add-input').value = "";
+                } else app.toast("Can't add self");
+            } else app.toast('Invalid Link');
         },
 
         saveContact: (name) => {
-            let list = JSON.parse(localStorage.getItem(`gc_contacts_${app.user}`) || "[]");
+            let list = JSON.parse(localStorage.getItem(`gc5_contacts_${app.user}`) || "[]");
             if(!list.includes(name)) {
                 list.push(name);
-                localStorage.setItem(`gc_contacts_${app.user}`, JSON.stringify(list));
-                app.toast('Friend Added!');
+                localStorage.setItem(`gc5_contacts_${app.user}`, JSON.stringify(list));
+                app.toast('Added!');
             }
             app.renderContacts();
         },
 
         renderContacts: () => {
-            const list = JSON.parse(localStorage.getItem(`gc_contacts_${app.user}`) || "[]");
+            const list = JSON.parse(localStorage.getItem(`gc5_contacts_${app.user}`) || "[]");
             const el = document.getElementById('contact-list');
             el.innerHTML = "";
+            if(list.length === 0) el.innerHTML = "<p style='text-align:center; color:#555;'>No chats yet</p>";
             
-            if(list.length === 0) el.innerHTML = "<div style='text-align:center; padding:20px; color:#555;'>No contacts yet.</div>";
-
             list.forEach(c => {
                 const div = document.createElement('div');
                 div.className = 'chat-item';
                 div.onclick = () => app.openChat(c);
-                div.innerHTML = `
-                    <div class="avatar">${c.charAt(0).toUpperCase()}</div>
-                    <div style="font-weight:bold;">${c}</div>
-                `;
+                div.innerHTML = `<div class="avatar">${c[0].toUpperCase()}</div><div style="font-weight:bold;">${c}</div>`;
                 el.appendChild(div);
             });
         },
 
         // --- CHAT ---
-        getChatID: (u1, u2) => `gc_msg_${[u1, u2].sort().join('_')}`,
+        getChatID: (u1, u2) => `gc5_msg_${[u1, u2].sort().join('_')}`,
 
         openChat: (name) => {
             app.target = name;
             app.nav('chat');
             document.getElementById('chat-name').innerText = name;
-            document.getElementById('chat-av').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('chat-av').innerText = name[0].toUpperCase();
             app.renderMsgs();
-            app.timer = setInterval(app.renderMsgs, 1000);
+            app.refresh = setInterval(app.renderMsgs, 1000);
         },
 
         send: () => {
             const txt = document.getElementById('msg-in').value.trim();
             if(!txt) return;
-
             const id = app.getChatID(app.user, app.target);
             let msgs = JSON.parse(localStorage.getItem(id) || "[]");
-            
-            msgs.push({
-                s: app.user,
-                t: txt,
-                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-            });
-
+            msgs.push({ s: app.user, t: txt });
             localStorage.setItem(id, JSON.stringify(msgs));
             document.getElementById('msg-in').value = "";
             app.renderMsgs();
@@ -407,25 +379,16 @@
             const id = app.getChatID(app.user, app.target);
             const msgs = JSON.parse(localStorage.getItem(id) || "[]");
             const cont = document.getElementById('msg-box');
-
             if(cont.childElementCount === msgs.length) return;
-
+            
             cont.innerHTML = "";
             msgs.forEach(m => {
-                const isMe = m.s === app.user;
                 const div = document.createElement('div');
-                div.className = `msg ${isMe ? 'msg-out' : 'msg-in'}`;
-                div.innerHTML = `${m.t}<span class="msg-time">${m.time}</span>`;
+                div.className = `msg ${m.s === app.user ? 'msg-out' : 'msg-in'}`;
+                div.innerText = m.t;
                 cont.appendChild(div);
             });
             cont.scrollTop = cont.scrollHeight;
-        },
-
-        clearChat: () => {
-            if(confirm('Delete Chat?')) {
-                localStorage.removeItem(app.getChatID(app.user, app.target));
-                app.renderMsgs();
-            }
         }
     };
 
