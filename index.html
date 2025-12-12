@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GhostMsg Elite</title>
+    <title>FaizanMsg Elite</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     
@@ -186,7 +186,8 @@
     <!-- 1. AUTH SCREEN -->
     <div id="view-auth" class="view-section active">
         <div class="scroll-view" style="display:flex; flex-direction:column; justify-content:center; padding-bottom: 24px;">
-            <div class="logo"><i class="fas fa-ghost text-gradient"></i> GhostMsg Elite</div>
+            <!-- UPDATED NAME HERE -->
+            <div class="logo"><i class="fas fa-ghost text-gradient"></i> FaizanMsg Elite</div>
             
             <h1 style="font-size: 42px; line-height: 1.1; margin-bottom: 10px;">
                 Unleash <br> <span class="text-gradient">Honesty.</span>
@@ -275,7 +276,8 @@
             
             <button class="btn btn-primary" onclick="app.sendPublicMessage()">Send Secretly 🚀</button>
             <div style="text-align:center; margin-top:30px;">
-                <a href="?" style="color:var(--text-sub); text-decoration:none; font-size:12px;">Get your own GhostMsg Elite</a>
+                <!-- UPDATED NAME HERE -->
+                <a href="?" style="color:var(--text-sub); text-decoration:none; font-size:12px;">Get your own FaizanMsg Elite</a>
             </div>
         </div>
     </div>
@@ -291,7 +293,8 @@
 <!-- STORY MODE MODAL -->
 <div id="story-modal" class="story-overlay">
     <div class="story-card" id="story-capture-area">
-        <div class="story-badge">GhostMsg Elite</div>
+        <!-- UPDATED NAME HERE -->
+        <div class="story-badge">FaizanMsg Elite</div>
         <div style="font-size: 80px; margin-bottom: 20px; opacity:0.8;">👻</div>
         <h2 id="story-text" style="font-size: 24px; line-height: 1.4; margin-bottom: 20px;">
             "This is a placeholder message"
@@ -313,13 +316,13 @@
             theme: 'neon'
         },
         db: {
-            users: 'elite_users',
-            msgs: 'elite_msgs'
+            users: 'faizan_users', // Changed DB Name for freshness
+            msgs: 'faizan_msgs'
         },
 
         init: () => {
             // Load Theme
-            const savedTheme = localStorage.getItem('elite_theme') || 'neon';
+            const savedTheme = localStorage.getItem('faizan_theme') || 'neon';
             app.applyTheme(savedTheme);
 
             // Check URL for Public Link
@@ -329,7 +332,7 @@
             if(to) {
                 app.loadPublic(to);
             } else {
-                const sess = localStorage.getItem('elite_sess');
+                const sess = localStorage.getItem('faizan_sess');
                 if(sess) app.loginSuccess(sess);
                 else app.show('auth');
             }
@@ -372,7 +375,7 @@
 
         // --- THEME ENGINE ---
         setTheme: (themeName, el) => {
-            localStorage.setItem('elite_theme', themeName);
+            localStorage.setItem('faizan_theme', themeName);
             app.applyTheme(themeName);
             
             // UI Update
@@ -405,7 +408,7 @@
             let users = JSON.parse(localStorage.getItem(app.db.users) || "{}");
 
             if(users[u] === p) {
-                localStorage.setItem('elite_sess', u);
+                localStorage.setItem('faizan_sess', u);
                 app.loginSuccess(u);
             } else {
                 app.toast('Invalid Credentials');
@@ -418,7 +421,7 @@
         },
 
         logout: () => {
-            localStorage.removeItem('elite_sess');
+            localStorage.removeItem('faizan_sess');
             location.href = window.location.pathname;
         },
 
